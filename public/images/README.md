@@ -7,7 +7,7 @@ This directory contains product images for the NBS Supplements website.
 The following images need to be added to complete the product gallery:
 
 ### Main Product Images (high-resolution)
-- `catalyst-front.jpg` - Front label showing clean ingredient list
+- `catalyst-front.webp` - Front label showing clean ingredient list
 - `catalyst-back.jpg` - Supplement facts and usage instructions  
 - `catalyst-lifestyle.jpg` - Product being mixed in gym setting
 - `catalyst-ingredients.jpg` - Close-up of natural ingredients and clinical dosing
