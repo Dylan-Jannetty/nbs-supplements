@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Thank You - NBS Supplements"
+  description="Thank you for subscribing to NBS Supplements newsletter. Check your email for confirmation."
+>
+  <section class="py-20 lg:py-32">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center">
+        
+        <!-- Success Icon -->
+        <div class="w-20 h-20 bg-nbs-success/10 rounded-full flex items-center justify-center mx-auto mb-8">
+          <svg class="w-10 h-10 text-nbs-success" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+
+        <!-- Thank You Message -->
+        <h1 class="text-4xl lg:text-5xl font-bold text-nbs-trust mb-6">
+          Thank You!
+        </h1>
+        
+        <p class="text-xl text-muted-foreground mb-8">
+          You've successfully subscribed to our newsletter. Check your email for a confirmation message.
+        </p>
+
+        <!-- What's Next -->
+        <div class="clinical-card p-8 mb-12">
+          <h2 class="text-2xl font-semibold text-nbs-trust mb-6">What happens next?</h2>
+          
+          <div class="space-y-4 text-left">
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 bg-nbs-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <span class="text-nbs-primary font-semibold text-sm">1</span>
+              </div>
+              <div>
+                <h3 class="font-medium text-foreground mb-1">Check Your Email</h3>
+                <p class="text-sm text-muted-foreground">
+                  We've sent a confirmation email to verify your subscription.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 bg-nbs-secondary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <span class="text-nbs-secondary font-semibold text-sm">2</span>
+              </div>
+              <div>
+                <h3 class="font-medium text-foreground mb-1">Welcome Email</h3>
+                <p class="text-sm text-muted-foreground">
+                  You'll receive a welcome email with exclusive content and tips.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 bg-nbs-accent/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <span class="text-nbs-accent font-semibold text-sm">3</span>
+              </div>
+              <div>
+                <h3 class="font-medium text-foreground mb-1">Weekly Insights</h3>
+                <p class="text-sm text-muted-foreground">
+                  Get expert supplement advice and health tips every week.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a 
+            href="/products" 
+            class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-nbs-primary hover:bg-nbs-primary/90 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:ring-offset-2 shadow-lg hover:shadow-xl"
+          >
+            Browse Products
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          
+          <a 
+            href="/" 
+            class="inline-flex items-center px-8 py-4 text-lg font-semibold text-nbs-primary bg-transparent border-2 border-nbs-primary hover:bg-nbs-primary hover:text-white rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:ring-offset-2"
+          >
+            Back to Home
+          </a>
+        </div>
+
+        <!-- Social Proof -->
+        <div class="mt-16 pt-8 border-t border-border/50">
+          <p class="text-sm text-muted-foreground mb-4">
+            Join thousands of health enthusiasts who trust NBS Supplements
+          </p>
+          
+          <div class="flex items-center justify-center space-x-6">
+            <div class="trust-signal">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>Pharmacist Formulated</span>
+            </div>
+            
+            <div class="trust-signal">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Third-Party Tested</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

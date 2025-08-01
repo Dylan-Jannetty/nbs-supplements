@@ -1,0 +1,1466 @@
+---
+// Professional contact form component for NBS Supplements
+// Includes Netlify Forms integration, validation, and accessibility features
+
+export interface Props {
+  title?: string;
+  description?: string;
+  variant?: 'default' | 'card';
+  showTitle?: boolean;
+}
+
+const {
+  title = "Get in Touch",
+  description = "Have questions about our products? Need support? We'd love to hear from you.",
+  variant = 'default',
+  showTitle = true
+} = Astro.props;
+
+// Generate unique IDs for form elements
+const formId = `contact-${Math.random().toString(36).substr(2, 9)}`;
+const nameId = `name-${formId}`;
+const emailId = `email-${formId}`;
+const subjectId = `subject-${formId}`;
+const messageId = `message-${formId}`;
+const honeypotId = `honeypot-${formId}`;
+---
+
+<div class={variant === 'card' ? 'clinical-card p-8' : ''}>
+  {showTitle && (
+    <div class="mb-8">
+      <h2 class="text-2xl lg:text-3xl font-bold text-nbs-trust mb-4">{title}</h2>
+      <p class="text-muted-foreground leading-relaxed">{description}</p>
+    </div>
+  )}
+
+  <form 
+    name="contact" 
+    method="POST" 
+    data-netlify="true"
+    class="space-y-6"
+    id={formId}
+    novalidate
+  >
+    <!-- Netlify form identification -->
+    <input type="hidden" name="form-name" value="contact" />
+    
+    <!-- Honeypot field for spam protection -->
+    <div class="hidden">
+      <label for={honeypotId}>Don't fill this out if you're human:</label>
+      <input type="text" name="honeypot" id={honeypotId} />
+    </div>
+
+    <!-- Name Field -->
+    <div class="form-group">
+      <label 
+        for={nameId}
+        class="block text-sm font-medium text-foreground mb-2"
+      >
+        Full Name <span class="text-destructive">*</span>
+      </label>
+      <input
+        type="text"
+        name="name"
+        id={nameId}
+        required
+        class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:border-transparent transition-colors duration-200 bg-background text-foreground"
+        placeholder="Enter your full name"
+        aria-describedby={`${nameId}-error`}
+      />
+      <div id={`${nameId}-error`} class="form-error hidden text-sm text-destructive mt-1" role="alert"></div>
+    </div>
+
+    <!-- Email Field -->
+    <div class="form-group">
+      <label 
+        for={emailId}
+        class="block text-sm font-medium text-foreground mb-2"
+      >
+        Email Address <span class="text-destructive">*</span>
+      </label>
+      <input
+        type="email"
+        name="email"
+        id={emailId}
+        required
+        class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:border-transparent transition-colors duration-200 bg-background text-foreground"
+        placeholder="Enter your email address"
+        aria-describedby={`${emailId}-error`}
+      />
+      <div id={`${emailId}-error`} class="form-error hidden text-sm text-destructive mt-1" role="alert"></div>
+    </div>
+
+    <!-- Subject Field -->
+    <div class="form-group">
+      <label 
+        for={subjectId}
+        class="block text-sm font-medium text-foreground mb-2"
+      >
+        Subject/Topic
+      </label>
+      <select
+        name="subject"
+        id={subjectId}
+        class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:border-transparent transition-colors duration-200 bg-background text-foreground"
+        aria-describedby={`${subjectId}-help`}
+      >
+        <option value="">Select a topic (optional)</option>
+        <option value="general">General Inquiry</option>
+        <option value="product">Product Questions</option>
+        <option value="wholesale">Wholesale/Partnership</option>
+        <option value="support">Technical Support</option>
+        <option value="quality">Quality/Safety Concerns</option>
+        <option value="media">Media Inquiries</option>
+      </select>
+      <div id={`${subjectId}-help`} class="text-xs text-muted-foreground mt-1">
+        Help us route your message to the right team
+      </div>
+    </div>
+
+    <!-- Message Field -->
+    <div class="form-group">
+      <label 
+        for={messageId}
+        class="block text-sm font-medium text-foreground mb-2"
+      >
+        Message <span class="text-destructive">*</span>
+      </label>
+      <textarea
+        name="message"
+        id={messageId}
+        required
+        rows="5"
+        maxlength="1000"
+        class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:border-transparent transition-colors duration-200 bg-background text-foreground resize-vertical"
+        placeholder="Tell us how we can help you..."
+        aria-describedby={`${messageId}-error ${messageId}-count`}
+      ></textarea>
+      <div class="flex justify-between items-center mt-1">
+        <div id={`${messageId}-error`} class="form-error hidden text-sm text-destructive" role="alert"></div>
+        <div id={`${messageId}-count`} class="text-xs text-muted-foreground">
+          <span class="character-count">0</span>/1000 characters
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-submit-group">
+      <button
+        type="submit"
+        class="w-full inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-nbs-primary hover:bg-nbs-primary/90 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:ring-offset-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        id="submit-button"
+      >
+        <span class="submit-text">Send Message</span>
+        <span class="loading-text hidden">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Sending...
+        </span>
+        <svg class="ml-2 w-5 h-5 submit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message" class="hidden p-4 bg-nbs-success/10 border border-nbs-success/20 rounded-lg">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-nbs-success mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <div>
+          <h4 class="font-semibold text-nbs-success">Message Sent Successfully!</h4>
+          <p class="text-sm text-muted-foreground mt-1">We'll get back to you within 24-48 hours.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="hidden p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-destructive mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div>
+          <h4 class="font-semibold text-destructive">Error Sending Message</h4>
+          <p class="text-sm text-muted-foreground mt-1">Please try again or contact us directly.</p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Privacy Notice -->
+  <div class="mt-6 p-4 bg-muted/30 rounded-lg">
+    <p class="text-xs text-muted-foreground leading-relaxed">
+      <strong>Privacy Notice:</strong> Your information is secure and will only be used to respond to your inquiry. 
+      We never share personal data with third parties. By submitting this form, you agree to our 
+      <a href="/privacy" class="text-nbs-primary hover:underline">Privacy Policy</a>.
+    </p>
+  </div>
+</div>
+
+<!-- Enhanced Contact Form JavaScript with Advanced Features -->
+<script>
+  // Enhanced Contact Form Controller with Advanced Features
+  class ContactFormController {
+    constructor(formSelector) {
+      this.form = document.querySelector(formSelector);
+      if (!this.form) return;
+
+      // DOM elements cache
+      this.elements = this.cacheElements();
+      
+      // State management
+      this.state = {
+        isSubmitting: false,
+        validationState: new Map(),
+        draftKey: `contact_draft_${this.form.id}`,
+        retryCount: 0,
+        maxRetries: 3
+      };
+
+      // Performance optimized debounced functions
+      this.debouncedValidate = this.debounce(this.validateField.bind(this), 300);
+      this.debouncedSaveDraft = this.debounce(this.saveDraft.bind(this), 1000);
+      this.debouncedAnalyzeContent = this.debounce(this.analyzeMessageContent.bind(this), 500);
+
+      // Initialize all features
+      this.init();
+    }
+
+    cacheElements() {
+      return {
+        submitButton: this.form.querySelector('#submit-button'),
+        submitText: this.form.querySelector('.submit-text'),
+        loadingText: this.form.querySelector('.loading-text'),
+        submitIcon: this.form.querySelector('.submit-icon'),
+        successMessage: this.form.querySelector('#success-message'),
+        errorMessage: this.form.querySelector('#error-message'),
+        messageTextarea: this.form.querySelector('textarea[name="message"]'),
+        characterCount: this.form.querySelector('.character-count'),
+        subjectSelect: this.form.querySelector('select[name="subject"]'),
+        nameInput: this.form.querySelector('input[name="name"]'),
+        emailInput: this.form.querySelector('input[name="email"]'),
+        requiredFields: this.form.querySelectorAll('[required]'),
+        allInputs: this.form.querySelectorAll('input, textarea, select')
+      };
+    }
+
+    init() {
+      this.setupEventListeners();
+      this.setupProgressiveValidation();
+      this.setupAutosave();
+      this.setupKeyboardNavigation();
+      this.setupAccessibilityFeatures();
+      this.loadDraft();
+      this.setupSmartPlaceholders();
+      this.setupRetryMechanism();
+      this.announceToScreenReader('Contact form loaded and ready for input', 'polite');
+    }
+
+    // Utility: Debounce function for performance optimization
+    debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func.apply(this, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Utility: Throttle function for high-frequency events
+    throttle(func, limit) {
+      let inThrottle;
+      return function executedFunction(...args) {
+        if (!inThrottle) {
+          func.apply(this, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      };
+    }
+
+    // Event Listeners Setup with Performance Optimization
+    setupEventListeners() {
+      // Form submission with enhanced error handling
+      this.form.addEventListener('submit', this.handleSubmit.bind(this));
+
+      // Character counter with visual feedback enhancements
+      if (this.elements.messageTextarea && this.elements.characterCount) {
+        const updateCharacterCount = this.throttle((e) => {
+          this.updateCharacterCount(e.target);
+          this.debouncedSaveDraft();
+          this.debouncedAnalyzeContent(e.target.value);
+        }, 100);
+
+        this.elements.messageTextarea.addEventListener('input', updateCharacterCount);
+      }
+
+      // Enhanced validation listeners with debouncing
+      this.elements.requiredFields.forEach(field => {
+        field.addEventListener('input', (e) => {
+          this.debouncedValidate(e.target);
+          this.debouncedSaveDraft();
+        });
+
+        field.addEventListener('blur', (e) => {
+          this.validateField(e.target, true);
+        });
+
+        field.addEventListener('focus', (e) => {
+          this.handleFieldFocus(e.target);
+        });
+      });
+
+      // Copy/paste handling optimization
+      this.elements.allInputs.forEach(input => {
+        input.addEventListener('paste', this.handlePaste.bind(this));
+      });
+
+      // Subject change handler for smart placeholders
+      if (this.elements.subjectSelect) {
+        this.elements.subjectSelect.addEventListener('change', (e) => {
+          this.updateSmartPlaceholder(e.target.value);
+          this.debouncedSaveDraft();
+        });
+      }
+    }
+
+    // Progressive Validation with Real-time Feedback
+    setupProgressiveValidation() {
+      this.validationRules = {
+        name: {
+          required: true,
+          minLength: 2,
+          pattern: /^[a-zA-Z\s'-]+$/,
+          messages: {
+            required: 'Full name is required',
+            minLength: 'Name must be at least 2 characters',
+            pattern: 'Please enter a valid name (letters, spaces, hyphens, and apostrophes only)'
+          }
+        },
+        email: {
+          required: true,
+          pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          messages: {
+            required: 'Email address is required',
+            pattern: 'Please enter a valid email address'
+          }
+        },
+        message: {
+          required: true,
+          minLength: 10,
+          maxLength: 1000,
+          messages: {
+            required: 'Message is required',
+            minLength: 'Message must be at least 10 characters',
+            maxLength: 'Message cannot exceed 1000 characters'
+          }
+        }
+      };
+    }
+
+    // Enhanced Field Validation with Multiple Error Types
+    validateField(field, showSuccess = false) {
+      const fieldName = field.name;
+      const rules = this.validationRules[fieldName];
+      
+      if (!rules) return true;
+
+      const value = field.value.trim();
+      const errors = [];
+      
+      // Required validation
+      if (rules.required && !value) {
+        errors.push(rules.messages.required);
+      }
+      
+      // Only run other validations if field has value
+      if (value) {
+        // Pattern validation
+        if (rules.pattern && !rules.pattern.test(value)) {
+          errors.push(rules.messages.pattern);
+        }
+        
+        // Length validations
+        if (rules.minLength && value.length < rules.minLength) {
+          errors.push(rules.messages.minLength);
+        }
+        
+        if (rules.maxLength && value.length > rules.maxLength) {
+          errors.push(rules.messages.maxLength);
+        }
+      }
+
+      const isValid = errors.length === 0;
+      this.state.validationState.set(fieldName, isValid);
+
+      // Update UI with validation state
+      this.updateFieldValidationUI(field, errors, isValid && showSuccess && value);
+      
+      // Update form progress
+      this.updateFormProgress();
+
+      return isValid;
+    }
+
+    // Enhanced UI Updates for Validation States
+    updateFieldValidationUI(field, errors, showSuccess) {
+      const errorDiv = document.getElementById(`${field.id}-error`);
+      const fieldContainer = field.closest('.form-group');
+
+      // Clear previous states
+      field.classList.remove('border-destructive', 'ring-destructive', 'border-nbs-success', 'ring-nbs-success');
+      fieldContainer?.classList.remove('field-valid', 'field-invalid');
+
+      if (errors.length > 0) {
+        // Show error state
+        field.classList.add('border-destructive', 'ring-1', 'ring-destructive');
+        fieldContainer?.classList.add('field-invalid');
+        
+        if (errorDiv) {
+          errorDiv.classList.remove('hidden');
+          errorDiv.textContent = errors[0]; // Show first error
+          errorDiv.setAttribute('aria-live', 'assertive');
+        }
+      } else {
+        // Clear error state
+        if (errorDiv) {
+          errorDiv.classList.add('hidden');
+          errorDiv.textContent = '';
+          errorDiv.removeAttribute('aria-live');
+        }
+
+        // Show success state if requested
+        if (showSuccess) {
+          field.classList.add('border-nbs-success', 'ring-1', 'ring-nbs-success');
+          fieldContainer?.classList.add('field-valid');
+          this.addSuccessIndicator(field);
+        }
+      }
+    }
+
+    // Add Visual Success Indicators
+    addSuccessIndicator(field) {
+      const existingIndicator = field.parentNode.querySelector('.success-indicator');
+      if (existingIndicator) return;
+
+      const indicator = document.createElement('div');
+      indicator.className = 'success-indicator absolute right-3 top-1/2 transform -translate-y-1/2 text-nbs-success';
+      indicator.innerHTML = `
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      `;
+      indicator.setAttribute('aria-label', 'Valid input');
+      
+      // Position relative container
+      const container = field.parentNode;
+      if (container.style.position !== 'relative') {
+        container.style.position = 'relative';
+      }
+      
+      container.appendChild(indicator);
+      
+      // Animate in
+      indicator.style.opacity = '0';
+      indicator.style.transform = 'translate(-50%, -50%) scale(0.8)';
+      requestAnimationFrame(() => {
+        indicator.style.transition = 'all 0.2s ease-out';
+        indicator.style.opacity = '1';
+        indicator.style.transform = 'translate(-50%, -50%) scale(1)';
+      });
+    }
+
+    // Enhanced Character Counter with Visual Feedback
+    updateCharacterCount(textarea) {
+      const count = textarea.value.length;
+      const maxLength = 1000;
+      
+      if (this.elements.characterCount) {
+        this.elements.characterCount.textContent = count;
+        const countContainer = this.elements.characterCount.parentElement;
+        
+        // Remove all previous classes
+        countContainer.classList.remove('text-muted-foreground', 'text-nbs-accent', 'text-destructive', 'text-nbs-success');
+        
+        // Apply appropriate styling based on count
+        if (count === 0) {
+          countContainer.classList.add('text-muted-foreground');
+        } else if (count < maxLength * 0.7) {
+          countContainer.classList.add('text-nbs-success');
+        } else if (count < maxLength * 0.9) {
+          countContainer.classList.add('text-nbs-accent');
+        } else {
+          countContainer.classList.add('text-destructive');
+        }
+
+        // Add progress bar visualization
+        this.updateCharacterProgressBar(count, maxLength);
+      }
+    }
+
+    // Character Count Progress Bar
+    updateCharacterProgressBar(count, maxLength) {
+      let progressBar = this.form.querySelector('.character-progress-bar');
+      
+      if (!progressBar) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'character-progress-bar w-full h-1 bg-muted rounded-full mt-1 overflow-hidden';
+        progressBar.innerHTML = '<div class="progress-fill h-full transition-all duration-300 ease-out"></div>';
+        this.elements.characterCount.parentElement.parentElement.appendChild(progressBar);
+      }
+
+      const progressFill = progressBar.querySelector('.progress-fill');
+      const percentage = (count / maxLength) * 100;
+      
+      progressFill.style.width = `${Math.min(percentage, 100)}%`;
+      
+      // Color coding
+      if (percentage < 70) {
+        progressFill.className = 'progress-fill h-full transition-all duration-300 ease-out bg-nbs-success';
+      } else if (percentage < 90) {
+        progressFill.className = 'progress-fill h-full transition-all duration-300 ease-out bg-nbs-accent';
+      } else {
+        progressFill.className = 'progress-fill h-full transition-all duration-300 ease-out bg-destructive';
+      }
+    }
+
+    // Form Progress Indicator
+    updateFormProgress() {
+      const totalFields = this.elements.requiredFields.length;
+      const validFields = Array.from(this.elements.requiredFields)
+        .filter(field => this.state.validationState.get(field.name) === true).length;
+      
+      const progress = (validFields / totalFields) * 100;
+      
+      let progressIndicator = this.form.querySelector('.form-progress-indicator');
+      if (!progressIndicator) {
+        progressIndicator = document.createElement('div');
+        progressIndicator.className = 'form-progress-indicator mb-4';
+        progressIndicator.innerHTML = `
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-medium text-muted-foreground">Form Completion</span>
+            <span class="text-sm text-muted-foreground progress-text">${Math.round(progress)}%</span>
+          </div>
+          <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+            <div class="progress-bar h-full bg-nbs-primary transition-all duration-500 ease-out" style="width: ${progress}%"></div>
+          </div>
+        `;
+        this.form.insertBefore(progressIndicator, this.form.firstElementChild.nextElementSibling);
+      }
+
+      const progressBar = progressIndicator.querySelector('.progress-bar');
+      const progressText = progressIndicator.querySelector('.progress-text');
+      
+      progressBar.style.width = `${progress}%`;
+      progressText.textContent = `${Math.round(progress)}%`;
+
+      // Announce progress to screen readers
+      if (progress === 100) {
+        this.announceToScreenReader('Form completed, ready to submit', 'polite');
+      }
+    }
+
+    // Auto-save Draft Functionality
+    setupAutosave() {
+      // Load existing draft on page load
+      this.loadDraft();
+      
+      // Save draft indicator
+      this.createDraftIndicator();
+    }
+
+    saveDraft() {
+      const formData = new FormData(this.form);
+      const draftData = {};
+      
+      for (const [key, value] of formData.entries()) {
+        if (key !== 'form-name' && key !== 'honeypot' && value.trim()) {
+          draftData[key] = value;
+        }
+      }
+
+      if (Object.keys(draftData).length > 0) {
+        try {
+          localStorage.setItem(this.state.draftKey, JSON.stringify({
+            data: draftData,
+            timestamp: Date.now()
+          }));
+          this.showDraftSaved();
+        } catch (e) {
+          console.warn('Could not save draft to localStorage:', e);
+        }
+      }
+    }
+
+    loadDraft() {
+      try {
+        const stored = localStorage.getItem(this.state.draftKey);
+        if (stored) {
+          const { data, timestamp } = JSON.parse(stored);
+          
+          // Only load if draft is less than 24 hours old
+          if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
+            this.showDraftRestoreOption(data);
+          } else {
+            localStorage.removeItem(this.state.draftKey);
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load draft from localStorage:', e);
+      }
+    }
+
+    showDraftRestoreOption(draftData) {
+      const draftNotice = document.createElement('div');
+      draftNotice.className = 'draft-restore-notice p-3 bg-blue-50 border border-blue-200 rounded-lg mb-4 flex items-center justify-between';
+      draftNotice.innerHTML = `
+        <div class="flex items-center">
+          <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="text-sm text-blue-700">Previous draft found. Would you like to restore it?</span>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="restore-draft text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors">Restore</button>
+          <button type="button" class="dismiss-draft text-sm text-blue-500 hover:text-blue-700 transition-colors">Dismiss</button>
+        </div>
+      `;
+
+      this.form.insertBefore(draftNotice, this.form.firstElementChild);
+
+      // Event listeners for draft restoration
+      draftNotice.querySelector('.restore-draft').addEventListener('click', () => {
+        this.restoreDraft(draftData);
+        draftNotice.remove();
+      });
+
+      draftNotice.querySelector('.dismiss-draft').addEventListener('click', () => {
+        localStorage.removeItem(this.state.draftKey);
+        draftNotice.remove();
+      });
+    }
+
+    restoreDraft(draftData) {
+      Object.entries(draftData).forEach(([key, value]) => {
+        const field = this.form.querySelector(`[name="${key}"]`);
+        if (field) {
+          field.value = value;
+          
+          // Trigger events to update UI
+          field.dispatchEvent(new Event('input', { bubbles: true }));
+          field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+
+      this.announceToScreenReader('Draft restored successfully', 'polite');
+    }
+
+    createDraftIndicator() {
+      const indicator = document.createElement('div');
+      indicator.className = 'draft-indicator hidden text-xs text-muted-foreground flex items-center mt-2';
+      indicator.innerHTML = `
+        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>Draft saved</span>
+      `;
+      
+      this.form.appendChild(indicator);
+      this.draftIndicator = indicator;
+    }
+
+    showDraftSaved() {
+      if (this.draftIndicator) {
+        this.draftIndicator.classList.remove('hidden');
+        clearTimeout(this.draftIndicator.hideTimeout);
+        this.draftIndicator.hideTimeout = setTimeout(() => {
+          this.draftIndicator.classList.add('hidden');
+        }, 2000);
+      }
+    }
+
+    // Smart Subject Selection based on Message Content
+    analyzeMessageContent(message) {
+      const keywords = {
+        'product': ['product', 'ingredient', 'dosage', 'side effect', 'catalyst', 'supplement', 'formula'],
+        'wholesale': ['wholesale', 'bulk', 'partner', 'business', 'retail', 'distributor'],
+        'support': ['support', 'help', 'problem', 'issue', 'bug', 'error', 'not working'],
+        'quality': ['quality', 'safety', 'testing', 'certification', 'contamination', 'purity'],
+        'media': ['media', 'press', 'interview', 'article', 'journalist', 'publication']
+      };
+
+      const messageLower = message.toLowerCase();
+      let bestMatch = '';
+      let highestScore = 0;
+
+      Object.entries(keywords).forEach(([category, words]) => {
+        const score = words.reduce((acc, word) => {
+          return acc + (messageLower.includes(word) ? 1 : 0);
+        }, 0);
+
+        if (score > highestScore) {
+          highestScore = score;
+          bestMatch = category;
+        }
+      });
+
+      if (bestMatch && this.elements.subjectSelect.value === '') {
+        this.suggestSubject(bestMatch);
+      }
+    }
+
+    suggestSubject(category) {
+      const suggestion = document.createElement('div');
+      suggestion.className = 'subject-suggestion p-2 bg-blue-50 border border-blue-200 rounded text-sm text-blue-700 mt-2 flex items-center justify-between';
+      suggestion.innerHTML = `
+        <span>Suggested topic: ${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+        <div>
+          <button type="button" class="accept-suggestion text-blue-500 hover:text-blue-700 mr-2">Accept</button>
+          <button type="button" class="dismiss-suggestion text-gray-500 hover:text-gray-700">×</button>
+        </div>
+      `;
+
+      // Remove existing suggestions
+      const existing = this.form.querySelector('.subject-suggestion');
+      if (existing) existing.remove();
+
+      // Add new suggestion
+      this.elements.subjectSelect.parentNode.appendChild(suggestion);
+
+      // Event listeners
+      suggestion.querySelector('.accept-suggestion').addEventListener('click', () => {
+        this.elements.subjectSelect.value = category;
+        this.elements.subjectSelect.dispatchEvent(new Event('change'));
+        suggestion.remove();
+      });
+
+      suggestion.querySelector('.dismiss-suggestion').addEventListener('click', () => {
+        suggestion.remove();
+      });
+
+      // Auto-dismiss after 10 seconds
+      setTimeout(() => {
+        if (suggestion.parentNode) suggestion.remove();
+      }, 10000);
+    }
+
+    // Smart Placeholder Updates
+    setupSmartPlaceholders() {
+      this.placeholders = {
+        'general': 'Tell us how we can help you...',
+        'product': 'Ask about ingredients, dosage, or any product-specific questions...',
+        'wholesale': 'Tell us about your business and partnership interests...',
+        'support': 'Describe the issue you\'re experiencing in detail...',
+        'quality': 'Share your quality or safety concerns with us...',
+        'media': 'Tell us about your publication and interview needs...'
+      };
+    }
+
+    updateSmartPlaceholder(subject) {
+      if (this.elements.messageTextarea && this.placeholders[subject]) {
+        this.elements.messageTextarea.placeholder = this.placeholders[subject];
+      }
+    }
+
+    // Enhanced Keyboard Navigation
+    setupKeyboardNavigation() {
+      this.form.addEventListener('keydown', (e) => {
+        // Tab enhancement for better flow
+        if (e.key === 'Tab') {
+          this.handleTabNavigation(e);
+        }
+        
+        // Ctrl+Enter to submit
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          this.handleSubmit(e);
+        }
+
+        // Escape to clear current field
+        if (e.key === 'Escape') {
+          const activeElement = document.activeElement;
+          if (activeElement && activeElement.tagName !== 'BUTTON') {
+            activeElement.value = '';
+            activeElement.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        }
+      });
+    }
+
+    handleTabNavigation(e) {
+      const focusableElements = this.form.querySelectorAll(
+        'input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])'
+      );
+      const currentIndex = Array.prototype.indexOf.call(focusableElements, document.activeElement);
+      
+      // Skip invalid fields during tab navigation
+      if (!e.shiftKey && currentIndex >= 0) {
+        const currentField = focusableElements[currentIndex];
+        if (currentField.hasAttribute('required') && !this.validateField(currentField)) {
+          // Don't prevent default, let browser handle focus but show validation
+          this.validateField(currentField, true);
+        }
+      }
+    }
+
+    // Enhanced Field Focus Handling
+    handleFieldFocus(field) {
+      // Clear success indicators on re-focus
+      const successIndicator = field.parentNode.querySelector('.success-indicator');
+      if (successIndicator) {
+        successIndicator.remove();
+      }
+
+      // Show helpful hints
+      this.showFieldHint(field);
+    }
+
+    showFieldHint(field) {
+      const hints = {
+        'name': 'Enter your full name as you\'d like us to address you',
+        'email': 'We\'ll use this to respond to your message',
+        'message': 'Be as detailed as possible to help us assist you better'
+      };
+
+      const hint = hints[field.name];
+      if (hint) {
+        // Create or update hint element
+        let hintElement = field.parentNode.querySelector('.field-hint');
+        if (!hintElement) {
+          hintElement = document.createElement('div');
+          hintElement.className = 'field-hint text-xs text-blue-600 mt-1 opacity-0 transition-opacity duration-200';
+          field.parentNode.appendChild(hintElement);
+        }
+        
+        hintElement.textContent = hint;
+        hintElement.style.opacity = '1';
+
+        // Hide hint after 5 seconds or on blur
+        const hideHint = () => {
+          hintElement.style.opacity = '0';
+          setTimeout(() => {
+            if (hintElement.parentNode) {
+              hintElement.remove();
+            }
+          }, 200);
+        };
+
+        field.addEventListener('blur', hideHint, { once: true });
+        setTimeout(hideHint, 5000);
+      }
+    }
+
+    // Enhanced Copy/Paste Handling
+    handlePaste(e) {
+      const field = e.target;
+      
+      // Handle email paste validation
+      if (field.type === 'email') {
+        setTimeout(() => {
+          this.validateField(field, true);
+        }, 0);
+      }
+
+      // Handle large text paste in message field
+      if (field.name === 'message') {
+        setTimeout(() => {
+          if (field.value.length > 1000) {
+            field.value = field.value.substring(0, 1000);
+            this.announceToScreenReader('Text trimmed to maximum length', 'assertive');
+          }
+          this.updateCharacterCount(field);
+        }, 0);
+      }
+    }
+
+    // Enhanced Accessibility Features
+    setupAccessibilityFeatures() {
+      // Create live region for announcements
+      this.createLiveRegion();
+      
+      // Add skip link for keyboard users
+      this.addSkipToSubmitLink();
+      
+      // Enhanced focus management
+      this.setupFocusManagement();
+    }
+
+    createLiveRegion() {
+      if (!document.getElementById('form-announcements')) {
+        const liveRegion = document.createElement('div');
+        liveRegion.id = 'form-announcements';
+        liveRegion.className = 'sr-only';
+        liveRegion.setAttribute('aria-live', 'polite');
+        liveRegion.setAttribute('aria-atomic', 'true');
+        document.body.appendChild(liveRegion);
+      }
+    }
+
+    addSkipToSubmitLink() {
+      const skipLink = document.createElement('a');
+      skipLink.href = '#submit-button';
+      skipLink.className = 'skip-to-submit sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-nbs-primary text-white px-4 py-2 rounded z-50';
+      skipLink.textContent = 'Skip to submit button';
+      this.form.insertBefore(skipLink, this.form.firstElementChild);
+    }
+
+    setupFocusManagement() {
+      // Return focus to first error field after submission attempt with errors
+      this.form.addEventListener('submit', (e) => {
+        if (!this.validateAllFields()) {
+          e.preventDefault();
+          
+          // Find first invalid field and focus it
+          const firstInvalidField = Array.from(this.elements.requiredFields)
+            .find(field => !this.state.validationState.get(field.name));
+          
+          if (firstInvalidField) {
+            setTimeout(() => {
+              firstInvalidField.focus();
+              this.announceToScreenReader(`Please correct the error in ${firstInvalidField.labels[0]?.textContent || firstInvalidField.name}`, 'assertive');
+            }, 100);
+          }
+        }
+      });
+    }
+
+    announceToScreenReader(message, priority = 'polite') {
+      const liveRegion = document.getElementById('form-announcements');
+      if (liveRegion) {
+        liveRegion.setAttribute('aria-live', priority);
+        liveRegion.textContent = message;
+        
+        // Clear after announcement
+        setTimeout(() => {
+          liveRegion.textContent = '';
+        }, 1000);
+      }
+    }
+
+    // Enhanced Retry Mechanism with Exponential Backoff
+    setupRetryMechanism() {
+      this.retryDelays = [1000, 2000, 5000]; // Exponential backoff delays
+    }
+
+    async attemptSubmissionWithRetry(formData) {
+      for (let attempt = 0; attempt <= this.state.maxRetries; attempt++) {
+        try {
+          const response = await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString(),
+            signal: AbortSignal.timeout(10000) // 10 second timeout
+          });
+
+          if (response.ok) {
+            return { success: true };
+          } else if (response.status >= 500) {
+            // Server error, retry
+            throw new Error(`Server error: ${response.status}`);
+          } else {
+            // Client error, don't retry
+            return { success: false, error: `Request failed: ${response.status}` };
+          }
+        } catch (error) {
+          if (attempt === this.state.maxRetries) {
+            return { success: false, error: error.message };
+          }
+
+          // Wait before retry with exponential backoff
+          await new Promise(resolve => setTimeout(resolve, this.retryDelays[attempt] || 5000));
+          
+          this.updateSubmissionProgress(`Retrying... (${attempt + 1}/${this.state.maxRetries})`);
+        }
+      }
+    }
+
+    // Enhanced Form Submission with Progress Feedback
+    async handleSubmit(e) {
+      e.preventDefault();
+      
+      if (this.state.isSubmitting) return;
+
+      // Hide previous messages
+      this.elements.successMessage?.classList.add('hidden');
+      this.elements.errorMessage?.classList.add('hidden');
+      
+      // Validate all fields
+      if (!this.validateAllFields()) {
+        this.announceToScreenReader('Please fix the errors in the form before submitting', 'assertive');
+        return;
+      }
+      
+      this.state.isSubmitting = true;
+      this.showSubmissionProgress();
+      
+      try {
+        const formData = new FormData(this.form);
+        const result = await this.attemptSubmissionWithRetry(formData);
+        
+        if (result.success) {
+          this.handleSubmissionSuccess();
+        } else {
+          this.handleSubmissionError(result.error);
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+        this.handleSubmissionError(error.message);
+      } finally {
+        this.state.isSubmitting = false;
+        this.resetSubmissionUI();
+      }
+    }
+
+    validateAllFields() {
+      let allValid = true;
+      
+      this.elements.requiredFields.forEach(field => {
+        const isValid = this.validateField(field, true);
+        if (!isValid) allValid = false;
+      });
+      
+      return allValid;
+    }
+
+    showSubmissionProgress() {
+      this.elements.submitButton.disabled = true;
+      this.elements.submitText.classList.add('hidden');
+      this.elements.loadingText.classList.remove('hidden');
+      this.elements.submitIcon.classList.add('hidden');
+      
+      // Add progress indicator
+      this.updateSubmissionProgress('Sending your message...');
+    }
+
+    updateSubmissionProgress(message) {
+      let progressElement = this.form.querySelector('.submission-progress');
+      if (!progressElement) {
+        progressElement = document.createElement('div');
+        progressElement.className = 'submission-progress text-sm text-muted-foreground mt-2 flex items-center';
+        progressElement.innerHTML = `
+          <svg class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="progress-message">${message}</span>
+        `;
+        this.elements.submitButton.parentNode.appendChild(progressElement);
+      } else {
+        progressElement.querySelector('.progress-message').textContent = message;
+      }
+    }
+
+    handleSubmissionSuccess() {
+      this.elements.successMessage?.classList.remove('hidden');
+      this.form.reset();
+      this.state.validationState.clear();
+      
+      // Clear character count
+      if (this.elements.characterCount) {
+        this.elements.characterCount.textContent = '0';
+      }
+      
+      // Clear draft
+      localStorage.removeItem(this.state.draftKey);
+      
+      // Reset progress
+      this.updateFormProgress();
+      
+      // Focus success message for screen readers
+      setTimeout(() => {
+        this.elements.successMessage?.focus();
+        this.announceToScreenReader('Message sent successfully! We will respond within 24-48 hours.', 'assertive');
+      }, 100);
+
+      // Add celebration animation
+      this.addSuccessAnimation();
+    }
+
+    handleSubmissionError(errorMessage) {
+      this.elements.errorMessage?.classList.remove('hidden');
+      
+      // Update error message with specific details
+      const errorText = this.elements.errorMessage?.querySelector('p');
+      if (errorText) {
+        errorText.textContent = `There was a problem sending your message: ${errorMessage}. Please try again or contact us directly.`;
+      }
+      
+      this.announceToScreenReader(`Error sending message: ${errorMessage}`, 'assertive');
+    }
+
+    resetSubmissionUI() {
+      this.elements.submitButton.disabled = false;
+      this.elements.submitText.classList.remove('hidden');
+      this.elements.loadingText.classList.add('hidden');
+      this.elements.submitIcon.classList.remove('hidden');
+      
+      // Remove progress indicator
+      const progressElement = this.form.querySelector('.submission-progress');
+      if (progressElement) {
+        progressElement.remove();
+      }
+    }
+
+    addSuccessAnimation() {
+      // Create confetti-like success animation
+      const successAnimation = document.createElement('div');
+      successAnimation.className = 'success-animation fixed inset-0 pointer-events-none z-50';
+      successAnimation.innerHTML = `
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div class="success-checkmark w-16 h-16 bg-nbs-success rounded-full flex items-center justify-center animate-bounce">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(successAnimation);
+      
+      // Remove animation after 2 seconds
+      setTimeout(() => {
+        successAnimation.remove();
+      }, 2000);
+    }
+
+    // Cleanup method to prevent memory leaks
+    destroy() {
+      // Remove event listeners
+      this.form.removeEventListener('submit', this.handleSubmit);
+      
+      // Clear timeouts
+      if (this.draftIndicator?.hideTimeout) {
+        clearTimeout(this.draftIndicator.hideTimeout);
+      }
+      
+      // Clear state
+      this.state.validationState.clear();
+    }
+  }
+
+  // Initialize the enhanced contact form when DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = new ContactFormController('form[name="contact"]');
+    
+    // Make form instance globally available for debugging
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      window.contactForm = contactForm;
+    }
+  });
+
+  // Fallback for browsers without JavaScript (Progressive Enhancement)
+  document.documentElement.classList.add('js-enabled');
+</script>
+
+<style>
+  /* Enhanced Form Styling with Advanced Features */
+  
+  /* Focus states with improved accessibility */
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    box-shadow: 0 0 0 3px hsl(var(--nbs-primary) / 0.1);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  
+  .form-group input.border-destructive:focus,
+  .form-group textarea.border-destructive:focus {
+    box-shadow: 0 0 0 3px hsl(var(--destructive) / 0.1);
+  }
+
+  /* Success state styling with animations */
+  .form-group input.border-nbs-success:focus,
+  .form-group textarea.border-nbs-success:focus {
+    box-shadow: 0 0 0 3px hsl(var(--nbs-success) / 0.1);
+  }
+
+  .field-valid input,
+  .field-valid textarea,
+  .field-valid select {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .field-invalid input,
+  .field-invalid textarea,
+  .field-invalid select {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  /* Shake animation for invalid fields */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+  }
+
+  /* Success indicator positioning and animation */
+  .success-indicator {
+    animation: successFadeIn 0.3s ease-out;
+  }
+
+  @keyframes successFadeIn {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  /* Progress indicators with smooth transitions */
+  .form-progress-indicator .progress-bar {
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .character-progress-bar .progress-fill {
+    transition: width 0.3s ease-out, background-color 0.2s ease-out;
+  }
+
+  /* Draft and suggestion styling */
+  .draft-restore-notice {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .subject-suggestion {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Field hints with fade animation */
+  .field-hint {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  /* Enhanced loading states */
+  .loading-text svg {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Success animation styles */
+  .success-animation {
+    animation: fadeInOut 2s ease-out;
+  }
+
+  .success-checkmark {
+    animation: bounceIn 0.6s ease-out;
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Skip link accessibility */
+  .skip-to-submit {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-out;
+  }
+
+  .skip-to-submit:focus {
+    transform: translateY(0);
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: 3px solid;
+      outline-offset: 2px;
+    }
+
+    .success-indicator,
+    .character-progress-bar .progress-fill,
+    .form-progress-indicator .progress-bar {
+      border: 1px solid;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .field-invalid input,
+    .field-invalid textarea,
+    .field-invalid select {
+      animation: none;
+    }
+
+    .success-indicator,
+    .draft-restore-notice,
+    .subject-suggestion,
+    .field-hint,
+    .success-animation,
+    .success-checkmark {
+      animation: none;
+    }
+
+    .form-progress-indicator .progress-bar,
+    .character-progress-bar .progress-fill {
+      transition: none;
+    }
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 640px) {
+    .draft-restore-notice,
+    .subject-suggestion {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .draft-restore-notice .flex:last-child,
+    .subject-suggestion div:last-child {
+      align-self: flex-end;
+    }
+
+    .form-progress-indicator {
+      font-size: 0.875rem;
+    }
+
+    .success-checkmark {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .success-checkmark svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  /* Dark mode enhancements */
+  .dark .draft-restore-notice {
+    background-color: hsl(var(--primary) / 0.1);
+    border-color: hsl(var(--primary) / 0.2);
+  }
+
+  .dark .subject-suggestion {
+    background-color: hsl(var(--primary) / 0.1);
+    border-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary));
+  }
+
+  .dark .field-hint {
+    color: hsl(var(--primary) / 0.8);
+  }
+
+  /* Form validation states enhanced for accessibility */
+  .form-group[aria-invalid="true"] input,
+  .form-group[aria-invalid="true"] textarea {
+    border-color: hsl(var(--destructive));
+    background-color: hsl(var(--destructive) / 0.05);
+  }
+
+  .form-group[aria-invalid="false"] input,
+  .form-group[aria-invalid="false"] textarea {
+    border-color: hsl(var(--nbs-success));
+    background-color: hsl(var(--nbs-success) / 0.05);
+  }
+
+  /* Improved button states */
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  button:disabled:hover {
+    transform: none !important;
+  }
+
+  /* Enhanced focus indicators for keyboard navigation */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible {
+    outline: 2px solid hsl(var(--nbs-primary));
+    outline-offset: 2px;
+  }
+
+  /* Screen reader only content */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sr-only.focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Performance optimization - will-change for animated elements */
+  .progress-bar,
+  .progress-fill,
+  .success-indicator,
+  .success-animation {
+    will-change: transform, opacity;
+  }
+
+  /* Prevent layout shift during animations */
+  .form-progress-indicator,
+  .character-progress-bar {
+    contain: layout style paint;
+  }
+</style>

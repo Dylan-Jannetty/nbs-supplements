@@ -1,0 +1,37 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  
+  // Filter out drafts
+  const publishedEntries = blogEntries.filter(entry => !entry.data.draft);
+  
+  return publishedEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+type Props = {
+  entry: CollectionEntry<'blog'>;
+};
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Calculate reading time if not provided
+const readingTime = entry.data.readingTime || Math.ceil(entry.data.excerpt.length / 200);
+
+// Format frontmatter for BlogLayout
+const frontmatter = {
+  ...entry.data,
+  readingTime,
+  publishDate: entry.data.publishDate,
+};
+---
+
+<BlogLayout frontmatter={frontmatter} slug={entry.slug}>
+  <Content />
+</BlogLayout>

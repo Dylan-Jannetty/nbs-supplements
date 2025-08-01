@@ -1,0 +1,787 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ProductImageGallery } from '../../components/ui/ProductImageGallery.tsx';
+import { Button } from '../../components/ui/button.tsx';
+import { Badge } from '../../components/ui/badge.tsx';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card.tsx';
+import { Separator } from '../../components/ui/separator.tsx';
+
+// Product data
+const product = {
+  name: "Catalyst Pre-Workout",
+  price: 39.99,
+  originalPrice: 49.99,
+  rating: 4.8,
+  reviewCount: 127,
+  inStock: true,
+  description: "Clean, pharmacist-formulated pre-workout with clinical doses of creatine, L-citrulline, and natural energy boosters. No fillers, no fluff - just results.",
+  shortDescription: "The clean pre-workout that delivers real results without the junk.",
+  servingsPerContainer: 30,
+  servingSize: "1 scoop (12g)",
+  gumroadUrl: "https://gumroad.com/l/nbs-catalyst",
+  images: [
+    {
+      src: "/images/catalyst-front.jpg",
+      alt: "Catalyst Pre-Workout front label showing clean ingredient list",
+      thumbnail: "/images/catalyst-front-thumb.jpg"
+    },
+    {
+      src: "/images/catalyst-back.jpg", 
+      alt: "Catalyst Pre-Workout supplement facts and usage instructions",
+      thumbnail: "/images/catalyst-back-thumb.jpg"
+    },
+    {
+      src: "/images/catalyst-lifestyle.jpg",
+      alt: "Catalyst Pre-Workout being mixed in gym setting",
+      thumbnail: "/images/catalyst-lifestyle-thumb.jpg"
+    },
+    {
+      src: "/images/catalyst-ingredients.jpg",
+      alt: "Close-up of Catalyst's natural ingredients and clinical dosing",
+      thumbnail: "/images/catalyst-ingredients-thumb.jpg"
+    }
+  ]
+};
+
+// Ingredient data with clinical information
+const ingredients = [
+  {
+    name: "Creatine Monohydrate",
+    dosage: "5g",
+    purpose: "Power & Strength",
+    description: "The gold standard for strength and power. Clinical dose proven to increase muscle power output by up to 15%.",
+    benefits: ["Increased power output", "Enhanced muscle strength", "Improved high-intensity performance", "Faster recovery between sets"]
+  },
+  {
+    name: "L-Citrulline",
+    dosage: "2g", 
+    purpose: "Blood Flow & Pumps",
+    description: "Superior to L-Arginine for nitric oxide production. Enhances blood flow and muscle pumps during training.",
+    benefits: ["Enhanced muscle pumps", "Improved blood flow", "Reduced muscle fatigue", "Better nutrient delivery"]
+  },
+  {
+    name: "Guarana Extract",
+    dosage: "400mg",
+    purpose: "Natural Energy",
+    description: "Nature's alternative to synthetic caffeine. Provides smooth, sustained energy without the crash.",
+    benefits: ["Clean, natural energy", "Enhanced focus", "No jitters or crash", "Sustained energy release"]
+  },
+  {
+    name: "Beta-Alanine",
+    dosage: "2g",
+    purpose: "Endurance & Performance", 
+    description: "Buffers lactic acid buildup to extend your training capacity and reduce muscle fatigue.",
+    benefits: ["Increased muscular endurance", "Reduced fatigue", "Extended training capacity", "Better workout volume"]
+  },
+  {
+    name: "Vitamin B12",
+    dosage: "100mcg",
+    purpose: "Energy Metabolism",
+    description: "Essential for energy production and nervous system function. Supports natural energy pathways.",
+    benefits: ["Energy metabolism support", "Nervous system health", "Reduced fatigue", "Enhanced mental clarity"]
+  },
+  {
+    name: "Vitamin C",
+    dosage: "90mg", 
+    purpose: "Antioxidant Support",
+    description: "Powerful antioxidant that protects against exercise-induced oxidative stress.",
+    benefits: ["Antioxidant protection", "Immune system support", "Collagen synthesis", "Recovery enhancement"]
+  },
+  {
+    name: "Monk Fruit Extract",
+    dosage: "Natural sweetener",
+    purpose: "Clean Sweetening",
+    description: "Zero-calorie natural sweetener that's 200x sweeter than sugar with no glycemic impact.",
+    benefits: ["Zero calories", "No artificial sweeteners", "No glycemic impact", "Natural taste enhancement"]
+  }
+];
+
+// FAQ data
+const faqs = [
+  {
+    question: "When should I take Catalyst?",
+    answer: "Take Catalyst 15-30 minutes before your workout. Mix 1 scoop with 8-10 oz of cold water. For best results, take on an empty stomach or 2-3 hours after eating."
+  },
+  {
+    question: "Is Catalyst safe for daily use?",
+    answer: "Yes, Catalyst is formulated with clinically studied ingredients at safe, effective doses. It's third-party tested for purity and potency. We recommend cycling off for 1-2 weeks every 8-10 weeks."
+  },
+  {
+    question: "How is Catalyst different from other pre-workouts?",
+    answer: "Catalyst uses only natural ingredients with no artificial colors, flavors, or synthetic stimulants. Every ingredient is clinically dosed - no proprietary blends or underdosed compounds."
+  },
+  {
+    question: "Will I experience tingles or side effects?",
+    answer: "You may experience mild tingling from beta-alanine, which is normal and harmless. This indicates the ingredient is working. The sensation typically subsides after 15-20 minutes."
+  },
+  {
+    question: "Can I stack Catalyst with other supplements?",
+    answer: "Catalyst works great on its own, but can be combined with our future products. Avoid taking with other caffeine sources to prevent overstimulation."
+  },
+  {
+    question: "What's your return policy?",
+    answer: "We offer a 30-day money-back guarantee. If you're not satisfied with your results, contact us for a full refund. Your satisfaction is our priority."
+  }
+];
+
+// Testimonials specific to Catalyst
+const testimonials = [
+  {
+    name: "Mike Chen",
+    rating: 5,
+    text: "Finally, a pre-workout that doesn't make me crash or feel jittery. Clean energy that lasts my entire workout.",
+    verified: true,
+    date: "2024-01-15"
+  },
+  {
+    name: "Sarah Martinez", 
+    rating: 5,
+    text: "Love that I can pronounce every ingredient. The pumps are incredible and I feel focused throughout my training.",
+    verified: true,
+    date: "2024-01-10"
+  },
+  {
+    name: "David Thompson",
+    rating: 4,
+    text: "Best natural pre-workout I've tried. The taste is great and no artificial aftertaste like other brands.",
+    verified: true,
+    date: "2024-01-08"
+  }
+];
+
+// SEO data
+const seoData = {
+  title: "Catalyst Pre-Workout - Clean, Natural, Pharmacist-Formulated | NBS Supplements",
+  description: "Catalyst Pre-Workout delivers clinical doses of creatine, L-citrulline, and natural guarana. Clean formulation with no artificial ingredients. Third-party tested. $39.99",
+  keywords: "natural pre-workout, clean pre-workout, pharmacist formulated pre-workout, creatine pre-workout, no artificial ingredients",
+  canonicalUrl: "https://supplements-nbs.com/products/catalyst"
+};
+---
+
+<BaseLayout 
+  title={seoData.title}
+  description={seoData.description}
+>
+  <!-- Structured Data Schema -->
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Product",
+          "@id": "https://supplements-nbs.com/products/catalyst#product",
+          "name": "Catalyst Pre-Workout",
+          "description": "Clean, pharmacist-formulated pre-workout with clinical doses of creatine, L-citrulline, and natural energy boosters.",
+          "brand": {
+            "@type": "Brand",
+            "name": "NBS Supplements",
+            "url": "https://supplements-nbs.com"
+          },
+          "category": "Sports Nutrition > Pre-Workout Supplements",
+          "offers": {
+            "@type": "Offer",
+            "@id": "https://supplements-nbs.com/products/catalyst#offer",
+            "url": "https://gumroad.com/l/nbs-catalyst",
+            "priceCurrency": "USD", 
+            "price": "39.99",
+            "priceValidUntil": "2025-12-31",
+            "availability": "https://schema.org/InStock",
+            "seller": {
+              "@type": "Organization",
+              "name": "NBS Supplements"
+            }
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8", 
+            "reviewCount": "127",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "review": [
+            {
+              "@type": "Review",
+              "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+              },
+              "author": {
+                "@type": "Person",
+                "name": "Mike Chen"
+              },
+              "reviewBody": "Finally, a pre-workout that doesn't make me crash or feel jittery. Clean energy that lasts my entire workout.",
+              "datePublished": "2024-01-15"
+            }
+          ],
+          "image": [
+            "https://supplements-nbs.com/images/catalyst-front.jpg",
+            "https://supplements-nbs.com/images/catalyst-back.jpg",
+            "https://supplements-nbs.com/images/catalyst-lifestyle.jpg"
+          ],
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue", 
+              "name": "Serving Size",
+              "value": "1 scoop (12g)"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "Servings Per Container", 
+              "value": "30"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "Third-Party Tested",
+              "value": "Yes"
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://supplements-nbs.com"
+            },
+            {
+              "@type": "ListItem", 
+              "position": 2,
+              "name": "Products",
+              "item": "https://supplements-nbs.com/products"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Catalyst Pre-Workout",
+              "item": "https://supplements-nbs.com/products/catalyst"
+            }
+          ]
+        }
+      ]
+    }
+  </script>
+
+  <!-- Breadcrumb Navigation -->
+  <nav aria-label="Breadcrumb" class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <ol class="flex items-center space-x-2 text-sm text-muted-foreground">
+      <li>
+        <a href="/" class="hover:text-nbs-primary transition-colors duration-200">Home</a>
+      </li>
+      <li>/</li>
+      <li>
+        <a href="/products" class="hover:text-nbs-primary transition-colors duration-200">Products</a>
+      </li>
+      <li>/</li>
+      <li class="text-foreground font-medium" aria-current="page">Catalyst Pre-Workout</li>
+    </ol>
+  </nav>
+
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Product Header Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
+      
+      <!-- Product Image Gallery -->
+      <div class="space-y-4">
+        <ProductImageGallery 
+          images={product.images}
+          productName={product.name}
+          client:load
+        />
+      </div>
+
+      <!-- Product Information -->
+      <div class="space-y-6">
+        <!-- Product Title and Rating -->
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <Badge variant="secondary" class="bg-nbs-secondary/10 text-nbs-secondary">
+              Pharmacist Formulated
+            </Badge>
+            <Badge variant="outline" class="border-nbs-natural text-nbs-natural">
+              Third-Party Tested
+            </Badge>
+          </div>
+          
+          <h1 class="text-3xl lg:text-4xl font-bold text-foreground mb-2">
+            {product.name}
+          </h1>
+          
+          <div class="flex items-center gap-4 mb-4">
+            <!-- Star Rating -->
+            <div class="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  class={`w-5 h-5 ${i < Math.floor(product.rating) ? 'text-nbs-accent fill-current' : 'text-muted-foreground'}`}
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+              <span class="text-sm text-muted-foreground ml-2">
+                {product.rating} ({product.reviewCount} reviews)
+              </span>
+            </div>
+          </div>
+
+          <p class="text-lg text-muted-foreground leading-relaxed">
+            {product.shortDescription}
+          </p>
+        </div>
+
+        <!-- Pricing -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl font-bold text-foreground">
+              ${product.price}
+            </span>
+            {product.originalPrice && (
+              <span class="text-lg text-muted-foreground line-through">
+                ${product.originalPrice}
+              </span>
+            )}
+            <Badge variant="destructive" class="bg-nbs-accent text-white">
+              Save ${(product.originalPrice! - product.price).toFixed(2)}
+            </Badge>
+          </div>
+          <p class="text-sm text-muted-foreground">
+            {product.servingsPerContainer} servings • ${(product.price / product.servingsPerContainer).toFixed(2)} per serving
+          </p>
+        </div>
+
+        <!-- Stock Status -->
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 bg-nbs-secondary rounded-full"></div>
+          <span class="text-sm font-medium text-nbs-secondary">In Stock - Ships within 1-2 business days</span>
+        </div>
+
+        <!-- Primary CTA -->
+        <div class="space-y-4">
+          <Button 
+            size="lg" 
+            className="w-full bg-nbs-primary hover:bg-nbs-primary/90 text-white text-lg py-6"
+            onclick="window.open('https://gumroad.com/l/nbs-catalyst', '_blank')"
+          >
+            Add to Cart - ${product.price}
+          </Button>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <Button 
+              variant="outline" 
+              size="lg"
+              onclick="document.getElementById('ingredient-breakdown').scrollIntoView({ behavior: 'smooth' })"
+            >
+              View Ingredients
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg"
+              onclick="document.getElementById('reviews').scrollIntoView({ behavior: 'smooth' })"
+            >
+              Read Reviews
+            </Button>
+          </div>
+        </div>
+
+        <!-- Key Benefits -->
+        <Card>
+          <CardHeader>
+            <CardTitle class="text-lg">Why Choose Catalyst?</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-nbs-secondary" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Clinical doses - no underdosed ingredients</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-nbs-secondary" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>100% natural ingredients, no artificial additives</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-nbs-secondary" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Third-party tested for purity and potency</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-nbs-secondary" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Formulated by licensed pharmacists</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-nbs-secondary" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Made in FDA-registered facility in the USA</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+
+    <!-- Product Description -->
+    <section class="mb-12">
+      <div class="prose prose-lg max-w-none">
+        <h2 class="text-2xl font-bold text-foreground mb-4">
+          Clean Pre-Workout That Actually Works
+        </h2>
+        <p class="text-muted-foreground leading-relaxed">
+          {product.description} Every ingredient is carefully selected and dosed based on scientific research, 
+          not marketing hype. We believe in transparency - that's why every ingredient and dosage is clearly listed 
+          on our label, with no proprietary blends to hide behind.
+        </p>
+        <p class="text-muted-foreground leading-relaxed">
+          Catalyst delivers clean, sustained energy without the crash, enhanced blood flow for better pumps, 
+          and improved endurance to help you push through your toughest workouts. 
+          All while using only natural ingredients your body recognizes and can utilize effectively.
+        </p>
+      </div>
+    </section>
+
+    <!-- Ingredient Breakdown -->
+    <section id="ingredient-breakdown" class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+          Clinical Doses of Premium Ingredients
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Every ingredient in Catalyst is included at clinically effective doses backed by scientific research. 
+          No fillers, no fluff - just what works.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {ingredients.map((ingredient) => (
+          <Card key={ingredient.name} class="hover:shadow-lg transition-shadow duration-200">
+            <CardHeader>
+              <div class="flex items-center justify-between mb-2">
+                <CardTitle class="text-lg">{ingredient.name}</CardTitle>
+                <Badge variant="outline" class="bg-nbs-primary/10 text-nbs-primary border-nbs-primary">
+                  {ingredient.dosage}
+                </Badge>
+              </div>
+              <CardDescription class="text-nbs-accent font-medium">
+                {ingredient.purpose}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p class="text-muted-foreground mb-4">{ingredient.description}</p>
+              <div class="space-y-1">
+                <h4 class="font-medium text-foreground">Key Benefits:</h4>
+                <ul class="text-sm text-muted-foreground space-y-1">
+                  {ingredient.benefits.map((benefit) => (
+                    <li key={benefit} class="flex items-center gap-2">
+                      <div class="w-1.5 h-1.5 bg-nbs-secondary rounded-full"></div>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+
+    <!-- Secondary CTA -->
+    <section class="bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 rounded-2xl p-8 text-center mb-12">
+      <h3 class="text-2xl font-bold text-foreground mb-4">
+        Ready to Experience Clean Energy?
+      </h3>
+      <p class="text-muted-foreground mb-6 max-w-2xl mx-auto">
+        Join thousands of satisfied customers who've made the switch to clean, effective pre-workout supplementation.
+      </p>
+      <Button 
+        size="lg" 
+        className="bg-nbs-primary hover:bg-nbs-primary/90 text-white px-8"
+        onclick="window.open('https://gumroad.com/l/nbs-catalyst', '_blank')"
+      >
+        Order Catalyst Now - ${product.price}
+      </Button>
+      <p class="text-sm text-muted-foreground mt-3">
+        Free shipping on orders over $50 • 30-day money-back guarantee
+      </p>
+    </section>
+
+    <!-- Usage Instructions -->
+    <section class="mb-12">
+      <Card>
+        <CardHeader>
+          <CardTitle class="text-xl">How to Use Catalyst</CardTitle>
+          <CardDescription>Get the most out of your pre-workout with proper timing and dosing</CardDescription>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center p-4 rounded-lg bg-muted/50">
+              <div class="w-12 h-12 bg-nbs-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                <span class="text-white font-bold text-lg">1</span>
+              </div>
+              <h4 class="font-medium mb-2">Mix</h4>
+              <p class="text-sm text-muted-foreground">
+                Combine 1 scoop with 8-10 oz of cold water
+              </p>
+            </div>
+            <div class="text-center p-4 rounded-lg bg-muted/50">
+              <div class="w-12 h-12 bg-nbs-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                <span class="text-white font-bold text-lg">2</span>
+              </div>
+              <h4 class="font-medium mb-2">Time</h4>
+              <p class="text-sm text-muted-foreground">
+                Consume 15-30 minutes before training
+              </p>
+            </div>
+            <div class="text-center p-4 rounded-lg bg-muted/50">
+              <div class="w-12 h-12 bg-nbs-accent rounded-full flex items-center justify-center mx-auto mb-3">
+                <span class="text-white font-bold text-lg">3</span>
+              </div>
+              <h4 class="font-medium mb-2">Train</h4>
+              <p class="text-sm text-muted-foreground">
+                Experience clean energy and enhanced performance
+              </p>
+            </div>
+          </div>
+          
+          <Separator />
+          
+          <div class="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg">
+            <h4 class="font-medium mb-2 flex items-center gap-2">
+              <svg class="w-4 h-4 text-nbs-primary" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+              Pro Tips
+            </h4>
+            <ul class="text-sm text-muted-foreground space-y-2">
+              <li>• Take on an empty stomach or 2-3 hours after eating for best absorption</li>
+              <li>• Start with half a scoop to assess tolerance if you're sensitive to stimulants</li>
+              <li>• Avoid taking within 6 hours of bedtime to prevent sleep disruption</li>
+              <li>• Cycle off for 1-2 weeks every 8-10 weeks to maintain effectiveness</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+    </section>
+
+    <!-- Customer Reviews -->
+    <section id="reviews" class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+          What Our Customers Say
+        </h2>
+        <div class="flex items-center justify-center gap-4">
+          <div class="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <svg
+                key={i} 
+                class="w-6 h-6 text-nbs-accent fill-current"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+          <span class="text-lg font-medium">{product.rating} out of 5 ({product.reviewCount} reviews)</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {testimonials.map((review) => (
+          <Card key={review.name}>
+            <CardHeader>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-nbs-primary rounded-full flex items-center justify-center">
+                  <span class="text-white font-bold text-sm">
+                    {review.name.split(' ').map(n => n[0]).join('')}
+                  </span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <CardTitle class="text-sm">{review.name}</CardTitle>
+                    {review.verified && (
+                      <Badge variant="secondary" class="text-xs bg-nbs-secondary/10 text-nbs-secondary">
+                        Verified
+                      </Badge>
+                    )}
+                  </div>
+                  <div class="flex items-center gap-1">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <svg
+                        key={i}
+                        class="w-3 h-3 text-nbs-accent fill-current"
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p class="text-muted-foreground text-sm leading-relaxed">
+                "{review.text}"
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <!-- Review Form -->
+      <Card>
+        <CardHeader>
+          <CardTitle>Share Your Experience</CardTitle>
+          <CardDescription>Help others discover Catalyst by sharing your honest review</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form name="catalyst-review" method="POST" data-netlify="true" class="space-y-4">
+            <input type="hidden" name="form-name" value="catalyst-review" />
+            <input type="hidden" name="product" value="Catalyst Pre-Workout" />
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="reviewer-name" class="block text-sm font-medium mb-1">Name</label>
+                <input
+                  type="text"
+                  id="reviewer-name"
+                  name="name"
+                  required
+                  class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary"
+                />
+              </div>
+              <div>
+                <label for="reviewer-email" class="block text-sm font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  id="reviewer-email"
+                  name="email"
+                  required
+                  class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Rating</label>
+              <div class="flex gap-2">
+                {[1, 2, 3, 4, 5].map((rating) => (
+                  <label key={rating} class="cursor-pointer">
+                    <input type="radio" name="rating" value={rating} class="sr-only peer" required />
+                    <svg
+                      class="w-6 h-6 text-muted-foreground peer-checked:text-nbs-accent hover:text-nbs-accent transition-colors"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label for="review-text" class="block text-sm font-medium mb-1">Your Review</label>
+              <textarea
+                id="review-text"
+                name="review"
+                rows="4"
+                required
+                class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary"
+                placeholder="Share your experience with Catalyst..."
+              ></textarea>
+            </div>
+
+            <Button type="submit" class="bg-nbs-primary hover:bg-nbs-primary/90">
+              Submit Review
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-lg text-muted-foreground">
+          Everything you need to know about Catalyst
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-4">
+        {faqs.map((faq, index) => (
+          <Card key={index}>
+            <details class="group">
+              <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-muted/50 transition-colors">
+                <h3 class="font-medium pr-4">{faq.question}</h3>
+                <svg 
+                  class="w-5 h-5 text-muted-foreground group-open:rotate-180 transition-transform duration-200" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div class="px-6 pb-6">
+                <p class="text-muted-foreground leading-relaxed">{faq.answer}</p>
+              </div>
+            </details>
+          </Card>
+        ))}
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="text-center bg-gradient-to-r from-nbs-primary to-nbs-secondary rounded-2xl p-8 text-white">
+      <h3 class="text-2xl lg:text-3xl font-bold mb-4">
+        Transform Your Workouts Today
+      </h3>
+      <p class="text-lg opacity-90 mb-6 max-w-2xl mx-auto">
+        Join the thousands of athletes and fitness enthusiasts who trust Catalyst for clean, 
+        effective pre-workout supplementation.
+      </p>
+      <Button 
+        size="lg" 
+        variant="secondary"
+        className="bg-white text-nbs-primary hover:bg-white/90 px-8 text-lg"
+        onclick="window.open('https://gumroad.com/l/nbs-catalyst', '_blank')"
+      >
+        Order Now - ${product.price}
+      </Button>
+      <div class="flex items-center justify-center gap-6 mt-6 text-sm opacity-80">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          30-Day Guarantee
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+          </svg>
+          Free Shipping Over $50
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+          </svg>
+          Secure Checkout
+        </div>
+      </div>
+    </section>
+  </main>
+
+</BaseLayout>

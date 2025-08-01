@@ -1,0 +1,579 @@
+/* Import fonts first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base Colors - High contrast for pharmaceutical trust */
+    --background: 0 0% 100%;
+    --foreground: 210 10% 12%; /* Darker for better readability */
+    --card: 0 0% 100%;
+    --card-foreground: 210 10% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 10% 12%;
+    
+    /* Primary Colors - Clean Medical Blues */
+    --primary: 203 89% 53%; /* Medical trust blue */
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary Colors - Natural Greens */
+    --secondary: 142 69% 58%; /* Natural health green */
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Muted Colors - Clean grays */
+    --muted: 210 40% 98%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    /* Accent Colors - Energetic but trustworthy */
+    --accent: 32 95% 44%; /* Professional orange */
+    --accent-foreground: 0 0% 100%;
+    
+    /* Utility Colors */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 203 89% 53%;
+    --radius: 0.5rem;
+    
+    /* NBS Brand Colors - Professional supplement palette */
+    --nbs-primary: 203 89% 53%; /* Trust Blue - medical reliability */
+    --nbs-secondary: 142 69% 58%; /* Natural Green - organic health */
+    --nbs-accent: 32 95% 44%; /* Energy Orange - vitality & action */
+    --nbs-natural: 45 31% 58%; /* Earth Tone - natural ingredients */
+    
+    /* Supplement-specific colors */
+    --nbs-success: 142 76% 36%; /* Success green for certifications */
+    --nbs-warning: 48 96% 53%; /* Warning yellow for important info */
+    --nbs-clinical: 210 20% 98%; /* Clinical white for sterile feel */
+    --nbs-trust: 203 23% 30%; /* Deep trust color for headings */
+    
+    /* Component-specific tokens */
+    --card-shadow: 210 40% 5%;
+    --button-shadow: 0 0% 0%;
+    --input-focus: 203 89% 53%;
+    --badge-bg: var(--nbs-clinical);
+    --certification-gold: 43 96% 56%;
+    
+    /* Spacing system - 8px base grid */
+    --space-xs: 0.25rem; /* 4px */
+    --space-sm: 0.5rem;  /* 8px */
+    --space-md: 1rem;    /* 16px */
+    --space-lg: 1.5rem;  /* 24px */
+    --space-xl: 2rem;    /* 32px */
+    --space-2xl: 3rem;   /* 48px */
+    --space-3xl: 4rem;   /* 64px */
+    
+    /* Container sizes */
+    --container-xs: 20rem;   /* 320px */
+    --container-sm: 24rem;   /* 384px */
+    --container-md: 28rem;   /* 448px */
+    --container-lg: 32rem;   /* 512px */
+    --container-xl: 36rem;   /* 576px */
+    --container-2xl: 42rem;  /* 672px */
+    --container-3xl: 48rem;  /* 768px */
+    --container-4xl: 56rem;  /* 896px */
+    --container-5xl: 64rem;  /* 1024px */
+    --container-6xl: 72rem;  /* 1152px */
+    --container-7xl: 80rem;  /* 1280px */
+  }
+
+  .dark {
+    /* Base Colors - Dark Mode with professional medical feel */
+    --background: 210 11% 7%; /* Deep clinical dark */
+    --foreground: 210 17% 92%; /* High contrast text */
+    --card: 210 11% 9%; /* Slightly lighter cards */
+    --card-foreground: 210 17% 92%;
+    --popover: 210 11% 9%;
+    --popover-foreground: 210 17% 92%;
+    
+    /* Primary Colors - Trustworthy medical blues */
+    --primary: 203 89% 65%; /* Brighter blue for dark mode */
+    --primary-foreground: 210 11% 7%;
+    
+    /* Secondary Colors - Natural health greens */
+    --secondary: 142 69% 65%; /* Brighter green for visibility */
+    --secondary-foreground: 210 11% 7%;
+    
+    /* Muted Colors - Professional grays */
+    --muted: 217.2 32.6% 15%;
+    --muted-foreground: 215 20.2% 70%;
+    
+    /* Accent Colors - Energy with restraint */
+    --accent: 32 95% 58%; /* Slightly brighter orange */
+    --accent-foreground: 210 11% 7%;
+    
+    /* Utility Colors */
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 210 17% 92%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 203 89% 65%;
+    
+    /* NBS Brand Colors - Dark Mode Professional */
+    --nbs-primary: 203 89% 65%; /* Trust Blue - maintains medical authority */
+    --nbs-secondary: 142 69% 65%; /* Natural Green - organic health visibility */
+    --nbs-accent: 32 95% 58%; /* Energy Orange - controlled vitality */
+    --nbs-natural: 45 31% 68%; /* Earth Tone - warmer in dark */
+    
+    /* Dark mode supplement-specific colors */
+    --nbs-success: 142 76% 50%; /* Brighter success green */
+    --nbs-warning: 48 96% 65%; /* More visible warning */
+    --nbs-clinical: 210 20% 12%; /* Clinical dark for backgrounds */
+    --nbs-trust: 203 23% 75%; /* Light trust for headings */
+    
+    /* Dark mode component tokens */
+    --card-shadow: 0 0% 0%;
+    --button-shadow: 0 0% 0%;
+    --input-focus: 203 89% 65%;
+    --badge-bg: var(--nbs-clinical);
+    --certification-gold: 43 96% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'cv11', 'ss01', 'kern', 'liga';
+    font-variant-ligatures: contextual;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6; /* Better readability for supplement content */
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+  }
+  
+  /* Fluid Typography Scale - Pharmaceutical/Medical Focus */
+  h1 {
+    font-size: clamp(1.75rem, 4vw + 1rem, 3.5rem); /* 28px -> 56px */
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: hsl(var(--nbs-trust));
+    @apply scroll-m-20 tracking-tight;
+  }
+  
+  h2 {
+    font-size: clamp(1.5rem, 3vw + 0.5rem, 2.75rem); /* 24px -> 44px */
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: hsl(var(--nbs-trust));
+    @apply scroll-m-20 border-b pb-2 tracking-tight first:mt-0;
+  }
+  
+  h3 {
+    font-size: clamp(1.25rem, 2.5vw + 0.25rem, 2rem); /* 20px -> 32px */
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: hsl(var(--nbs-trust));
+    @apply scroll-m-20 tracking-tight;
+  }
+  
+  h4 {
+    font-size: clamp(1.125rem, 2vw + 0.125rem, 1.5rem); /* 18px -> 24px */
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: hsl(var(--nbs-trust));
+    @apply scroll-m-20 tracking-tight;
+  }
+  
+  h5 {
+    font-size: clamp(1rem, 1.5vw + 0.125rem, 1.25rem); /* 16px -> 20px */
+    font-weight: 500;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+    @apply scroll-m-20;
+  }
+  
+  h6 {
+    font-size: clamp(0.875rem, 1vw + 0.125rem, 1.125rem); /* 14px -> 18px */
+    font-weight: 500;
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    @apply scroll-m-20;
+  }
+  
+  /* Body text with optimal reading */
+  p {
+    font-size: clamp(0.875rem, 1vw + 0.25rem, 1.125rem); /* 14px -> 18px */
+    line-height: 1.7;
+    color: hsl(var(--foreground));
+    @apply [&:not(:first-child)]:mt-6;
+  }
+  
+  /* Clinical/supplement specific text sizes */
+  .text-clinical {
+    font-size: clamp(0.75rem, 0.8vw + 0.2rem, 0.875rem); /* 12px -> 14px */
+    font-family: 'IBM Plex Sans', monospace;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-dosage {
+    font-size: clamp(1rem, 1.2vw + 0.3rem, 1.25rem); /* 16px -> 20px */
+    font-weight: 700;
+    font-family: 'IBM Plex Sans', monospace;
+    color: hsl(var(--nbs-primary));
+  }
+  
+  .text-ingredient {
+    font-size: clamp(0.875rem, 1vw + 0.25rem, 1rem); /* 14px -> 16px */
+    font-weight: 500;
+    color: hsl(var(--nbs-secondary));
+  }
+  
+  /* Lists and content formatting */
+  blockquote {
+    @apply mt-6 border-l-4 pl-6 italic;
+    border-color: hsl(var(--nbs-primary));
+    background: hsl(var(--nbs-clinical));
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    font-style: italic;
+  }
+  
+  ul, ol {
+    @apply my-6 ml-6 [&>li]:mt-2;
+    line-height: 1.6;
+  }
+  
+  ul {
+    @apply list-disc;
+  }
+  
+  ol {
+    @apply list-decimal;
+  }
+  
+  li {
+    color: hsl(var(--foreground));
+    padding-left: 0.25rem;
+  }
+  
+  code {
+    @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+    font-family: 'IBM Plex Sans', 'Fira Code', monospace;
+    color: hsl(var(--nbs-primary));
+  }
+  
+  /* Links */
+  a {
+    color: hsl(var(--nbs-primary));
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  a:hover {
+    color: hsl(var(--nbs-accent));
+    text-decoration: underline;
+  }
+  
+  /* Strong and emphasis */
+  strong, b {
+    font-weight: 600;
+    color: hsl(var(--nbs-trust));
+  }
+  
+  em, i {
+    font-style: italic;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  /* Custom Component Classes - Supplement Industry Specific */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--nbs-primary)), hsl(var(--nbs-secondary)));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease-in-out infinite;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: hsl(var(--background) / 0.8);
+    border: 1px solid hsl(var(--border) / 0.5);
+    box-shadow: 0 8px 32px hsl(var(--card-shadow) / 0.1);
+  }
+  
+  /* Pharmaceutical/Medical specific components */
+  .clinical-card {
+    background: hsl(var(--nbs-clinical));
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) + 2px);
+    box-shadow: 0 2px 8px hsl(var(--card-shadow) / 0.1);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .clinical-card:hover {
+    box-shadow: 0 4px 16px hsl(var(--card-shadow) / 0.15);
+    border-color: hsl(var(--nbs-primary) / 0.3);
+  }
+  
+  .ingredient-badge {
+    background: linear-gradient(135deg, hsl(var(--nbs-secondary) / 0.1), hsl(var(--nbs-primary) / 0.1));
+    border: 1px solid hsl(var(--nbs-secondary) / 0.2);
+    color: hsl(var(--nbs-secondary));
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .dosage-highlight {
+    background: hsl(var(--nbs-primary) / 0.1);
+    border: 2px solid hsl(var(--nbs-primary) / 0.3);
+    color: hsl(var(--nbs-primary));
+    font-family: 'IBM Plex Sans', monospace;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  
+  .certification-badge {
+    background: linear-gradient(135deg, hsl(var(--certification-gold) / 0.1), hsl(var(--nbs-success) / 0.1));
+    border: 1px solid hsl(var(--certification-gold) / 0.3);
+    color: hsl(var(--certification-gold));
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .trust-signal {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: hsl(var(--nbs-success) / 0.05);
+    border: 1px solid hsl(var(--nbs-success) / 0.2);
+    border-radius: var(--radius);
+    color: hsl(var(--nbs-success));
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  
+  /* Animation Classes */
+  .animate-in {
+    animation: fade-in 0.5s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+  
+  /* Accessibility - WCAG 2.1 AA Compliant Focus States */
+  :focus-visible {
+    outline: none;
+    ring: 2px solid hsl(var(--ring));
+    ring-offset: 2px;
+    ring-offset-color: hsl(var(--background));
+    border-radius: calc(var(--radius) - 1px);
+  }
+  
+  /* Enhanced focus for interactive elements */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid hsl(var(--nbs-primary));
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px hsl(var(--nbs-primary) / 0.2);
+  }
+  
+  /* High contrast selection */
+  ::selection {
+    background: hsl(var(--nbs-accent) / 0.2);
+    color: hsl(var(--nbs-accent));
+  }
+  
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
+    .gradient-text {
+      animation: none;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 0 0% 0%;
+      --ring: var(--nbs-primary);
+    }
+    
+    .dark {
+      --border: 0 0% 100%;
+      --foreground: 0 0% 100%;
+    }
+  }
+  
+  /* Container queries support */
+  .product-grid {
+    container-type: inline-size;
+  }
+  
+  @container (min-width: 300px) {
+    .product-card-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+  }
+  
+  @container (min-width: 500px) {
+    .product-card-content {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
+
+/* Enhanced animations and keyframes */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-trust {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(var(--nbs-primary) / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px hsl(var(--nbs-primary) / 0);
+  }
+}
+
+/* Theme transition with performance optimizations */
+* {
+  transition: 
+    color 200ms ease-in-out,
+    background-color 200ms ease-in-out,
+    border-color 200ms ease-in-out,
+    box-shadow 150ms ease-in-out,
+    transform 150ms ease-in-out;
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Touch-friendly interactive elements - WCAG 2.2 compliance */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a,
+  input,
+  textarea,
+  select,
+  [role="button"],
+  [tabindex] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.75rem 1rem;
+  }
+  
+  .ingredient-badge,
+  .certification-badge {
+    min-height: 32px;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Print styles for supplement information */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  
+  .clinical-card {
+    border: 1px solid black;
+    page-break-inside: avoid;
+  }
+  
+  .dosage-highlight {
+    border: 2px solid black;
+    background: white;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}

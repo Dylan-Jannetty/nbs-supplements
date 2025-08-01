@@ -9,6 +9,25 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.12.7"
+    "@astrojs/mdx": "^4.3.2",
+    "@astrojs/netlify": "^6.5.4",
+    "@astrojs/react": "^4.3.0",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.2",
+    "@astrojs/tailwind": "^6.0.2",
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "astro": "^5.12.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.6.0",
+    "lucide-react": "^0.535.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "3.4.17",
+    "tailwindcss-animate": "^1.0.7"
   }
 }

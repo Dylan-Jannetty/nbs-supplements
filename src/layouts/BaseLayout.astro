@@ -1,0 +1,242 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/globals.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  type?: 'website' | 'article' | 'product';
+  noindex?: boolean;
+  structuredData?: any;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  twitterTitle?: string;
+  twitterDescription?: string;
+}
+
+const { 
+  title, 
+  description, 
+  image = '/images/og-default.jpg',
+  canonical,
+  type = 'website',
+  noindex = false,
+  structuredData,
+  ogTitle,
+  ogDescription,
+  ogImage: ogImageProp,
+  twitterTitle,
+  twitterDescription
+} = Astro.props;
+
+const siteUrl = 'https://supplements-nbs.com';
+const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL(ogImageProp || image, siteUrl).href;
+
+// Enhanced meta values
+const finalOgTitle = ogTitle || title;
+const finalOgDescription = ogDescription || description;
+const finalTwitterTitle = twitterTitle || finalOgTitle;
+const finalTwitterDescription = twitterDescription || finalOgDescription;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={finalOgTitle} />
+    <meta property="og:description" content={finalOgDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={finalOgTitle} />
+    <meta property="og:site_name" content="NBS Supplements" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="article:author" content="NBS Supplements" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="@nbssupplements" />
+    <meta property="twitter:creator" content="@nbssupplements" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={finalTwitterTitle} />
+    <meta property="twitter:description" content={finalTwitterDescription} />
+    <meta property="twitter:image" content={ogImage} />
+    <meta property="twitter:image:alt" content={finalTwitterTitle} />
+    
+    <!-- Additional Meta Tags -->
+    <meta name="author" content="NBS Supplements" />
+    <meta name="copyright" content="NBS Supplements" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    
+    <!-- Schema.org Structured Data -->
+    {structuredData ? (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    ) : (
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "NBS Supplements",
+          "alternateName": "No Bullsh*t Supplements",
+          "url": "https://supplements-nbs.com",
+          "logo": "https://supplements-nbs.com/images/logo.png",
+          "description": "Clean, natural supplements formulated by pharmacists. Clinically dosed ingredients, third-party tested, and completely transparent.",
+          "founder": {
+            "@type": "Person",
+            "name": "NBS Pharmacist Team"
+          },
+          "foundingDate": "2023",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "NJ",
+            "addressCountry": "US"
+          },
+          "sameAs": [
+            "https://www.instagram.com/nbssupplements/",
+            "https://www.facebook.com/nbssupplements/"
+          ]
+        }
+      </script>
+    )}
+    
+    <!-- Theme Detection Script -->
+    <script is:inline>
+      // Theme detection and application
+      function getThemePreference() {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      
+      function setTheme(theme) {
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+        localStorage.setItem('theme', theme);
+      }
+      
+      // Apply theme immediately to prevent flash
+      setTheme(getThemePreference());
+      
+      // Listen for theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    </script>
+    
+    <!-- Google Analytics Placeholder -->
+    <!-- TODO: Add Google Analytics 4 tracking code -->
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+    
+  </head>
+  
+  <body class="min-h-screen bg-background font-sans antialiased">
+    <!-- Skip to main content link for accessibility -->
+    <a 
+      href="#main-content" 
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium"
+    >
+      Skip to main content
+    </a>
+    
+    <!-- Header -->
+    <Header />
+    
+    <!-- Main Content -->
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    
+    <!-- Footer -->
+    <Footer />
+    
+    <!-- Theme Toggle Script -->
+    <script>
+      // Theme toggle functionality
+      function toggleTheme() {
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        if (newTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+        
+        localStorage.setItem('theme', newTheme);
+        
+        // Dispatch custom event for components to listen to
+        window.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: newTheme } }));
+      }
+      
+      // Make toggle function available globally
+      window.toggleTheme = toggleTheme;
+    </script>
+    
+    <!-- Global Gumroad Script Loader -->
+    <script>
+      // Global loadGumroad function available on all pages
+      const loadGumroad = () => {
+        // Check if Gumroad is already loaded
+        if (window.GumroadOverlay) {
+          return;
+        }
+        
+        // Check if script is already being loaded
+        if (document.getElementById('gumroad-script')) {
+          return;
+        }
+        
+        // Create and load the Gumroad script
+        const script = document.createElement('script');
+        script.id = 'gumroad-script';
+        script.src = 'https://gumroad.com/js/gumroad.js';
+        script.async = true;
+        script.onload = () => {
+          console.log('Gumroad script loaded successfully');
+        };
+        script.onerror = () => {
+          console.error('Failed to load Gumroad script');
+        };
+        document.head.appendChild(script);
+      };
+      
+      // Make function available globally
+      window.loadGumroad = loadGumroad;
+      
+      // Load Gumroad immediately on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        loadGumroad();
+      });
+    </script>
+  </body>
+</html>
