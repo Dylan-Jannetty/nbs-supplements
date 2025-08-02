@@ -5,6 +5,10 @@ import { Button } from '../../components/ui/button.tsx';
 import { Badge } from '../../components/ui/badge.tsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card.tsx';
 import { Separator } from '../../components/ui/separator.tsx';
+import EnhancedProductPage from '../../components/ui/EnhancedProductPage.tsx';
+import ProductComparison from '../../components/ui/ProductComparison.tsx';
+import QuantitySelector from '../../components/ui/QuantitySelector.tsx';
+import PerformanceTracker from '../../components/ui/PerformanceTracker.tsx';
 
 // Product data
 const product = {
@@ -358,11 +362,23 @@ const seoData = {
           <span class="text-sm font-medium text-nbs-secondary">In Stock - Ships within 1-2 business days</span>
         </div>
 
+        <!-- Quantity Selector -->
+        <div id="quantity-selector">
+          <QuantitySelector 
+            basePrice={product.price}
+            gumroadUrl={product.gumroadUrl}
+            onQuantityChange={(quantity, totalPrice, savings) => {
+              console.log('Quantity changed:', { quantity, totalPrice, savings });
+            }}
+            client:load
+          />
+        </div>
+
         <!-- Primary CTA -->
-        <div class="space-y-4">
+        <div class="space-y-4" id="purchase-section">
           <Button 
             size="lg" 
-            className="w-full bg-nbs-primary hover:bg-nbs-primary/90 text-white text-lg py-6"
+            className="purchase-button w-full bg-nbs-primary hover:bg-nbs-primary/90 text-white text-lg py-6 transition-all duration-300"
             onclick="window.open('https://gumroad.com/l/nbs-catalyst', '_blank')"
           >
             Add to Cart - ${product.price}
@@ -429,6 +445,13 @@ const seoData = {
       </div>
     </div>
 
+    <!-- Enhanced Product Features Integration -->
+    <EnhancedProductPage 
+      product={product}
+      ingredients={ingredients}
+      client:load
+    />
+
     <!-- Product Description -->
     <section class="mb-12">
       <div class="prose prose-lg max-w-none">
@@ -449,7 +472,7 @@ const seoData = {
     </section>
 
     <!-- Ingredient Breakdown -->
-    <section id="ingredient-breakdown" class="mb-12">
+    <section id="ingredient-breakdown" class="mb-12" data-observe>
       <div class="text-center mb-8">
         <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
           Clinical Doses of Premium Ingredients
@@ -460,41 +483,28 @@ const seoData = {
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {ingredients.map((ingredient) => (
-          <Card key={ingredient.name} class="hover:shadow-lg transition-shadow duration-200">
-            <CardHeader>
-              <div class="flex items-center justify-between mb-2">
-                <CardTitle class="text-lg">{ingredient.name}</CardTitle>
-                <Badge variant="outline" class="bg-nbs-primary/10 text-nbs-primary border-nbs-primary">
-                  {ingredient.dosage}
-                </Badge>
-              </div>
-              <CardDescription class="text-nbs-accent font-medium">
-                {ingredient.purpose}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p class="text-muted-foreground mb-4">{ingredient.description}</p>
-              <div class="space-y-1">
-                <h4 class="font-medium text-foreground">Key Benefits:</h4>
-                <ul class="text-sm text-muted-foreground space-y-1">
-                  {ingredient.benefits.map((benefit) => (
-                    <li key={benefit} class="flex items-center gap-2">
-                      <div class="w-1.5 h-1.5 bg-nbs-secondary rounded-full"></div>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <!-- Interactive ingredient cards are now handled by EnhancedProductPage component -->
+      <div id="ingredient-cards-container"></div>
     </section>
 
+    <!-- Product Comparison -->
+    <ProductComparison 
+      currentProduct={{
+        name: product.name,
+        price: product.price,
+        features: [
+          "Clinical doses",
+          "Natural ingredients", 
+          "Third-party tested",
+          "Pharmacist formulated"
+        ],
+        rating: product.rating
+      }}
+      client:load
+    />
+
     <!-- Secondary CTA -->
-    <section class="bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 rounded-2xl p-8 text-center mb-12">
+    <section class="bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 rounded-2xl p-8 text-center mb-12" data-observe>
       <h3 class="text-2xl font-bold text-foreground mb-4">
         Ready to Experience Clean Energy?
       </h3>
@@ -503,7 +513,7 @@ const seoData = {
       </p>
       <Button 
         size="lg" 
-        className="bg-nbs-primary hover:bg-nbs-primary/90 text-white px-8"
+        className="purchase-button bg-nbs-primary hover:bg-nbs-primary/90 text-white px-8 transition-all duration-300"
         onclick="window.open('https://gumroad.com/l/nbs-catalyst', '_blank')"
       >
         Order Catalyst Now - ${product.price}
@@ -572,7 +582,7 @@ const seoData = {
     </section>
 
     <!-- Customer Reviews -->
-    <section id="reviews" class="mb-12">
+    <section id="reviews" class="mb-12" data-observe>
       <div class="text-center mb-8">
         <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
           What Our Customers Say
@@ -710,7 +720,7 @@ const seoData = {
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="mb-12">
+    <section id="faq" class="mb-12" data-observe>
       <div class="text-center mb-8">
         <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
           Frequently Asked Questions
@@ -745,7 +755,7 @@ const seoData = {
     </section>
 
     <!-- Final CTA -->
-    <section class="text-center bg-gradient-to-r from-nbs-primary to-nbs-secondary rounded-2xl p-8 text-white">
+    <section class="text-center bg-gradient-to-r from-nbs-primary to-nbs-secondary rounded-2xl p-8 text-white" data-observe>
       <h3 class="text-2xl lg:text-3xl font-bold mb-4">
         Transform Your Workouts Today
       </h3>
@@ -756,7 +766,7 @@ const seoData = {
       <Button 
         size="lg" 
         variant="secondary"
-        className="bg-white text-nbs-primary hover:bg-white/90 px-8 text-lg"
+        className="purchase-button bg-white text-nbs-primary hover:bg-white/90 px-8 text-lg transition-all duration-300"
         onclick="window.open('https://gumroad.com/l/nbs-catalyst', '_blank')"
       >
         Order Now - ${product.price}
@@ -782,6 +792,16 @@ const seoData = {
         </div>
       </div>
     </section>
+
+    <!-- Performance Tracking -->
+    <PerformanceTracker
+      productName={product.name}
+      price={product.price}
+      enableReporting={true}
+      client:load
+    />
   </main>
 
+  <!-- Enhanced JavaScript -->
+  <script src="/src/scripts/product-enhancements.js"></script>
 </BaseLayout>
