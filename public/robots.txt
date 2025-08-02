@@ -1,0 +1,43 @@
+# Robots.txt for NBS Supplements - optimized for SEO crawling
+User-agent: *
+Allow: /
+
+# Allow all major search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# Disallow admin and private areas (none currently, but future-proofing)
+Disallow: /admin/
+Disallow: /.netlify/
+Disallow: /dist/
+
+# Allow crawling of assets that are important for SEO
+Allow: /images/
+Allow: /fonts/
+Allow: /_astro/
+
+# Sitemap location
+Sitemap: https://supplements-nbs.com/sitemap-index.xml
+
+# Crawl-delay for respectful crawling (optional, helps with server load)
+Crawl-delay: 1
+
+# Additional directive for supplement/health content compliance
+User-agent: *
+# Allow all legitimate health and supplement content
+Allow: /products/
+Allow: /blog/
+Allow: /about
+Allow: /contact

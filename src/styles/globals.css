@@ -1,6 +1,4 @@
-/* Import fonts first */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded via preload in BaseLayout for better LCP */
 
 @tailwind base;
 @tailwind components;
@@ -518,7 +516,7 @@
   }
 }
 
-/* Theme transition with performance optimizations */
+/* Theme transition with performance optimizations and CLS prevention */
 * {
   transition: 
     color 200ms ease-in-out,
@@ -526,12 +524,61 @@
     border-color 200ms ease-in-out,
     box-shadow 150ms ease-in-out,
     transform 150ms ease-in-out;
+  /* Prevent layout shifts during transitions */
+  contain: layout;
+}
+
+/* Override contain for flex/grid containers */
+.flex, .grid, [class*="grid-"], [class*="flex-"] {
+  contain: none;
 }
 
 /* Performance optimizations */
 .gpu-accelerated {
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* CLS Prevention - Layout Stability */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+  contain: layout style;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+  contain: layout style;
+}
+
+/* Prevent layout shifts during theme transitions */
+.theme-transition {
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+  contain: layout style;
+}
+
+/* Image loading optimization */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent shifts from dynamic content */
+.dynamic-content {
+  min-height: 3rem; /* Reserve space for content */
+  contain: layout;
+}
+
+/* Loading state with proper dimensions */
+.loading-placeholder {
+  background: linear-gradient(90deg, hsl(var(--muted)) 0%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 /* Touch-friendly interactive elements - WCAG 2.2 compliance */

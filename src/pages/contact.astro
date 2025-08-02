@@ -1,754 +1,224 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { StructuredDataGenerator } from '../lib/structured-data';
 
-const title = "Contact Us - Expert Support from NBS Supplements";
+const title = "Contact Us - Expert Support from NBS Supplements | NBS";
 const description = "Get professional support from our pharmacist team. Fast response times, expert guidance, and comprehensive customer service for all your supplement questions.";
 
-// Structured data for LocalBusiness, ContactPoint, and FAQPage
+// Generate comprehensive structured data combining LocalBusiness and FAQ
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "LocalBusiness",
-      "@id": "https://supplements-nbs.com/#organization",
-      "name": "NBS Supplements",
-      "alternateName": "No Bullshit Supplements", 
-      "description": "Premium natural supplements formulated by pharmacists. Clinically dosed, third-party tested, and completely transparent formulations for health enthusiasts and fitness professionals.",
-      "url": "https://supplements-nbs.com",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://supplements-nbs.com/logo.png",
-        "width": 512,
-        "height": 512
-      },
-      "image": "https://supplements-nbs.com/images/nbs-supplements-storefront.jpg",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "New Jersey",
-        "addressRegion": "NJ",
-        "addressCountry": "US"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 40.0583,
-        "longitude": -74.4057
-      },
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "telephone": "+1-855-NBS-SUPP",
-          "contactType": "customer service",
-          "areaServed": "US",
-          "availableLanguage": ["English"],
-          "hoursAvailable": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            "opens": "09:00",
-            "closes": "18:00",
-            "timeZone": "America/New_York"
-          },
-          "contactOption": "TollFree"
-        },
-        {
-          "@type": "ContactPoint", 
-          "email": "contact@supplements-nbs.com",
-          "contactType": "customer service",
-          "areaServed": "US",
-          "availableLanguage": ["English"],
-          "serviceType": "General inquiries, product questions, technical support"
-        },
-        {
-          "@type": "ContactPoint",
-          "email": "wholesale@supplements-nbs.com", 
-          "contactType": "sales",
-          "areaServed": "US",
-          "availableLanguage": ["English"],
-          "serviceType": "Wholesale partnerships, business inquiries"
-        }
-      ],
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "09:00",
-          "closes": "18:00",
-          "timeZone": "America/New_York"
-        },
-        {
-          "@type": "OpeningHoursSpecification", 
-          "dayOfWeek": "Saturday",
-          "opens": "10:00",
-          "closes": "16:00",
-          "timeZone": "America/New_York"
-        }
-      ],
-      "priceRange": "$",
-      "currenciesAccepted": "USD",
-      "paymentAccepted": ["Credit Card", "Debit Card", "PayPal"],
-      "foundingDate": "2020",
-      "founders": [
-        {
-          "@type": "Person",
-          "name": "NBS Pharmacist Team",
-          "jobTitle": "Founding Pharmacists"
-        }
-      ],
-      "employee": [
-        {
-          "@type": "Person",
-          "name": "NBS Customer Support Team",
-          "jobTitle": "Customer Service Representatives"
-        }
-      ],
-      "memberOf": {
-        "@type": "Organization",
-        "name": "Natural Products Association"
-      },
-      "makesOffer": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "Catalyst Pre-Workout",
-            "description": "Clinically dosed pre-workout supplement with natural ingredients",
-            "category": "Natural Supplements"
-          },
-          "price": "39.99",
-          "priceCurrency": "USD"
-        }
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "NBS Supplements Product Catalog",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Product", 
-              "name": "Catalyst Pre-Workout",
-              "category": "Pre-Workout Supplements"
-            }
-          }
-        ]
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "247",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Verified Customer"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5"
-          },
-          "reviewBody": "Outstanding quality and transparency. The pharmacist-formulated approach really shows in the effectiveness."
-        }
-      ],
-      "sameAs": [
-        "https://www.instagram.com/nbssupplements",
-        "https://www.facebook.com/nbssupplements",
-        "https://twitter.com/nbssupplements"
-      ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://supplements-nbs.com/contact#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What makes NBS supplements different?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We're pharmacist-formulated with clinically dosed ingredients, third-party tested, and completely transparent about our formulations."
-          }
-        },
-        {
-          "@type": "Question", 
-          "name": "How do I know the right dosage?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "All our products include detailed dosing guidelines. Contact us for personalized recommendations based on your goals."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Are your supplements safe?",
-          "acceptedAnswer": {
-            "@type": "Answer", 
-            "text": "Yes, all products are third-party tested for purity and potency, manufactured in FDA-registered facilities."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How fast do you ship?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Orders process within 1-2 business days with 3-5 day standard shipping nationwide."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's your return policy?", 
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "30-day money-back guarantee if you're not completely satisfied with your purchase."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you ship internationally?",
-          "acceptedAnswer": {
-            "@type": "Answer", 
-            "text": "Currently we ship within the USA only, but international shipping is coming soon."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do you ensure quality?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Every batch is third-party tested for purity, potency, and contaminants with certificates available upon request."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Where are products manufactured?", 
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "All products are manufactured in FDA-registered, GMP-certified facilities in the United States."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I see test results?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Absolutely! We provide batch-specific certificates of analysis for complete transparency."
-          }
-        }
-      ]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://supplements-nbs.com/#website", 
-      "url": "https://supplements-nbs.com",
-      "name": "NBS Supplements",
-      "description": "Premium natural supplements formulated by pharmacists",
-      "publisher": {
-        "@id": "https://supplements-nbs.com/#organization"
-      },
-      "potentialAction": [
-        {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://supplements-nbs.com/search?q={search_term_string}"
-          },
-          "query-input": "required name=search_term_string"
-        }
-      ]
-    },
-    {
-      "@type": "ContactPage",
-      "@id": "https://supplements-nbs.com/contact#webpage",
-      "url": "https://supplements-nbs.com/contact",
-      "name": "Contact Us - Expert Support from NBS Supplements",
-      "description": "Get professional support from our pharmacist team. Fast response times, expert guidance, and comprehensive customer service for all your supplement questions.",
-      "isPartOf": {
-        "@id": "https://supplements-nbs.com/#website"
-      },
-      "about": {
-        "@id": "https://supplements-nbs.com/#organization"
-      },
-      "mainContentOfPage": {
-        "@type": "WebPageElement",
-        "cssSelector": ".contact-form-section"
-      },
-      "specialty": [
-        "Pharmacist consultation",
-        "Product ingredient guidance", 
-        "Dosage recommendations",
-        "Quality assurance support",
-        "Technical product support"
-      ]
-    }
+    StructuredDataGenerator.generateLocalBusinessSchema(),
+    StructuredDataGenerator.generateContactFAQSchema()
   ]
 };
 ---
 
 <BaseLayout 
-  title={title}
+  title={title} 
   description={description}
-  type="website"
   structuredData={structuredData}
-  ogTitle="Contact NBS Supplements - Expert Pharmacist Support & Customer Service"
-  ogDescription="Get professional support from our pharmacist team in New Jersey. Fast response times, expert guidance, and comprehensive customer service for all your supplement questions."
-  ogImage="https://supplements-nbs.com/images/nbs-contact-support.jpg"
-  twitterTitle="Contact NBS Supplements - Expert Pharmacist Support"
-  twitterDescription="Professional pharmacist support team ready to help with product questions, dosing guidance, and quality assurance. Based in New Jersey, serving nationwide."
-  canonical="https://supplements-nbs.com/contact"
 >
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-background via-nbs-clinical to-background border-b border-border">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-      <div class="text-center max-w-4xl mx-auto">
-        <h1 class="text-4xl lg:text-6xl font-bold text-nbs-trust mb-6 leading-tight">
-          Get in Touch
-        </h1>
-        <p class="text-xl lg:text-2xl text-muted-foreground leading-relaxed mb-8">
-          Professional support from our expert pharmacist team. We're here to help with product questions, 
-          dosing guidance, and everything you need to achieve your health goals.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-          <div class="flex flex-col items-center p-4">
-            <div class="w-12 h-12 bg-nbs-primary/10 rounded-full flex items-center justify-center mb-3">
-              <svg class="w-6 h-6 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="font-semibold text-foreground mb-1">Fast Response</h3>
-            <p class="text-sm text-muted-foreground text-center">24-48 hour response guarantee</p>
-          </div>
-          <div class="flex flex-col items-center p-4">
-            <div class="w-12 h-12 bg-nbs-secondary/10 rounded-full flex items-center justify-center mb-3">
-              <svg class="w-6 h-6 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-            </div>
-            <h3 class="font-semibold text-foreground mb-1">Expert Guidance</h3>
-            <p class="text-sm text-muted-foreground text-center">Pharmacist-backed support</p>
-          </div>
-          <div class="flex flex-col items-center p-4">
-            <div class="w-12 h-12 bg-nbs-accent/10 rounded-full flex items-center justify-center mb-3">
-              <svg class="w-6 h-6 text-nbs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <h3 class="font-semibold text-foreground mb-1">Secure Support</h3>
-            <p class="text-sm text-muted-foreground text-center">Your privacy protected</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-      
-      <!-- Contact Form Section -->
-      <div class="order-2 lg:order-1 contact-form-section">
-        <ContactForm variant="default" />
-      </div>
-
-      <!-- Contact Information & Quick Info -->
-      <div class="order-1 lg:order-2 space-y-8">
-        
-        <!-- Contact Information Grid -->
-        <div class="clinical-card p-8">
-          <h2 class="text-2xl font-bold text-nbs-trust mb-6">Contact Information</h2>
-          <div class="space-y-6">
-            
-            <!-- Business Hours -->
-            <div class="flex items-start space-x-4">
-              <div class="w-10 h-10 bg-nbs-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-foreground mb-2">Business Hours</h3>
-                <div class="text-sm text-muted-foreground space-y-1">
-                  <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM EST</p>
-                  <p><strong>Saturday:</strong> 10:00 AM - 4:00 PM EST</p>
-                  <p><strong>Sunday:</strong> Closed</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Response Times -->
-            <div class="flex items-start space-x-4">
-              <div class="w-10 h-10 bg-nbs-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-foreground mb-2">Response Times</h3>
-                <div class="text-sm text-muted-foreground space-y-1">
-                  <p><strong>General Inquiries:</strong> 24-48 hours</p>
-                  <p><strong>Urgent Matters:</strong> 4-6 hours</p>
-                  <p><strong>Technical Support:</strong> Same business day</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Location & Shipping -->
-            <div class="flex items-start space-x-4">
-              <div class="w-10 h-10 bg-nbs-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-nbs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-foreground mb-2">Location & Shipping</h3>
-                <div class="text-sm text-muted-foreground space-y-1">
-                  <p><strong>Based in:</strong> New Jersey, USA</p>
-                  <p><strong>Shipping:</strong> Nationwide coverage</p>
-                  <p><strong>Processing:</strong> 1-2 business days</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Professional Email -->
-            <div class="flex items-start space-x-4">
-              <div class="w-10 h-10 bg-nbs-natural/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-nbs-natural" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-foreground mb-2">Direct Contact</h3>
-                <div class="text-sm text-muted-foreground">
-                  <p><strong>Email:</strong> <a href="mailto:contact@supplements-nbs.com" class="text-nbs-primary hover:underline">contact@supplements-nbs.com</a></p>
-                  <p class="mt-1">Professional pharmacist team support</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Customer Service Promise -->
-        <div class="clinical-card p-8 bg-nbs-success/5 border-nbs-success/20">
-          <div class="flex items-start space-x-4">
-            <div class="w-12 h-12 bg-nbs-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg class="w-6 h-6 text-nbs-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold text-nbs-success mb-3">Our Service Promise</h3>
-              <div class="text-sm text-muted-foreground space-y-2">
-                <p>✓ <strong>Expert Support:</strong> Every inquiry handled by our pharmacist team</p>
-                <p>✓ <strong>Response Guarantee:</strong> 24-48 hour maximum response time</p>
-                <p>✓ <strong>Quality Focus:</strong> Comprehensive product guidance and safety information</p>
-                <p>✓ <strong>Privacy First:</strong> Your information is secure and never shared</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- FAQ Section -->
-    <div class="mt-20">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold text-nbs-trust mb-4">Frequently Asked Questions</h2>
-        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Quick answers to common questions about our products, shipping, and quality standards.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-        
-        <!-- Product Questions -->
-        <div class="clinical-card p-6">
-          <h3 class="text-lg font-semibold text-nbs-trust mb-4 flex items-center">
-            <svg class="w-5 h-5 text-nbs-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-            Product Questions
-          </h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: What makes NBS supplements different?</p>
-              <p class="text-muted-foreground">A: We're pharmacist-formulated with clinically dosed ingredients, third-party tested, and completely transparent about our formulations.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: How do I know the right dosage?</p>
-              <p class="text-muted-foreground">A: All our products include detailed dosing guidelines. Contact us for personalized recommendations based on your goals.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Are your supplements safe?</p>
-              <p class="text-muted-foreground">A: Yes, all products are third-party tested for purity and potency, manufactured in FDA-registered facilities.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Shipping & Returns -->
-        <div class="clinical-card p-6">
-          <h3 class="text-lg font-semibold text-nbs-trust mb-4 flex items-center">
-            <svg class="w-5 h-5 text-nbs-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-            </svg>
-            Shipping & Returns
-          </h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: How fast do you ship?</p>
-              <p class="text-muted-foreground">A: Orders process within 1-2 business days with 3-5 day standard shipping nationwide.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: What's your return policy?</p>
-              <p class="text-muted-foreground">A: 30-day money-back guarantee if you're not completely satisfied with your purchase.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Do you ship internationally?</p>
-              <p class="text-muted-foreground">A: Currently we ship within the USA only, but international shipping is coming soon.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quality Assurance -->
-        <div class="clinical-card p-6">
-          <h3 class="text-lg font-semibold text-nbs-trust mb-4 flex items-center">
-            <svg class="w-5 h-5 text-nbs-accent mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            Quality Assurance
-          </h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: How do you ensure quality?</p>
-              <p class="text-muted-foreground">A: Every batch is third-party tested for purity, potency, and contaminants with certificates available upon request.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Where are products manufactured?</p>
-              <p class="text-muted-foreground">A: All products are manufactured in FDA-registered, GMP-certified facilities in the United States.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Can I see test results?</p>
-              <p class="text-muted-foreground">A: Absolutely! We provide batch-specific certificates of analysis for complete transparency.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Technical Support -->
-        <div class="clinical-card p-6">
-          <h3 class="text-lg font-semibold text-nbs-trust mb-4 flex items-center">
-            <svg class="w-5 h-5 text-nbs-natural mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Technical Support
-          </h3>
-          <div class="space-y-3 text-sm">
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Having trouble with your order?</p>
-              <p class="text-muted-foreground">A: Contact us immediately for order issues, payment problems, or delivery concerns - we'll resolve it quickly.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Need ingredient information?</p>
-              <p class="text-muted-foreground">A: Our pharmacist team can provide detailed ingredient profiles, interactions, and compatibility information.</p>
-            </div>
-            <div>
-              <p class="font-medium text-foreground mb-1">Q: Questions about timing?</p>
-              <p class="text-muted-foreground">A: We'll help you optimize supplement timing for maximum effectiveness and minimal side effects.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Wholesale Inquiries Section -->
-    <div class="mt-20">
-      <div class="clinical-card p-8 lg:p-12 bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 border-nbs-primary/20">
-        <div class="max-w-4xl mx-auto text-center">
-          <div class="w-16 h-16 bg-nbs-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg class="w-8 h-8 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-          </div>
-          <h2 class="text-3xl lg:text-4xl font-bold text-nbs-trust mb-4">Wholesale & Partnership Inquiries</h2>
-          <p class="text-lg text-muted-foreground mb-8 leading-relaxed">
-            Interested in carrying NBS supplements in your retail store, gym, or health practice? 
-            We offer competitive wholesale pricing and dedicated business support.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="text-left">
-              <h4 class="font-semibold text-foreground mb-2">Perfect for:</h4>
-              <ul class="text-sm text-muted-foreground space-y-1">
-                <li>• Health food stores</li>
-                <li>• Fitness centers & gyms</li>
-                <li>• Medical practices</li>
-                <li>• Online retailers</li>
-              </ul>
-            </div>
-            <div class="text-left">
-              <h4 class="font-semibold text-foreground mb-2">We provide:</h4>
-              <ul class="text-sm text-muted-foreground space-y-1">
-                <li>• Competitive wholesale pricing</li>
-                <li>• Marketing materials</li>
-                <li>• Product training</li>
-                <li>• Ongoing support</li>
-              </ul>
-            </div>
-          </div>
-          <div class="bg-background/60 backdrop-blur-sm rounded-lg p-6 border border-border">
-            <p class="text-sm text-muted-foreground mb-4">
-              <strong>Ready to partner with us?</strong> Use the contact form above and select "Wholesale/Partnership" 
-              as your topic, or email us directly at <a href="mailto:wholesale@supplements-nbs.com" class="text-nbs-primary hover:underline">wholesale@supplements-nbs.com</a>
-            </p>
-            <p class="text-xs text-muted-foreground">
-              Minimum order quantities and terms apply. We'll respond to wholesale inquiries within 24 hours.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Trust Indicators & Privacy -->
-    <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-      
-      <!-- Enhanced Security & Trust Indicators -->
-      <div class="clinical-card p-6">
-        <h3 class="text-lg font-semibold text-nbs-trust mb-4 flex items-center">
-          <svg class="w-5 h-5 text-nbs-success mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-          Security & Trust Certifications
-        </h3>
-        
-        <!-- Security Badges Row -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div class="flex flex-col items-center p-3 bg-nbs-success/5 border border-nbs-success/20 rounded-lg">
-            <svg class="w-6 h-6 text-nbs-success mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-            <span class="text-xs font-medium text-center">SSL/TLS 1.3 Encrypted</span>
-          </div>
-          <div class="flex flex-col items-center p-3 bg-nbs-primary/5 border border-nbs-primary/20 rounded-lg">
-            <svg class="w-6 h-6 text-nbs-primary mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="text-xs font-medium text-center">SOC 2 Compliant</span>
-          </div>
-          <div class="flex flex-col items-center p-3 bg-nbs-accent/5 border border-nbs-accent/20 rounded-lg">
-            <svg class="w-6 h-6 text-nbs-accent mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span class="text-xs font-medium text-center">GDPR Compliant</span>
-          </div>
-          <div class="flex flex-col items-center p-3 bg-nbs-natural/5 border border-nbs-natural/20 rounded-lg">
-            <svg class="w-6 h-6 text-nbs-natural mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-            <span class="text-xs font-medium text-center">FDA Registered</span>
-          </div>
-        </div>
-
-        <!-- Trust Indicators List -->
-        <div class="space-y-3 text-sm">
-          <div class="flex items-center space-x-3">
-            <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-            <span class="text-muted-foreground">End-to-end encrypted communication</span>
-          </div>
-          <div class="flex items-center space-x-3">
-            <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-            <span class="text-muted-foreground">24-48 hour response guarantee</span>
-          </div>
-          <div class="flex items-center space-x-3">
-            <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-            <span class="text-muted-foreground">Licensed pharmacist team verification</span>
-          </div>
-          <div class="flex items-center space-x-3">
-            <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-            <span class="text-muted-foreground">No data sharing with third parties</span>
-          </div>
-          <div class="flex items-center space-x-3">
-            <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-            <span class="text-muted-foreground">Advanced spam protection (99.5% effective)</span>
-          </div>
-          <div class="flex items-center space-x-3">
-            <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-            <span class="text-muted-foreground">Regular third-party security audits</span>
-          </div>
-        </div>
-
-        <!-- Trust Score Display -->
-        <div class="mt-4 p-3 bg-gradient-to-r from-nbs-success/10 to-nbs-primary/10 border border-nbs-success/20 rounded-lg">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-              <svg class="w-5 h-5 text-nbs-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span class="text-sm font-medium text-nbs-success">Trust Score: A+</span>
-            </div>
-            <div class="text-xs text-muted-foreground">
-              Based on security audits & customer feedback
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enhanced Privacy & GDPR Compliance -->
-      <div class="clinical-card p-6">
-        <h3 class="text-lg font-semibold text-nbs-trust mb-4 flex items-center">
-          <svg class="w-5 h-5 text-nbs-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-          Privacy & Data Protection
-        </h3>
-        <div class="space-y-3 text-sm text-muted-foreground">
-          <div class="bg-nbs-success/5 border border-nbs-success/20 rounded p-3 mb-3">
-            <p class="font-medium text-nbs-success text-xs mb-1">🔒 GDPR Compliant Data Handling</p>
-            <p class="text-xs">Your rights under GDPR are fully protected with transparent data practices.</p>
-          </div>
+  <!-- Contact Page Content -->
+  <div class="min-h-screen bg-background">
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-nbs-clinical via-background to-nbs-primary/5 py-16 lg:py-20">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <!-- Breadcrumb Navigation -->
+          <Breadcrumb 
+            breadcrumbs={[]}
+            current="Contact"
+            className="mb-8"
+          />
           
-          <div class="space-y-2">
-            <p><strong>Data Collection:</strong> We collect only the information necessary to respond to your inquiry (name, email, message content).</p>
-            <p><strong>Data Usage:</strong> Information is used exclusively for customer support, product guidance, and direct response to your specific inquiry.</p>
-            <p><strong>Data Retention:</strong> Contact form submissions are retained for up to 24 months for customer service quality assurance, then automatically deleted.</p>
-            <p><strong>Data Sharing:</strong> Your information is never sold, rented, or shared with third parties for marketing purposes. We may share data only when legally required.</p>
-            <p><strong>Your Rights:</strong> You have the right to request access, correction, or deletion of your personal data at any time.</p>
-          </div>
-
-          <div class="border-t border-border pt-3 mt-4">
-            <p class="text-xs mb-2"><strong>Security Measures:</strong></p>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-                <span>TLS 1.3 Encryption</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-                <span>SOC 2 Compliance</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-                <span>Data Anonymization</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-nbs-success rounded-full"></div>
-                <span>Regular Security Audits</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="border-t border-border pt-3">
-            <p class="text-xs">
-              <strong>Legal Basis:</strong> Processing is based on legitimate interest for customer support. 
-              <a href="/privacy" class="text-nbs-primary hover:underline">Complete Privacy Policy</a> | 
-              <a href="/data-subject-rights" class="text-nbs-primary hover:underline">Data Subject Rights</a>
+          <div class="text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold text-nbs-trust mb-6">
+              Get Expert <span class="gradient-text">Support</span>
+            </h1>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Have questions about our supplements? Need guidance from our pharmacist team? 
+              We're here to provide professional, knowledgeable support for all your health and fitness goals.
             </p>
           </div>
         </div>
       </div>
+    </section>
 
-    </div>
+    <!-- Main Contact Content -->
+    <section class="py-16 lg:py-20">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+          <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div>
+              <ContactForm 
+                title="Send Us a Message"
+                description="Our pharmacist team typically responds within 24-48 hours. For urgent matters, please call us directly."
+                variant="default"
+                showTitle={true}
+              />
+            </div>
 
+            <!-- Contact Information & FAQ -->
+            <div class="space-y-8">
+              <!-- Contact Information -->
+              <div class="clinical-card p-8">
+                <h2 class="text-2xl font-bold text-nbs-trust mb-6">
+                  Contact Information
+                </h2>
+                
+                <div class="space-y-6">
+                  <!-- Business Hours -->
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-nbs-primary/10 rounded-lg flex items-center justify-center mt-1">
+                      <svg class="w-5 h-5 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-nbs-trust mb-2">Business Hours</h3>
+                      <div class="text-sm text-muted-foreground space-y-1">
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM EST</p>
+                        <p>Saturday: 10:00 AM - 4:00 PM EST</p>
+                        <p>Sunday: Closed</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Response Time -->
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-nbs-secondary/10 rounded-lg flex items-center justify-center mt-1">
+                      <svg class="w-5 h-5 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-nbs-trust mb-2">Response Times</h3>
+                      <div class="text-sm text-muted-foreground space-y-1">
+                        <p>Email inquiries: 24-48 hours</p>
+                        <p>Product questions: Same day</p>
+                        <p>Technical support: 2-4 hours</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Location -->
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-nbs-accent/10 rounded-lg flex items-center justify-center mt-1">
+                      <svg class="w-5 h-5 text-nbs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-nbs-trust mb-2">Location</h3>
+                      <div class="text-sm text-muted-foreground">
+                        <p>Based in New Jersey, USA</p>
+                        <p>Shipping nationwide</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAQ Section -->
+              <div class="clinical-card p-8">
+                <h2 class="text-2xl font-bold text-nbs-trust mb-6">
+                  Frequently Asked Questions
+                </h2>
+                
+                <div class="space-y-6">
+                  <!-- FAQ Item 1 -->
+                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
+                    <h3 class="font-semibold text-nbs-trust mb-3">How long does shipping take?</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                      We ship all orders within 1-2 business days. Standard shipping takes 3-5 business days, 
+                      and expedited shipping options are available at checkout.
+                    </p>
+                  </div>
+
+                  <!-- FAQ Item 2 -->
+                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
+                    <h3 class="font-semibold text-nbs-trust mb-3">Are your supplements third-party tested?</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                      Yes, all NBS supplements are third-party tested for purity, potency, and safety. 
+                      We provide certificates of analysis for every batch.
+                    </p>
+                  </div>
+
+                  <!-- FAQ Item 3 -->
+                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
+                    <h3 class="font-semibold text-nbs-trust mb-3">What makes NBS supplements different?</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                      Our supplements are formulated by licensed pharmacists using clinically dosed ingredients. 
+                      We use only natural flavors and sweeteners with complete transparency in our formulations.
+                    </p>
+                  </div>
+
+                  <!-- FAQ Item 4 -->
+                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
+                    <h3 class="font-semibold text-nbs-trust mb-3">Do you offer a money-back guarantee?</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                      Yes, we offer a 30-day money-back guarantee on all products. 
+                      If you're not satisfied, contact us for a full refund.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
+  <!-- Analytics Event Tracking -->
+  <script>
+    // Use passive listeners and defer non-critical tracking for better INP
+    window.addEventListener('load', function() {
+      // Track contact form submissions with passive listeners
+      const contactForm = document.querySelector('#contact-form, form[name="contact"]');
+      if (contactForm) {
+        contactForm.addEventListener('submit', function() {
+          // Use requestIdleCallback for non-blocking analytics
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+              if (typeof window.trackContactForm === 'function') {
+                window.trackContactForm('contact_page');
+              }
+            });
+          } else {
+            setTimeout(() => {
+              if (typeof window.trackContactForm === 'function') {
+                window.trackContactForm('contact_page');
+              }
+            }, 0);
+          }
+        }, { passive: true });
+      }
+
+      // Track FAQ interactions with optimized event handling
+      const faqItems = document.querySelectorAll('h3');
+      faqItems.forEach(item => {
+        if (item.textContent && item.textContent.includes('?')) {
+          item.addEventListener('click', function() {
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(() => {
+                if (typeof gtag !== 'undefined') {
+                  gtag('event', 'faq_interaction', {
+                    faq_question: this.textContent,
+                    engagement_time_msec: Date.now() - performance.timeOrigin
+                  });
+                }
+              });
+            }
+          }, { passive: true });
+        }
+      });
+    });
+  </script>
 </BaseLayout>

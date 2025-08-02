@@ -3,60 +3,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Newsletter from "../components/Newsletter.astro";
 import { Image } from "astro:assets";
 import catalystStacked from "../images/catalyst-stacked.png";
+import { StructuredDataGenerator } from "../lib/structured-data";
 
-// SEO Data
+// SEO Data with enhanced keyword targeting
 const seoData = {
   title: "Natural Pre-Workout Supplements | Clean, Pharmacist-Formulated | NBS",
   description:
     "Discover Catalyst, the pharmacist-formulated pre-workout with clinical doses of creatine, L-citrulline, and natural ingredients. No fillers, no fluff - just results.",
   keywords:
-    "natural pre-workout supplements, clean pre-workout, pharmacist formulated supplements, clinical dose pre-workout",
+    "natural pre-workout supplements, clean pre-workout, pharmacist formulated supplements, clinical dose pre-workout, best natural pre-workout without artificial ingredients",
 };
+
+// Generate comprehensive structured data
+const structuredData = StructuredDataGenerator.generateHomepageSchema();
 ---
 
-<BaseLayout title={seoData.title} description={seoData.description}>
-  <!-- Structured Data Schema -->
-  <script type="application/ld+json" slot="head">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Product",
-          "name": "Catalyst Pre-Workout",
-          "description": "Clean, pharmacist-formulated pre-workout with clinical doses of creatine, L-citrulline, and natural energy boosters.",
-          "brand": {
-            "@type": "Brand",
-            "name": "NBS Supplements"
-          },
-          "offers": {
-            "@type": "Offer",
-            "url": "https://gumroad.com/l/nbs-catalyst",
-            "priceCurrency": "USD",
-            "price": "39.99",
-            "availability": "https://schema.org/InStock"
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "127"
-          }
-        },
-        {
-          "@type": "Review",
-          "@id": "#review1",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5"
-          },
-          "author": {
-            "@type": "Person",
-            "name": "Sarah M."
-          },
-          "reviewBody": "Finally, a pre-workout that doesn't make me crash. The pharmacist formulation really shows - clean energy without the jitters."
-        }
-      ]
-    }
-  </script>
+<BaseLayout 
+  title={seoData.title} 
+  description={seoData.description}
+  structuredData={structuredData}
+>
 
   <!-- Hero Section -->
   <section
@@ -165,19 +131,27 @@ const seoData = {
           </div>
         </div>
 
-        <!-- Product Showcase -->
-        <div class="relative animate-scale-in">
+        <!-- Product Showcase - CLS Optimized -->
+        <div class="relative animate-scale-in" style="contain: layout;">
           <div
             class="bg-gradient-to-br from-nbs-primary/10 to-nbs-secondary/10 rounded-2xl p-8 shadow-2xl"
+            style="min-height: 500px; contain: layout;"
           >
-            <!-- Placeholder for Catalyst product image -->
+            <!-- Optimized product image for LCP -->
             <div
               class="aspect-square bg-gradient-to-br from-nbs-clinical to-nbs-primary/5 rounded-xl border-2 border-nbs-primary/20 flex items-center justify-center mb-6"
+              style="contain: layout;"
             >
-              <div class="text-center text-nbs-trust/60">
+              <div class="text-center text-nbs-trust/60 w-full h-full flex items-center justify-center">
                 <Image
                   src={catalystStacked}
-                  alt="Catalyst Preworkout Bottles Stacked"
+                  alt="Catalyst Pre-Workout - Clean, pharmacist-formulated natural pre-workout supplement bottles"
+                  loading="eager"
+                  fetchpriority="high"
+                  width={400}
+                  height={400}
+                  class="w-full h-auto max-w-80 max-h-80 object-contain"
+                  style="aspect-ratio: 1 / 1;"
                 />
               </div>
             </div>

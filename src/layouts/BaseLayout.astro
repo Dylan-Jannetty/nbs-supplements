@@ -151,11 +151,174 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       });
     </script>
     
-    <!-- Google Analytics Placeholder -->
-    <!-- TODO: Add Google Analytics 4 tracking code -->
+    <!-- Critical CSS for above-the-fold content -->
+    <style>
+      /* Critical CSS for initial paint */
+      body { font-family: 'Inter', system-ui, sans-serif; }
+      .hero-section { min-height: 60vh; }
+      .nbs-primary { color: hsl(203 89% 53%); }
+      .nbs-trust { color: hsl(203 23% 30%); }
+      .clinical-card { background: hsl(210 20% 98%); border-radius: 0.5rem; }
+    </style>
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Google Analytics 4 with Enhanced E-commerce - Deferred for INP -->
+    <script>
+      // Load GA4 after page load to improve INP
+      window.addEventListener('load', function() {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
+        document.head.appendChild(script);
+      });
+    </script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // Configure GA4 with enhanced e-commerce
+      gtag('config', 'GA_MEASUREMENT_ID', {
+        // Enhanced e-commerce settings
+        allow_enhanced_conversions: true,
+        send_page_view: true,
+        // Privacy settings
+        anonymize_ip: true,
+        // Performance settings
+        cookie_expires: 60 * 60 * 24 * 28, // 28 days
+      });
+
+      // Track page views with enhanced data
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        content_group1: 'NBS Supplements',
+        custom_map: {
+          dimension1: 'supplement_site'
+        }
+      });
+    </script>
+
+    <!-- Enhanced E-commerce Event Tracking -->
+    <script is:inline>
+      // Enhanced e-commerce tracking functions
+      window.trackPurchase = function(orderId, value, items) {
+        gtag('event', 'purchase', {
+          transaction_id: orderId,
+          value: value,
+          currency: 'USD',
+          items: items,
+          // Enhanced e-commerce parameters
+          affiliation: 'NBS Supplements',
+          shipping: 0,
+          tax: 0
+        });
+      };
+
+      // Newsletter signup tracking
+      window.trackNewsletterSignup = function(method = 'newsletter_form') {
+        gtag('event', 'generate_lead', {
+          currency: 'USD',
+          value: 5.00, // Estimated lead value
+          method: method,
+          content_group: 'newsletter'
+        });
+      };
+
+      // Contact form submission tracking
+      window.trackContactForm = function(formType = 'contact') {
+        gtag('event', 'form_submit', {
+          form_name: formType,
+          engagement_time_msec: Date.now() - performance.timeOrigin,
+          content_group: 'contact'
+        });
+      };
+
+      // Product view tracking
+      window.trackProductView = function(productData) {
+        gtag('event', 'view_item', {
+          currency: 'USD',
+          value: productData.price || 39.99,
+          items: [{
+            item_id: productData.id || 'catalyst-preworkout',
+            item_name: productData.name || 'Catalyst Pre-Workout',
+            category: 'Supplements',
+            price: productData.price || 39.99,
+            quantity: 1
+          }]
+        });
+      };
+
+      // Blog engagement tracking
+      window.trackBlogEngagement = function(action, articleTitle) {
+        gtag('event', action, {
+          content_type: 'article',
+          content_id: articleTitle,
+          engagement_time_msec: Date.now() - performance.timeOrigin
+        });
+      };
+
+      // Scroll depth tracking
+      let scrollTracked = [];
+      window.trackScrollDepth = function() {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        const milestones = [25, 50, 75, 90];
+        
+        milestones.forEach(milestone => {
+          if (scrollPercent >= milestone && !scrollTracked.includes(milestone)) {
+            scrollTracked.push(milestone);
+            gtag('event', 'scroll', {
+              percent_scrolled: milestone,
+              engagement_time_msec: Date.now() - performance.timeOrigin
+            });
+          }
+        });
+      };
+
+      // Attach optimized scroll tracking with passive listeners
+      if (typeof window !== 'undefined') {
+        let ticking = false;
+        
+        const optimizedScrollHandler = () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              trackScrollDepth();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+        
+        window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
+      }
+    </script>
+    
+    <!-- Preload critical resources for LCP optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" /></noscript>
+    
+    <!-- Preload critical images for LCP -->
+    {Astro.url.pathname === '/' && (
+      <link rel="preload" as="image" href="/src/images/catalyst-stacked.png" />
+    )}
+    
+    <!-- DNS prefetch for third-party resources -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://gumroad.com" />
+    
+    <!-- Preconnect to critical third-party origins -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://gumroad.com" crossorigin />
+    
+    <!-- Performance hints for better resource loading -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    
+    <!-- Critical resource hints for faster loading -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="msapplication-TileColor" content="#2563eb" />
     
   </head>
   
@@ -186,25 +349,32 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
         const currentTheme = localStorage.getItem('theme') || 'light';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
-        if (newTheme === 'light') {
-          document.documentElement.classList.remove('dark');
-        } else {
-          document.documentElement.classList.add('dark');
-        }
-        
-        localStorage.setItem('theme', newTheme);
-        
-        // Dispatch custom event for components to listen to
-        window.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: newTheme } }));
+        // Use requestAnimationFrame to ensure smooth visual updates
+        requestAnimationFrame(() => {
+          if (newTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
+            document.documentElement.classList.add('dark');
+          }
+          
+          localStorage.setItem('theme', newTheme);
+          
+          // Dispatch custom event with minimal payload
+          window.dispatchEvent(new CustomEvent('theme-change', { 
+            detail: { theme: newTheme },
+            bubbles: false,
+            cancelable: false
+          }));
+        });
       }
       
       // Make toggle function available globally
       window.toggleTheme = toggleTheme;
     </script>
     
-    <!-- Global Gumroad Script Loader -->
+    <!-- Enhanced Gumroad Script Loader with Conversion Tracking - Optimized for INP -->
     <script>
-      // Global loadGumroad function available on all pages
+      // Optimized Gumroad loading with interaction-based loading
       const loadGumroad = () => {
         // Check if Gumroad is already loaded
         if (window.GumroadOverlay) {
@@ -223,6 +393,29 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
         script.async = true;
         script.onload = () => {
           console.log('Gumroad script loaded successfully');
+          
+          // Set up Gumroad event listeners for conversion tracking
+          if (window.GumroadOverlay) {
+            // Track when checkout overlay opens
+            const originalOpen = window.GumroadOverlay.open;
+            window.GumroadOverlay.open = function(...args) {
+              // Track begin_checkout event
+              if (typeof gtag !== 'undefined') {
+                gtag('event', 'begin_checkout', {
+                  currency: 'USD',
+                  value: 39.99,
+                  items: [{
+                    item_id: 'catalyst-preworkout',
+                    item_name: 'Catalyst Pre-Workout',
+                    category: 'Supplements',
+                    price: 39.99,
+                    quantity: 1
+                  }]
+                });
+              }
+              return originalOpen.apply(this, args);
+            };
+          }
         };
         script.onerror = () => {
           console.error('Failed to load Gumroad script');
@@ -230,12 +423,101 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
         document.head.appendChild(script);
       };
       
-      // Make function available globally
-      window.loadGumroad = loadGumroad;
+      // Enhanced click tracking for Gumroad buttons
+      const trackGumroadClick = (element) => {
+        const productName = element.textContent || 'Catalyst Pre-Workout';
+        const price = 39.99;
+        
+        // Track add_to_cart event
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'add_to_cart', {
+            currency: 'USD',
+            value: price,
+            items: [{
+              item_id: 'catalyst-preworkout',
+              item_name: productName,
+              category: 'Supplements',
+              price: price,
+              quantity: 1
+            }]
+          });
+        }
+      };
       
-      // Load Gumroad immediately on page load
+      // Make functions available globally
+      window.loadGumroad = loadGumroad;
+      window.trackGumroadClick = trackGumroadClick;
+      
+      // Load Gumroad only on user interaction for better INP
       document.addEventListener('DOMContentLoaded', () => {
-        loadGumroad();
+        // Use passive event listeners for better performance
+        const gumroadButtons = document.querySelectorAll('.gumroad-button, [data-gumroad-single-product]');
+        
+        let gumroadLoaded = false;
+        
+        gumroadButtons.forEach(button => {
+          // Use passive listeners and load Gumroad on first interaction
+          button.addEventListener('mouseenter', () => {
+            if (!gumroadLoaded) {
+              loadGumroad();
+              gumroadLoaded = true;
+            }
+          }, { passive: true, once: true });
+          
+          button.addEventListener('click', () => {
+            if (!gumroadLoaded) {
+              loadGumroad();
+              gumroadLoaded = true;
+            }
+            trackGumroadClick(button);
+          }, { passive: true });
+        });
+      });
+
+      // Listen for successful purchases (Gumroad postMessage events)
+      window.addEventListener('message', (event) => {
+        if (event.origin === 'https://gumroad.com' && event.data) {
+          if (event.data.type === 'gumroad:purchase_complete') {
+            const purchaseData = event.data.data;
+            
+            // Track purchase conversion
+            if (typeof gtag !== 'undefined' && typeof window.trackPurchase === 'function') {
+              window.trackPurchase(
+                purchaseData.order_id || 'gumroad_' + Date.now(),
+                purchaseData.price || 39.99,
+                [{
+                  item_id: 'catalyst-preworkout',
+                  item_name: 'Catalyst Pre-Workout',
+                  category: 'Supplements',
+                  price: purchaseData.price || 39.99,
+                  quantity: 1
+                }]
+              );
+            }
+          }
+        }
+      });
+    </script>
+
+    <!-- Core Web Vitals Performance Monitoring -->
+    <script>
+      // Import and initialize performance monitoring
+      import('/src/lib/performance-monitor.js').then(({ performanceMonitor }) => {
+        // Performance monitoring is automatically initialized
+        
+        // Report summary when user is about to leave
+        window.addEventListener('beforeunload', () => {
+          performanceMonitor.reportSummary();
+        });
+        
+        // Report summary on visibility change (tab switching)
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'hidden') {
+            performanceMonitor.reportSummary();
+          }
+        });
+      }).catch(err => {
+        console.warn('Performance monitoring failed to load:', err);
       });
     </script>
   </body>
