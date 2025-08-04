@@ -9,6 +9,17 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://supplements-nbs.com',
+  image: {
+    // Enable image optimization for better performance
+    service: {
+      // Use Sharp for image processing (requires sharp dependency)
+      entrypoint: 'astro/assets/services/sharp',
+    },
+    domains: ['supplements-nbs.com'],
+    formats: ['avif', 'webp', 'jpeg'],
+    // Cache for 1 year in production
+    cacheDir: './.astro/assets',
+  },
   integrations: [
     react(),
     tailwind({

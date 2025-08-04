@@ -4,6 +4,90 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  /* Button Components - replacing React buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+  
+  /* Button Variants */
+  .btn-primary {
+    @apply bg-nbs-primary text-white shadow-sm hover:bg-nbs-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80;
+  }
+  
+  .btn-outline {
+    @apply border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground;
+  }
+  
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+  
+  /* Button Sizes */
+  .btn-sm {
+    @apply h-8 rounded-md px-3 text-xs;
+  }
+  
+  .btn-lg {
+    @apply h-10 rounded-md px-8;
+  }
+  
+  .btn-xl {
+    @apply h-12 rounded-lg px-8 text-base;
+  }
+  
+  /* NBS-specific button variants */
+  .btn-natural {
+    @apply bg-nbs-secondary text-white shadow-sm hover:bg-nbs-secondary/90;
+  }
+  
+  .btn-energetic {
+    @apply bg-nbs-accent text-white shadow-sm hover:bg-nbs-accent/90;
+  }
+  
+  /* Badge Components */
+  .badge {
+    @apply inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap gap-1;
+  }
+  
+  .badge-secondary {
+    @apply bg-secondary text-secondary-foreground;
+  }
+  
+  .badge-outline {
+    @apply border-input bg-background text-foreground;
+  }
+  
+  .badge-destructive {
+    @apply bg-destructive text-destructive-foreground;
+  }
+  
+  /* Card Components */
+  .card {
+    @apply rounded-xl border bg-card text-card-foreground shadow-sm;
+  }
+  
+  .card-header {
+    @apply flex flex-col space-y-1.5 p-6;
+  }
+  
+  .card-title {
+    @apply text-lg font-semibold leading-none tracking-tight;
+  }
+  
+  .card-description {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .card-content {
+    @apply p-6 pt-0;
+  }
+}
+
 @layer base {
   :root {
     /* Base Colors - High contrast for pharmaceutical trust */

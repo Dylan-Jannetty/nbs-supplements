@@ -8,9 +8,9 @@ The following images need to be added to complete the product gallery:
 
 ### Main Product Images (high-resolution)
 - `catalyst-front.webp` - Front label showing clean ingredient list
-- `catalyst-back.jpg` - Supplement facts and usage instructions  
+- `catalyst-back.webp` - Supplement facts and usage instructions  
 - `catalyst-lifestyle.jpg` - Product being mixed in gym setting
-- `catalyst-ingredients.jpg` - Close-up of natural ingredients and clinical dosing
+- `catalyst-ingredients.webp` - Close-up of natural ingredients and clinical dosing
 
 ### Thumbnail Images (optimized)
 - `catalyst-front-thumb.jpg` - Thumbnail version of front label

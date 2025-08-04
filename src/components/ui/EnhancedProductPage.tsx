@@ -48,7 +48,7 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
   const [wishlistAdded, setWishlistAdded] = useState(false);
 
   // Refs
-  const pageStartTime = useRef(Date.now());
+  const pageStartTime = useRef<number>(0);
   const stickyButtonRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const exitIntentTimerRef = useRef<NodeJS.Timeout>();
@@ -144,14 +144,16 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
       action: wishlistAdded ? 'removed' : 'added'
     });
     
-    // Store in localStorage for persistence
-    const wishlist = JSON.parse(localStorage.getItem('nbs_wishlist') || '[]');
-    if (wishlistAdded) {
-      const filtered = wishlist.filter((item: any) => item.name !== product.name);
-      localStorage.setItem('nbs_wishlist', JSON.stringify(filtered));
-    } else {
-      wishlist.push({ name: product.name, price: product.price, addedAt: Date.now() });
-      localStorage.setItem('nbs_wishlist', JSON.stringify(wishlist));
+    // Store in localStorage for persistence (client-side only)
+    if (typeof window !== 'undefined') {
+      const wishlist = JSON.parse(localStorage.getItem('nbs_wishlist') || '[]');
+      if (wishlistAdded) {
+        const filtered = wishlist.filter((item: any) => item.name !== product.name);
+        localStorage.setItem('nbs_wishlist', JSON.stringify(filtered));
+      } else {
+        wishlist.push({ name: product.name, price: product.price, addedAt: Date.now() });
+        localStorage.setItem('nbs_wishlist', JSON.stringify(wishlist));
+      }
     }
   }, [wishlistAdded, product]);
 
@@ -190,6 +192,9 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
 
   // Set up event listeners
   useEffect(() => {
+    // Initialize page start time (client-side only)
+    pageStartTime.current = Date.now();
+    
     const throttledScroll = throttle(handleScroll, 16); // 60fps
     window.addEventListener('scroll', throttledScroll);
     document.addEventListener('mouseleave', handleMouseLeave);
@@ -202,9 +207,11 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
       }));
     }, 5000);
 
-    // Load wishlist state
-    const wishlist = JSON.parse(localStorage.getItem('nbs_wishlist') || '[]');
-    setWishlistAdded(wishlist.some((item: any) => item.name === product.name));
+    // Load wishlist state (client-side only)
+    if (typeof window !== 'undefined') {
+      const wishlist = JSON.parse(localStorage.getItem('nbs_wishlist') || '[]');
+      setWishlistAdded(wishlist.some((item: any) => item.name === product.name));
+    }
 
     return () => {
       window.removeEventListener('scroll', throttledScroll);
