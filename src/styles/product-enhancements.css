@@ -87,16 +87,21 @@
   }
 }
 
-/* Intersection Observer animations */
+/* Intersection Observer animations - Transition-based for smooth performance */
 [data-observe] {
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-observe].animate-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Override conflicting global animate-in for data-observe elements */
+[data-observe].animate-in {
+  animation: none !important;
 }
 
 /* Delayed animations for staggered effects */
@@ -323,8 +328,16 @@
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.wishlist-heart.added {
+.wishlist-heart.added,
+.wishlist-heart.filled {
   animation: heartBeat 0.6s ease-in-out;
+  fill: rgb(239 68 68);
+}
+
+.wishlist-button.active {
+  background-color: rgb(254 226 226);
+  color: rgb(220 38 38);
+  border-color: rgb(252 165 165);
 }
 
 @keyframes heartBeat {

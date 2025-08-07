@@ -1,47 +1,45 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactForm from '../components/ContactForm.astro';
-import Breadcrumb from '../components/Breadcrumb.astro';
-import { StructuredDataGenerator } from '../lib/structured-data';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { StructuredDataGenerator } from "../lib/structured-data";
 
 const title = "Contact Us - Expert Support from NBS Supplements | NBS";
-const description = "Get professional support from our pharmacist team. Fast response times, expert guidance, and comprehensive customer service for all your supplement questions.";
+const description =
+  "Get professional support from our pharmacist team. Fast response times, expert guidance, and comprehensive customer service for all your supplement questions.";
 
 // Generate comprehensive structured data combining LocalBusiness and FAQ
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     StructuredDataGenerator.generateLocalBusinessSchema(),
-    StructuredDataGenerator.generateContactFAQSchema()
-  ]
+    StructuredDataGenerator.generateContactFAQSchema(),
+  ],
 };
 ---
 
-<BaseLayout 
-  title={title} 
+<BaseLayout
+  title={title}
   description={description}
   structuredData={structuredData}
 >
   <!-- Contact Page Content -->
   <div class="min-h-screen bg-background">
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-nbs-clinical via-background to-nbs-primary/5 py-16 lg:py-20">
+    <section
+      class="relative bg-gradient-to-br from-nbs-clinical via-background to-nbs-primary/5 py-16 lg:py-20"
+    >
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
-          <!-- Breadcrumb Navigation -->
-          <Breadcrumb 
-            breadcrumbs={[]}
-            current="Contact"
-            className="mb-8"
-          />
-          
           <div class="text-center">
             <h1 class="text-4xl lg:text-5xl font-bold text-nbs-trust mb-6">
               Get Expert <span class="gradient-text">Support</span>
             </h1>
-            <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Have questions about our supplements? Need guidance from our pharmacist team? 
-              We're here to provide professional, knowledgeable support for all your health and fitness goals.
+            <p
+              class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            >
+              Have questions about our supplements? Need guidance from our
+              pharmacist team? We're here to provide professional, knowledgeable
+              support for all your health and fitness goals.
             </p>
           </div>
         </div>
@@ -55,7 +53,7 @@ const structuredData = {
           <div class="grid lg:grid-cols-2 gap-12">
             <!-- Contact Form -->
             <div>
-              <ContactForm 
+              <ContactForm
                 title="Send Us a Message"
                 description="Our pharmacist team typically responds within 24-48 hours. For urgent matters, please call us directly."
                 variant="default"
@@ -70,17 +68,31 @@ const structuredData = {
                 <h2 class="text-2xl font-bold text-nbs-trust mb-6">
                   Contact Information
                 </h2>
-                
+
                 <div class="space-y-6">
                   <!-- Business Hours -->
                   <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-nbs-primary/10 rounded-lg flex items-center justify-center mt-1">
-                      <svg class="w-5 h-5 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <div
+                      class="w-10 h-10 bg-nbs-primary/10 rounded-lg flex items-center justify-center mt-1"
+                    >
+                      <svg
+                        class="w-5 h-5 text-nbs-primary"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-nbs-trust mb-2">Business Hours</h3>
+                      <h3 class="font-semibold text-nbs-trust mb-2">
+                        Business Hours
+                      </h3>
                       <div class="text-sm text-muted-foreground space-y-1">
                         <p>Monday - Friday: 9:00 AM - 6:00 PM EST</p>
                         <p>Saturday: 10:00 AM - 4:00 PM EST</p>
@@ -91,13 +103,27 @@ const structuredData = {
 
                   <!-- Response Time -->
                   <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-nbs-secondary/10 rounded-lg flex items-center justify-center mt-1">
-                      <svg class="w-5 h-5 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <div
+                      class="w-10 h-10 bg-nbs-secondary/10 rounded-lg flex items-center justify-center mt-1"
+                    >
+                      <svg
+                        class="w-5 h-5 text-nbs-secondary"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        ></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-nbs-trust mb-2">Response Times</h3>
+                      <h3 class="font-semibold text-nbs-trust mb-2">
+                        Response Times
+                      </h3>
                       <div class="text-sm text-muted-foreground space-y-1">
                         <p>Email inquiries: 24-48 hours</p>
                         <p>Product questions: Same day</p>
@@ -108,14 +134,32 @@ const structuredData = {
 
                   <!-- Location -->
                   <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-nbs-accent/10 rounded-lg flex items-center justify-center mt-1">
-                      <svg class="w-5 h-5 text-nbs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <div
+                      class="w-10 h-10 bg-nbs-accent/10 rounded-lg flex items-center justify-center mt-1"
+                    >
+                      <svg
+                        class="w-5 h-5 text-nbs-accent"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        ></path>
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-nbs-trust mb-2">Location</h3>
+                      <h3 class="font-semibold text-nbs-trust mb-2">
+                        Location
+                      </h3>
                       <div class="text-sm text-muted-foreground">
                         <p>Based in New Jersey, USA</p>
                         <p>Shipping nationwide</p>
@@ -130,41 +174,62 @@ const structuredData = {
                 <h2 class="text-2xl font-bold text-nbs-trust mb-6">
                   Frequently Asked Questions
                 </h2>
-                
+
                 <div class="space-y-6">
                   <!-- FAQ Item 1 -->
-                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
-                    <h3 class="font-semibold text-nbs-trust mb-3">How long does shipping take?</h3>
+                  <div
+                    class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0"
+                  >
+                    <h3 class="font-semibold text-nbs-trust mb-3">
+                      How long does shipping take?
+                    </h3>
                     <p class="text-sm text-muted-foreground leading-relaxed">
-                      We ship all orders within 1-2 business days. Standard shipping takes 3-5 business days, 
-                      and expedited shipping options are available at checkout.
+                      We ship all orders within 1-2 business days. Standard
+                      shipping takes 3-5 business days, and expedited shipping
+                      options are available at checkout.
                     </p>
                   </div>
 
                   <!-- FAQ Item 2 -->
-                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
-                    <h3 class="font-semibold text-nbs-trust mb-3">Are your supplements third-party tested?</h3>
+                  <div
+                    class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0"
+                  >
+                    <h3 class="font-semibold text-nbs-trust mb-3">
+                      Are your supplements third-party tested?
+                    </h3>
                     <p class="text-sm text-muted-foreground leading-relaxed">
-                      Yes, all NBS supplements are third-party tested for purity, potency, and safety. 
-                      We provide certificates of analysis for every batch.
+                      Yes, all NBS supplements are third-party tested for
+                      purity, potency, and safety. We provide certificates of
+                      analysis for every batch.
                     </p>
                   </div>
 
                   <!-- FAQ Item 3 -->
-                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
-                    <h3 class="font-semibold text-nbs-trust mb-3">What makes NBS supplements different?</h3>
+                  <div
+                    class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0"
+                  >
+                    <h3 class="font-semibold text-nbs-trust mb-3">
+                      What makes NBS supplements different?
+                    </h3>
                     <p class="text-sm text-muted-foreground leading-relaxed">
-                      Our supplements are formulated by licensed pharmacists using clinically dosed ingredients. 
-                      We use only natural flavors and sweeteners with complete transparency in our formulations.
+                      Our supplements are formulated by licensed pharmacists
+                      using clinically dosed ingredients. We use only natural
+                      flavors and sweeteners with complete transparency in our
+                      formulations.
                     </p>
                   </div>
 
                   <!-- FAQ Item 4 -->
-                  <div class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0">
-                    <h3 class="font-semibold text-nbs-trust mb-3">Do you offer a money-back guarantee?</h3>
+                  <div
+                    class="border-b border-border/50 pb-6 last:border-b-0 last:pb-0"
+                  >
+                    <h3 class="font-semibold text-nbs-trust mb-3">
+                      Do you offer a money-back guarantee?
+                    </h3>
                     <p class="text-sm text-muted-foreground leading-relaxed">
-                      Yes, we offer a 30-day money-back guarantee on all products. 
-                      If you're not satisfied, contact us for a full refund.
+                      Yes, we offer a 30-day money-back guarantee on all
+                      products. If you're not satisfied, contact us for a full
+                      refund.
                     </p>
                   </div>
                 </div>
@@ -179,44 +244,54 @@ const structuredData = {
   <!-- Analytics Event Tracking -->
   <script>
     // Use passive listeners and defer non-critical tracking for better INP
-    window.addEventListener('load', function() {
+    window.addEventListener("load", function () {
       // Track contact form submissions with passive listeners
-      const contactForm = document.querySelector('#contact-form, form[name="contact"]');
+      const contactForm = document.querySelector(
+        '#contact-form, form[name="contact"]'
+      );
       if (contactForm) {
-        contactForm.addEventListener('submit', function() {
-          // Use requestIdleCallback for non-blocking analytics
-          if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => {
-              if (typeof window.trackContactForm === 'function') {
-                window.trackContactForm('contact_page');
-              }
-            });
-          } else {
-            setTimeout(() => {
-              if (typeof window.trackContactForm === 'function') {
-                window.trackContactForm('contact_page');
-              }
-            }, 0);
-          }
-        }, { passive: true });
+        contactForm.addEventListener(
+          "submit",
+          function () {
+            // Use requestIdleCallback for non-blocking analytics
+            if ("requestIdleCallback" in window) {
+              requestIdleCallback(() => {
+                if (typeof window.trackContactForm === "function") {
+                  window.trackContactForm("contact_page");
+                }
+              });
+            } else {
+              setTimeout(() => {
+                if (typeof window.trackContactForm === "function") {
+                  window.trackContactForm("contact_page");
+                }
+              }, 0);
+            }
+          },
+          { passive: true }
+        );
       }
 
       // Track FAQ interactions with optimized event handling
-      const faqItems = document.querySelectorAll('h3');
-      faqItems.forEach(item => {
-        if (item.textContent && item.textContent.includes('?')) {
-          item.addEventListener('click', function() {
-            if ('requestIdleCallback' in window) {
-              requestIdleCallback(() => {
-                if (typeof gtag !== 'undefined') {
-                  gtag('event', 'faq_interaction', {
-                    faq_question: this.textContent,
-                    engagement_time_msec: Date.now() - performance.timeOrigin
-                  });
-                }
-              });
-            }
-          }, { passive: true });
+      const faqItems = document.querySelectorAll("h3");
+      faqItems.forEach((item) => {
+        if (item.textContent && item.textContent.includes("?")) {
+          item.addEventListener(
+            "click",
+            function () {
+              if ("requestIdleCallback" in window) {
+                requestIdleCallback(() => {
+                  if (typeof gtag !== "undefined") {
+                    gtag("event", "faq_interaction", {
+                      faq_question: this.textContent,
+                      engagement_time_msec: Date.now() - performance.timeOrigin,
+                    });
+                  }
+                });
+              }
+            },
+            { passive: true }
+          );
         }
       });
     });

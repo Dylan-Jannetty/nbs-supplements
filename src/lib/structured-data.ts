@@ -378,21 +378,6 @@ export class StructuredDataGenerator {
     };
   }
 
-  /**
-   * Generate Breadcrumb schema for navigation
-   */
-  static generateBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: string }>): BreadcrumbSchema {
-    return {
-      '@context': this.SCHEMA_CONTEXT,
-      '@type': 'BreadcrumbList',
-      itemListElement: breadcrumbs.map((crumb, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        name: crumb.name,
-        item: crumb.url
-      }))
-    };
-  }
 
   /**
    * Generate combined schema for homepage

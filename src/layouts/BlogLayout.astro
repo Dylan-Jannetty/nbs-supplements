@@ -1,8 +1,5 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { Badge } from '../components/ui/badge.tsx';
-import { Button } from '../components/ui/button.tsx';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card.tsx';
 
 export interface Props {
   frontmatter: {
@@ -96,9 +93,9 @@ const seoData = {
       <!-- Article Header -->
       <header class="mb-8 lg:mb-12">
         <div class="flex items-center gap-4 mb-4">
-          <Badge variant="secondary" class="bg-nbs-primary/10 text-nbs-primary">
+          <span class="badge badge-secondary bg-nbs-primary/10 text-nbs-primary">
             {frontmatter.category}
-          </Badge>
+          </span>
           <div class="flex items-center gap-2 text-sm text-muted-foreground">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -151,8 +148,8 @@ const seoData = {
       <!-- Article Footer -->
       <footer class="mt-12 pt-8 border-t border-border/50">
         <!-- Author Bio -->
-        <Card class="mb-8">
-          <CardHeader>
+        <div class="card mb-8">
+          <div class="card-header">
             <div class="flex items-center gap-4">
               <div class="w-16 h-16 rounded-full bg-gradient-to-br from-nbs-primary/20 to-nbs-secondary/20 flex items-center justify-center">
                 <svg class="w-8 h-8 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,23 +157,23 @@ const seoData = {
                 </svg>
               </div>
               <div>
-                <CardTitle class="text-lg">{frontmatter.author.name}</CardTitle>
-                <CardDescription>{frontmatter.author.title}</CardDescription>
+                <h3 class="card-title text-lg">{frontmatter.author.name}</h3>
+                <p class="card-description">{frontmatter.author.title}</p>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
+          </div>
+          <div class="card-content">
             <p class="text-muted-foreground leading-relaxed">{frontmatter.author.bio}</p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         <!-- Related Product CTA -->
-        <Card class="bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 mb-8">
-          <CardHeader>
-            <CardTitle class="text-xl">Try Catalyst Pre-Workout</CardTitle>
-            <CardDescription>Experience the clean, natural pre-workout difference</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <div class="card bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 mb-8">
+          <div class="card-header">
+            <h3 class="card-title text-xl">Try Catalyst Pre-Workout</h3>
+            <p class="card-description">Experience the clean, natural pre-workout difference</p>
+          </div>
+          <div class="card-content">
             <a 
               href="https://gumroad.com/l/nbs-catalyst"
               class="gumroad-button inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-nbs-primary hover:bg-nbs-primary/90 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:ring-offset-2 shadow-lg hover:shadow-xl"
@@ -187,16 +184,16 @@ const seoData = {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         <!-- Newsletter Signup -->
-        <Card>
-          <CardHeader>
-            <CardTitle class="text-xl">Stay Updated</CardTitle>
-            <CardDescription>Get the latest supplement insights and product updates</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title text-xl">Stay Updated</h3>
+            <p class="card-description">Get the latest supplement insights and product updates</p>
+          </div>
+          <div class="card-content">
             <form name="blog-newsletter" method="POST" data-netlify="true" class="space-y-4">
               <input type="hidden" name="form-name" value="blog-newsletter" />
               <input type="hidden" name="source" value={`blog-${slug}`} />
@@ -209,17 +206,17 @@ const seoData = {
                   placeholder="Enter your email"
                   class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-nbs-primary"
                 />
-                <Button type="submit" className="bg-nbs-primary hover:bg-nbs-primary/90">
+                <button type="submit" class="btn btn-primary bg-nbs-primary hover:bg-nbs-primary/90">
                   Subscribe
-                </Button>
+                </button>
               </div>
               
               <p class="text-xs text-muted-foreground">
                 No spam, just science. Unsubscribe anytime.
               </p>
             </form>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </footer>
     </div>
   </main>

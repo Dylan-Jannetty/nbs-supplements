@@ -1,9 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import EnhancedProductPage from "../../components/ui/EnhancedProductPage.tsx";
-import ProductComparison from "../../components/ui/ProductComparison.tsx";
-import QuantitySelector from "../../components/ui/QuantitySelector.tsx";
-import PerformanceTracker from "../../components/ui/PerformanceTracker.tsx";
 
 // Product data
 const product = {
@@ -215,7 +211,11 @@ const seoData = {
 };
 ---
 
-<BaseLayout title={seoData.title} description={seoData.description}>
+<BaseLayout
+  title={seoData.title}
+  description={seoData.description}
+  bodyClass="product-page"
+>
   <!-- Structured Data Schema -->
   <script type="application/ld+json" slot="head">
     {
@@ -318,33 +318,6 @@ const seoData = {
     }
   </script>
 
-  <!-- Breadcrumb Navigation -->
-  <nav
-    aria-label="Breadcrumb"
-    class="container mx-auto px-4 sm:px-6 lg:px-8 py-4"
-  >
-    <ol class="flex items-center space-x-2 text-sm text-muted-foreground">
-      <li>
-        <a
-          href="/"
-          class="hover:text-nbs-primary transition-colors duration-200">Home</a
-        >
-      </li>
-      <li>/</li>
-      <li>
-        <a
-          href="/products"
-          class="hover:text-nbs-primary transition-colors duration-200"
-          >Products</a
-        >
-      </li>
-      <li>/</li>
-      <li class="text-foreground font-medium" aria-current="page">
-        Catalyst Pre-Workout
-      </li>
-    </ol>
-  </nav>
-
   <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Product Header Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
@@ -438,19 +411,143 @@ const seoData = {
         </div>
 
         <!-- Quantity Selector -->
-        <div id="quantity-selector">
-          <QuantitySelector
-            basePrice={product.price}
-            gumroadUrl={product.gumroadUrl}
-            onQuantityChange={(quantity, totalPrice, savings) => {
-              console.log("Quantity changed:", {
-                quantity,
-                totalPrice,
-                savings,
-              });
-            }}
-            client:only="react"
-          />
+        <div
+          id="quantity-selector"
+          data-base-price={product.price}
+          data-gumroad-url={product.gumroadUrl}
+        >
+          <!-- Fallback quantity selector (enhanced by JavaScript) -->
+          <div class="space-y-4">
+            <div class="text-center mb-4">
+              <h3 class="text-lg font-semibold mb-2">Choose Your Supply</h3>
+              <p class="text-sm text-muted-foreground">
+                Larger quantities save you more money and ensure you never run
+                out
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div
+                class="card cursor-pointer transition-all duration-200 hover:shadow-md ring-2 ring-nbs-primary bg-nbs-primary/5"
+                data-quantity="1"
+              >
+                <div class="card-content p-4 text-center">
+                  <div class="mb-2">
+                    <div class="text-2xl font-bold">1</div>
+                    <div class="text-sm text-muted-foreground">Container</div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="text-lg font-semibold text-nbs-primary">
+                      $39.99
+                    </div>
+                    <div class="text-xs text-muted-foreground">$39.99 each</div>
+                  </div>
+                  <div class="text-xs text-muted-foreground">
+                    30 days supply
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="card cursor-pointer transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-nbs-primary/50"
+                data-quantity="2"
+              >
+                <div class="card-content p-4 text-center">
+                  <div class="mb-2">
+                    <div class="text-2xl font-bold">2</div>
+                    <div class="text-sm text-muted-foreground">Containers</div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="text-lg font-semibold text-nbs-primary">
+                      $73.98
+                    </div>
+                    <div class="text-sm text-green-600 font-medium">
+                      Save $6.00
+                    </div>
+                    <div class="text-xs text-muted-foreground">$36.99 each</div>
+                  </div>
+                  <div class="space-y-1 text-xs text-muted-foreground">
+                    <div>60 days supply</div>
+                    <div class="badge badge-secondary text-xs">Save 7.5%</div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="card cursor-pointer transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-nbs-primary/50 scale-105 relative"
+                data-quantity="3"
+              >
+                <div class="absolute -top-2 left-1/2 -translate-x-1/2">
+                  <div class="badge bg-nbs-accent text-white px-3 py-1">
+                    Most Popular
+                  </div>
+                </div>
+                <div class="card-content p-4 text-center">
+                  <div class="mb-2">
+                    <div class="text-2xl font-bold">3</div>
+                    <div class="text-sm text-muted-foreground">Containers</div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="text-lg font-semibold text-nbs-primary">
+                      $107.97
+                    </div>
+                    <div class="text-sm text-green-600 font-medium">
+                      Save $12.00
+                    </div>
+                    <div class="text-xs text-muted-foreground">$35.99 each</div>
+                  </div>
+                  <div class="text-xs text-muted-foreground">
+                    3 months supply
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="card cursor-pointer transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-nbs-primary/50"
+                data-quantity="6"
+              >
+                <div class="card-content p-4 text-center">
+                  <div class="mb-2">
+                    <div class="text-2xl font-bold">6</div>
+                    <div class="text-sm text-muted-foreground">Containers</div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="text-lg font-semibold text-nbs-primary">
+                      $203.94
+                    </div>
+                    <div class="text-sm text-green-600 font-medium">
+                      Save $36.00
+                    </div>
+                    <div class="text-xs text-muted-foreground">$33.99 each</div>
+                  </div>
+                  <div class="space-y-1 text-xs text-muted-foreground">
+                    <div>6 months supply</div>
+                    <div class="badge badge-secondary text-xs">Best Value</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="card bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5"
+            >
+              <div class="card-content p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="font-semibold">1 Container Selected</div>
+                    <div class="text-sm text-muted-foreground">
+                      30 days of premium pre-workout
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-2xl font-bold text-nbs-primary">
+                      $39.99
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Primary CTA -->
@@ -556,12 +653,57 @@ const seoData = {
       </div>
     </div>
 
-    <!-- Enhanced Product Features Integration -->
-    <EnhancedProductPage
-      product={product}
-      ingredients={ingredients}
-      client:load
-    />
+    <!-- Enhanced Product Features Integration (handled by JavaScript) -->
+    <div
+      id="enhanced-product-features"
+      data-product-name={product.name}
+      data-product-price={product.price}
+    >
+    </div>
+
+    <!-- Social Proof Section -->
+    <div
+      class="card mb-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30 border-green-200 dark:border-green-800"
+      data-observe
+    >
+      <div class="card-content p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse">
+              </div>
+              <span
+                class="text-sm font-medium text-green-700 dark:text-green-300"
+              >
+                87 left in stock
+              </span>
+            </div>
+            <div class="text-xs text-muted-foreground">
+              Recent purchases will be shown here
+            </div>
+          </div>
+          <button
+            class="btn btn-outline btn-sm wishlist-button"
+            data-product={product.name}
+          >
+            <svg
+              class="w-4 h-4 mr-2 transition-colors wishlist-heart"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width={2}
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              ></path>
+            </svg>
+            <span class="wishlist-text">Add to Wishlist</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Product Description -->
     <section class="mb-12 mt-12">
@@ -596,25 +738,73 @@ const seoData = {
         </p>
       </div>
 
-      <!-- Interactive ingredient cards are now handled by EnhancedProductPage component -->
-      <div id="ingredient-cards-container"></div>
+      <!-- Interactive ingredient cards (enhanced by JavaScript) -->
+      <div id="ingredient-cards-container" data-ingredient-cards>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-observe>
+          {
+            ingredients.map((ingredient, index) => (
+              <div
+                class="card ingredient-card hover:shadow-lg cursor-pointer transition-all duration-300 hover:transform hover:scale-[1.02]"
+                style={`animation-delay: ${index * 100}ms;`}
+                data-ingredient={ingredient.name}
+              >
+                <div class="card-header">
+                  <div class="flex items-center justify-between mb-2">
+                    <h4 class="card-title text-lg">{ingredient.name}</h4>
+                    <div class="badge badge-outline bg-nbs-primary/10 text-nbs-primary border-nbs-primary">
+                      {ingredient.dosage}
+                    </div>
+                  </div>
+                  <p class="card-description text-nbs-accent font-medium">
+                    {ingredient.purpose}
+                  </p>
+                </div>
+                <div class="card-content">
+                  <p class="text-muted-foreground mb-4">
+                    {ingredient.description}
+                  </p>
+                  <div class="space-y-1">
+                    <h5 class="font-medium text-foreground">Key Benefits:</h5>
+                    <ul class="text-sm text-muted-foreground space-y-1">
+                      {ingredient.benefits.map((benefit) => (
+                        <li class="flex items-center gap-2">
+                          <div class="w-1.5 h-1.5 bg-nbs-secondary rounded-full" />
+                          {benefit}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </section>
 
     <!-- Product Comparison -->
-    <ProductComparison
-      currentProduct={{
-        name: product.name,
-        price: product.price,
-        features: [
-          "Clinical doses",
-          "Natural ingredients",
-          "Third-party tested",
-          "Pharmacist formulated",
-        ],
-        rating: product.rating,
-      }}
-      client:load
-    />
+    <div
+      id="product-comparison"
+      data-product-name={product.name}
+      data-product-price={product.price}
+      data-product-rating={product.rating}
+    >
+      <!-- Fallback product comparison (enhanced by JavaScript) -->
+      <div class="card mb-8">
+        <div class="card-content p-6 text-center">
+          <h3 class="text-lg font-semibold mb-2">How does Catalyst compare?</h3>
+          <p class="text-muted-foreground mb-4">
+            See how Catalyst stacks up against other pre-workout supplements
+          </p>
+          <button
+            class="btn btn-outline hover:bg-nbs-primary hover:text-white"
+            data-toggle-comparison
+          >
+            Compare Products
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Secondary CTA -->
     <section
@@ -984,16 +1174,18 @@ const seoData = {
       </div>
     </section>
 
-    <!-- Performance Tracking -->
-    <PerformanceTracker
-      productName={product.name}
-      price={product.price}
-      enableReporting={true}
-      client:load
-    />
+    <!-- Performance tracking is handled by the coordinator -->
   </main>
 
+  <!-- Configuration for JavaScript modules -->
+  <script define:vars={{ product, ingredients }}>
+    window.PRODUCT_PAGE_CONFIG = {
+      product: product,
+      ingredients: ingredients,
+    };
+  </script>
+
   <!-- Enhanced JavaScript -->
-  <script src="/src/scripts/product-enhancements.js"></script>
-  <script src="/src/scripts/product-image-gallery.js"></script>
+  <script src="/scripts/product-page-init.js" is:inline></script>
+  <script src="/scripts/product-image-gallery.js" is:inline></script>
 </BaseLayout>

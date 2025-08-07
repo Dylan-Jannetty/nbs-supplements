@@ -473,6 +473,244 @@
     animation: scale-in 0.4s ease-out;
   }
   
+  /* Card Components - CSS-only implementation */
+  .card {
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  }
+  
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.375rem; /* space-y-1.5 */
+    padding: 1.5rem; /* p-6 */
+  }
+  
+  .card-title {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600; /* font-semibold */
+    line-height: 1; /* leading-none */
+    letter-spacing: -0.025em; /* tracking-tight */
+  }
+  
+  .card-description {
+    font-size: 0.875rem; /* text-sm */
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .card-content {
+    padding: 1.5rem; /* p-6 */
+    padding-top: 0; /* pt-0 */
+  }
+  
+  .card-footer {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem; /* p-6 */
+    padding-top: 0; /* pt-0 */
+  }
+  
+  /* Badge Components - CSS-only implementation */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem; /* rounded-md */
+    border: 1px solid;
+    padding: 0.125rem 0.5rem; /* px-2 py-0.5 */
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 500; /* font-medium */
+    width: fit-content;
+    white-space: nowrap;
+    gap: 0.25rem; /* gap-1 */
+  }
+  
+  .badge-default {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
+  }
+  
+  .badge-secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    border-color: hsl(var(--secondary));
+  }
+  
+  .badge-destructive {
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+    border-color: hsl(var(--destructive));
+  }
+  
+  .badge-outline {
+    border-color: hsl(var(--border));
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  
+  /* Button Components - CSS-only implementation */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* gap-2 */
+    white-space: nowrap;
+    border-radius: 0.375rem; /* rounded-md */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    transition: all 0.15s ease-in-out;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .btn:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .btn:focus-visible {
+    ring: 2px solid hsl(var(--ring));
+    ring-offset: 2px;
+  }
+  
+  .btn-default,
+  .btn-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: none;
+  }
+  
+  .btn-default:hover,
+  .btn-primary:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+  
+  .btn-destructive {
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: none;
+  }
+  
+  .btn-destructive:hover {
+    background-color: hsl(var(--destructive) / 0.9);
+  }
+  
+  .btn-outline {
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .btn-outline:hover {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .btn-secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: none;
+  }
+  
+  .btn-secondary:hover {
+    background-color: hsl(var(--secondary) / 0.8);
+  }
+  
+  .btn-ghost {
+    background-color: transparent;
+    color: hsl(var(--foreground));
+    border: none;
+    box-shadow: none;
+  }
+  
+  .btn-ghost:hover {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .btn-link {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .btn-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Button Sizes */
+  .btn-sm {
+    height: 2rem; /* h-8 */
+    border-radius: 0.375rem;
+    padding: 0 0.75rem; /* px-3 */
+    font-size: 0.75rem; /* text-xs */
+  }
+  
+  .btn-default,
+  .btn:not(.btn-sm):not(.btn-lg):not(.btn-icon) {
+    height: 2.25rem; /* h-9 */
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+  }
+  
+  .btn-lg {
+    height: 2.5rem; /* h-10 */
+    border-radius: 0.375rem;
+    padding: 0 2rem; /* px-8 */
+  }
+  
+  .btn-icon {
+    height: 2.25rem; /* h-9 */
+    width: 2.25rem; /* w-9 */
+    padding: 0;
+  }
+  
+  /* Input Components - CSS-only implementation */
+  .input {
+    display: flex;
+    height: 2.25rem; /* h-9 */
+    width: 100%;
+    border-radius: 0.375rem; /* rounded-md */
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--background));
+    padding: 0.25rem 0.75rem; /* px-3 py-1 */
+    font-size: 0.875rem; /* text-sm */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: colors 0.15s ease-in-out;
+  }
+  
+  .input::file-selector-button {
+    border: 0;
+    background: transparent;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .input:focus-visible {
+    outline: none;
+    ring: 1px solid hsl(var(--ring));
+  }
+  
+  .input:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
   /* Accessibility - WCAG 2.1 AA Compliant Focus States */
   :focus-visible {
     outline: none;

@@ -17,6 +17,7 @@ export interface Props {
   ogImage?: string;
   twitterTitle?: string;
   twitterDescription?: string;
+  bodyClass?: string;
 }
 
 const { 
@@ -31,7 +32,8 @@ const {
   ogDescription,
   ogImage: ogImageProp,
   twitterTitle,
-  twitterDescription
+  twitterDescription,
+  bodyClass = ''
 } = Astro.props;
 
 const siteUrl = 'https://supplements-nbs.com';
@@ -168,7 +170,7 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       window.addEventListener('load', function() {
         const script = document.createElement('script');
         script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=GTM-WJGKFP9V';
         document.head.appendChild(script);
       });
     </script>
@@ -323,7 +325,7 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
     
   </head>
   
-  <body class="min-h-screen bg-background font-sans antialiased">
+  <body class={`min-h-screen bg-background font-sans antialiased ${bodyClass}`.trim()}>
     <!-- Skip to main content link for accessibility -->
     <a 
       href="#main-content" 

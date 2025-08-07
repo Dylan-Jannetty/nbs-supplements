@@ -1,9 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Badge } from '../../components/ui/badge.tsx';
-import { Button } from '../../components/ui/button.tsx';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card.tsx';
-import { Input } from '../../components/ui/input.tsx';
 import { getCollection } from 'astro:content';
 
 // Get all blog posts
@@ -91,11 +87,11 @@ const seoData = {
         <div class="flex flex-col md:flex-row gap-4 mb-8">
           <!-- Search Bar -->
           <div class="flex-1">
-            <Input 
+            <input 
               type="search" 
               placeholder="Search articles..." 
               id="blog-search"
-              class="w-full h-12 text-base"
+              class="input w-full h-12 text-base"
             />
           </div>
           
@@ -125,7 +121,7 @@ const seoData = {
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredPosts.slice(0, 3).map(post => (
-            <Card class="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div class="card group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <div class="aspect-video rounded-t-lg overflow-hidden">
                 <img 
                   src={post.data.featuredImage.src}
@@ -134,11 +130,11 @@ const seoData = {
                   loading="lazy"
                 />
               </div>
-              <CardHeader>
+              <div class="card-header">
                 <div class="flex items-center gap-3 mb-3">
-                  <Badge variant="secondary" class="bg-nbs-primary/10 text-nbs-primary">
+                  <span class="badge badge-secondary bg-nbs-primary/10 text-nbs-primary">
                     {post.data.category}
-                  </Badge>
+                  </span>
                   <div class="flex items-center gap-1 text-sm text-muted-foreground">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -146,16 +142,16 @@ const seoData = {
                     <span>{post.data.readingTime || Math.ceil(post.data.excerpt.length / 200)} min read</span>
                   </div>
                 </div>
-                <CardTitle class="text-xl group-hover:text-nbs-primary transition-colors duration-200 line-clamp-2">
+                <h3 class="card-title text-xl group-hover:text-nbs-primary transition-colors duration-200 line-clamp-2">
                   <a href={`/blog/${post.slug}`} class="hover:underline">
                     {post.data.title}
                   </a>
-                </CardTitle>
-                <CardDescription class="text-base line-clamp-3">
+                </h3>
+                <p class="card-description text-base line-clamp-3">
                   {post.data.excerpt}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </p>
+              </div>
+              <div class="card-content">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-nbs-primary/20 to-nbs-secondary/20 flex items-center justify-center">
@@ -168,17 +164,15 @@ const seoData = {
                       <div class="text-xs text-muted-foreground">{new Date(post.data.publishDate).toLocaleDateString()}</div>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" class="text-nbs-primary hover:text-nbs-primary/80">
-                    <a href={`/blog/${post.slug}`} class="flex items-center gap-1">
-                      Read More
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </a>
-                  </Button>
+                  <a href={`/blog/${post.slug}`} class="btn btn-ghost btn-sm text-nbs-primary hover:text-nbs-primary/80 flex items-center gap-1">
+                    Read More
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -195,7 +189,7 @@ const seoData = {
 
       <div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {(featuredPosts.length > 0 ? recentPosts : publishedPosts).map(post => (
-          <Card class="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1" data-category={post.data.category}>
+          <div class="card group hover:shadow-lg transition-all duration-300 hover:-translate-y-1" data-category={post.data.category}>
             <div class="aspect-video rounded-t-lg overflow-hidden">
               <img 
                 src={post.data.featuredImage.src}
@@ -204,11 +198,11 @@ const seoData = {
                 loading="lazy"
               />
             </div>
-            <CardHeader>
+            <div class="card-header">
               <div class="flex items-center gap-3 mb-3">
-                <Badge variant="secondary" class="bg-nbs-primary/10 text-nbs-primary">
+                <span class="badge badge-secondary bg-nbs-primary/10 text-nbs-primary">
                   {post.data.category}
-                </Badge>
+                </span>
                 <div class="flex items-center gap-1 text-sm text-muted-foreground">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -216,16 +210,16 @@ const seoData = {
                   <span>{post.data.readingTime || Math.ceil(post.data.excerpt.length / 200)} min read</span>
                 </div>
               </div>
-              <CardTitle class="text-xl group-hover:text-nbs-primary transition-colors duration-200 line-clamp-2">
+              <h3 class="card-title text-xl group-hover:text-nbs-primary transition-colors duration-200 line-clamp-2">
                 <a href={`/blog/${post.slug}`} class="hover:underline">
                   {post.data.title}
                 </a>
-              </CardTitle>
-              <CardDescription class="text-base line-clamp-3">
+              </h3>
+              <p class="card-description text-base line-clamp-3">
                 {post.data.excerpt}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+            </div>
+            <div class="card-content">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                   <div class="w-8 h-8 rounded-full bg-gradient-to-br from-nbs-primary/20 to-nbs-secondary/20 flex items-center justify-center">
@@ -238,17 +232,15 @@ const seoData = {
                     <div class="text-xs text-muted-foreground">{new Date(post.data.publishDate).toLocaleDateString()}</div>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm" class="text-nbs-primary hover:text-nbs-primary/80">
-                  <a href={`/blog/${post.slug}`} class="flex items-center gap-1">
-                    Read More
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </a>
-                </Button>
+                <a href={`/blog/${post.slug}`} class="btn btn-ghost btn-sm text-nbs-primary hover:text-nbs-primary/80 flex items-center gap-1">
+                  Read More
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
 
@@ -269,31 +261,31 @@ const seoData = {
         Get expert supplement knowledge, product updates, and exclusive content delivered to your inbox.
       </p>
       
-      <Card class="max-w-md mx-auto">
-        <CardContent class="pt-6">
+      <div class="card max-w-md mx-auto">
+        <div class="card-content pt-6">
           <form name="blog-newsletter" method="POST" data-netlify="true" class="space-y-4">
             <input type="hidden" name="form-name" value="blog-newsletter" />
             <input type="hidden" name="source" value="blog-index" />
             
             <div class="flex gap-3">
-              <Input
+              <input
                 type="email"
                 name="email"
                 required
                 placeholder="Enter your email"
-                class="flex-1"
+                class="input flex-1"
               />
-              <Button type="submit" class="bg-nbs-primary hover:bg-nbs-primary/90">
+              <button type="submit" class="btn btn-primary bg-nbs-primary hover:bg-nbs-primary/90">
                 Subscribe
-              </Button>
+              </button>
             </div>
             
             <p class="text-xs text-muted-foreground">
               No spam, just science. Unsubscribe anytime.
             </p>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   </main>
 
