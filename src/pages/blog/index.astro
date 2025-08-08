@@ -339,6 +339,59 @@ const seoData = {
       // Add event listeners
       searchInput.addEventListener('input', filterArticles);
       categoryFilter.addEventListener('change', filterArticles);
+
+      // Track search usage with enhanced function
+      let searchTimeout;
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          if (this.value.length > 2) {
+            if (typeof window.trackBlogSearch === 'function') {
+              window.trackBlogSearch(this.value);
+            } else if (typeof window.trackBlogEngagement === 'function') {
+              window.trackBlogEngagement('search', `Search: ${this.value}`);
+            }
+          }
+        }, 1000);
+      });
+
+      // Track category filter usage with enhanced function
+      categoryFilter.addEventListener('change', function() {
+        if (this.value) {
+          if (typeof window.trackBlogFilter === 'function') {
+            window.trackBlogFilter(this.value);
+          } else if (typeof window.trackBlogEngagement === 'function') {
+            window.trackBlogEngagement('filter', `Category: ${this.value}`);
+          }
+        }
+      });
+    });
+
+    // Track article clicks with enhanced function
+    document.addEventListener('click', function(e) {
+      const articleLink = e.target.closest('a[href^="/blog/"]');
+      if (articleLink && !articleLink.href.endsWith('/blog/')) {
+        const articleTitle = articleLink.closest('.card')?.querySelector('h3')?.textContent?.trim() || 'Unknown Article';
+        const isFeatured = articleLink.closest('.card')?.closest('section')?.querySelector('h2')?.textContent?.includes('Featured');
+        const clickLocation = isFeatured ? 'featured_section' : 'recent_section';
+        
+        // Use enhanced tracking function if available
+        if (typeof window.trackArticleClick === 'function') {
+          window.trackArticleClick(articleTitle, clickLocation);
+        } else if (typeof window.trackBlogEngagement === 'function') {
+          window.trackBlogEngagement('article_click', articleTitle);
+        }
+
+        // Direct GA4 tracking as fallback
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'blog_article_click', {
+            content_type: 'article_preview',
+            content_id: articleTitle,
+            click_location: clickLocation,
+            engagement_time_msec: Date.now() - performance.timeOrigin
+          });
+        }
+      }
     });
   </script>
 </BaseLayout>

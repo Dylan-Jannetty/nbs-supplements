@@ -132,3 +132,12 @@ Based on PRD.md requirements, develop components in this order:
 4. TestimonialCarousel with auto-advancing slides
 5. Product components for Catalyst integration
 6. Blog content and related articles system
+
+## Astro Import Best Practices
+
+- Use explicit file extensions when importing Astro components and files
+- Prefer absolute imports using `src/` as the root directory for cleaner imports
+- Leverage Astro's built-in static analysis for type checking and optimizations
+- Use dynamic imports (`import()`) for components that require client-side interactivity
+- Utilize content collections for type-safe content management
+- Separate static and dynamic imports to optimize server-side rendering performance

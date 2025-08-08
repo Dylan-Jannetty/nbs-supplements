@@ -220,4 +220,47 @@ const seoData = {
       </footer>
     </div>
   </main>
+
+  <!-- Blog article engagement tracking -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const articleTitle = document.querySelector('h1').textContent.trim();
+      const category = document.querySelector('.badge')?.textContent.trim();
+      const readingTimeElement = document.querySelector('span');
+      const readingTimeText = readingTimeElement?.textContent || '';
+      const estimatedReadingTime = readingTimeText.match(/(\d+)\s*min/) ? parseInt(readingTimeText.match(/(\d+)\s*min/)[1]) : 5;
+      
+      // Track article view with enhanced data
+      if (typeof window.trackArticleView === 'function') {
+        window.trackArticleView(articleTitle, category, estimatedReadingTime);
+      } else if (typeof window.trackBlogEngagement === 'function') {
+        window.trackBlogEngagement('view', articleTitle);
+      }
+
+      // Track newsletter signup from blog article
+      const newsletterForm = document.querySelector('form[name="blog-newsletter"]');
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function() {
+          if (typeof window.trackBlogNewsletterSignup === 'function') {
+            window.trackBlogNewsletterSignup('blog_article', articleTitle);
+          } else if (typeof window.trackNewsletterSignup === 'function') {
+            window.trackNewsletterSignup('blog_article');
+          }
+        });
+      }
+
+      // Track product CTA clicks with context
+      const productCTAs = document.querySelectorAll('.gumroad-button, [data-gumroad-single-product]');
+      productCTAs.forEach(cta => {
+        cta.addEventListener('click', function() {
+          const ctaText = this.textContent.trim();
+          if (typeof window.trackBlogProductCTA === 'function') {
+            window.trackBlogProductCTA(articleTitle, ctaText);
+          } else if (typeof window.trackBlogEngagement === 'function') {
+            window.trackBlogEngagement('cta_click', articleTitle);
+          }
+        });
+      });
+    });
+  </script>
 </BaseLayout>
