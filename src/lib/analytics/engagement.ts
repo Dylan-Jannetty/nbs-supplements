@@ -4,7 +4,7 @@
  */
 
 import { trackEvent } from './ga4';
-import type { ScrollDepthEvent, NewsletterSignupEvent, FormSubmitEvent } from './types';
+import type { ScrollDepthEvent, NewsletterSignupEvent, FormSubmitEvent, FAQInteractionEvent } from './types';
 
 /**
  * Track scroll depth milestones
@@ -75,13 +75,104 @@ export function trackNewsletterSignup(
 /**
  * Track contact form submissions
  */
-export function trackContactForm(formType: string = 'contact'): void {
+export function trackContactForm(
+  formType: string = 'contact', 
+  formData?: Record<string, any>
+): void {
   const eventData: Partial<FormSubmitEvent> = {
     form_name: formType,
-    content_group: 'contact'
+    content_group: 'contact',
+    ...(formData && formData)
   };
 
   trackEvent('form_submit', eventData);
+}
+
+/**
+ * Track contact form field interactions
+ */
+export function trackFormFieldInteraction(
+  fieldName: string, 
+  action: 'focus' | 'blur' | 'input',
+  value?: string
+): void {
+  const eventData = {
+    field_name: fieldName,
+    action: action,
+    form_type: 'contact',
+    ...(value && { field_value_length: value.length })
+  };
+
+  trackEvent('form_field_interaction', eventData);
+}
+
+/**
+ * Track form validation errors
+ */
+export function trackFormValidationError(
+  fieldName: string, 
+  errorType: string
+): void {
+  const eventData = {
+    field_name: fieldName,
+    error_type: errorType,
+    form_type: 'contact'
+  };
+
+  trackEvent('form_validation_error', eventData);
+}
+
+/**
+ * Track FAQ interactions
+ */
+export function trackFAQInteraction(
+  question: string, 
+  action: 'view' | 'expand' | 'click' = 'click'
+): void {
+  const eventData: Partial<FAQInteractionEvent> = {
+    faq_question: question,
+    action: action,
+    content_type: 'faq',
+    engagement_time_msec: Date.now() - performance.timeOrigin
+  };
+
+  trackEvent('faq_interaction', eventData);
+}
+
+/**
+ * Track contact form completion rate
+ */
+export function trackFormProgress(
+  fieldsCompleted: number, 
+  totalFields: number
+): void {
+  const progressPercent = Math.round((fieldsCompleted / totalFields) * 100);
+  
+  const eventData = {
+    form_type: 'contact',
+    fields_completed: fieldsCompleted,
+    total_fields: totalFields,
+    progress_percent: progressPercent
+  };
+
+  trackEvent('form_progress', eventData);
+}
+
+/**
+ * Track contact form abandonment
+ */
+export function trackFormAbandonment(
+  fieldsCompleted: number,
+  timeSpent: number
+): void {
+  const eventData = {
+    form_type: 'contact',
+    fields_completed: fieldsCompleted,
+    time_spent_seconds: Math.round(timeSpent / 1000),
+    abandonment_point: fieldsCompleted > 0 ? 'partial' : 'immediate'
+  };
+
+  trackEvent('form_abandonment', eventData);
 }
 
 /**
@@ -129,5 +220,10 @@ export function exposeGlobalEngagementFunctions(): void {
     window.trackScrollDepth = trackScrollDepth;
     window.trackNewsletterSignup = trackNewsletterSignup;
     window.trackContactForm = trackContactForm;
+    window.trackFormFieldInteraction = trackFormFieldInteraction;
+    window.trackFormValidationError = trackFormValidationError;
+    window.trackFAQInteraction = trackFAQInteraction;
+    window.trackFormProgress = trackFormProgress;
+    window.trackFormAbandonment = trackFormAbandonment;
   }
 }
