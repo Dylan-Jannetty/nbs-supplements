@@ -1,0 +1,262 @@
+/**
+ * Layout Stability CSS - Cumulative Layout Shift (CLS) Prevention
+ * Optimizations to eliminate layout shifts and improve Core Web Vitals
+ */
+
+/* ========================================
+   FONT LOADING STABILITY
+   ======================================== */
+
+/* Font loading stability during web font download */
+.font-loading-stable {
+  font-display: block;
+  text-rendering: optimizeSpeed;
+}
+
+/* Text container reservations */
+.text-size-stable {
+  min-height: max-content;
+  contain: layout;
+}
+
+/* Responsive text with fallback dimensions */
+.responsive-text-lg {
+  font-size: 1.125rem; /* Fallback 18px */
+  line-height: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .responsive-text-lg {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem;
+  }
+}
+
+/* ========================================
+   GRADIENT TEXT STABILITY
+   ======================================== */
+
+/* Static gradient text without animation shifts */
+.gradient-text-stable {
+  background: linear-gradient(135deg, 
+    hsl(203 89% 53%) 0%, 
+    hsl(142 72% 29%) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 100% 100%; /* Fixed size prevents shifts */
+  color: hsl(203 89% 53%); /* Fallback color */
+  contain: paint layout;
+}
+
+/* ========================================
+   ICON AND IMAGE STABILITY
+   ======================================== */
+
+/* SVG icon containers with exact dimensions */
+.icon-stable {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  display: block;
+  contain: size layout;
+}
+
+/* Image containers with aspect ratio preservation */
+.image-container-stable {
+  position: relative;
+  overflow: hidden;
+  contain: layout;
+}
+
+.image-container-stable::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 0;
+  padding-bottom: var(--aspect-ratio, 100%);
+}
+
+.image-container-stable img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========================================
+   LAYOUT CONTAINER STABILITY
+   ======================================== */
+
+/* Flexbox containers with reserved space */
+.flex-stable {
+  display: flex;
+  min-height: max-content;
+  contain: layout;
+}
+
+.flex-wrap-stable {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: max-content;
+  contain: layout style;
+}
+
+/* Grid containers with minimum track sizes */
+.grid-stable {
+  display: grid;
+  contain: layout;
+}
+
+/* ========================================
+   ANIMATION STABILITY
+   ======================================== */
+
+/* Transform-free animations */
+.animate-fade-only {
+  animation: fade-stable 0.6s ease-out;
+  contain: style;
+}
+
+@keyframes fade-stable {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* GPU-accelerated transforms in separate layers */
+.animate-transform-stable {
+  animation: slide-stable 0.6s ease-out;
+  will-change: transform; /* Only for animation duration */
+  contain: layout style;
+}
+
+@keyframes slide-stable {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0); /* Smaller transform */
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Remove will-change after animation */
+.animate-transform-stable:not(.animating) {
+  will-change: auto;
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC STABILITY
+   ======================================== */
+
+/* Trust badges with exact dimensions */
+.trust-badge-stable {
+  min-height: 2.5rem;
+  min-width: 8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+  contain: layout size;
+}
+
+/* Newsletter forms with reserved space */
+.newsletter-stable {
+  min-height: 200px; /* Reserve space for form */
+  contain: layout;
+}
+
+/* Button stable dimensions */
+.button-stable {
+  min-height: 2.5rem;
+  min-width: max-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  contain: layout;
+}
+
+/* ========================================
+   LOADING STATE STABILITY
+   ======================================== */
+
+/* Skeleton loading with exact dimensions */
+.skeleton-stable {
+  background: linear-gradient(90deg, 
+    hsl(210 20% 98%) 25%, 
+    hsl(210 20% 95%) 50%, 
+    hsl(210 20% 98%) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 2s infinite;
+  border-radius: 0.375rem;
+  contain: layout paint;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   RESPONSIVE STABILITY
+   ======================================== */
+
+/* Responsive containers with reserved space */
+@media (min-width: 640px) {
+  .responsive-container-stable {
+    min-height: calc(100vh - 4rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-container-stable {
+    min-height: calc(100vh - 6rem);
+  }
+}
+
+/* ========================================
+   REDUCED MOTION PREFERENCES
+   ======================================== */
+
+/* Remove problematic animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-only,
+  .animate-transform-stable {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  .gradient-text-stable {
+    background: hsl(203 89% 53%);
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+  }
+}
+
+/* ========================================
+   DEBUG UTILITIES (Remove in production)
+   ======================================== */
+
+/* Visual indicators for CLS debugging */
+.debug-cls {
+  outline: 2px solid red;
+  outline-offset: 2px;
+}
+
+.debug-cls::before {
+  content: 'CLS Risk';
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  background: red;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}

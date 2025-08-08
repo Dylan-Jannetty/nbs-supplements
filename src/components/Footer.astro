@@ -290,9 +290,9 @@
           name="newsletter" 
           method="POST" 
           data-netlify="true" 
-          data-netlify-recaptcha="true" 
           class="space-y-3"
           action="/thank-you"
+          id="footer-newsletter-form"
         >
           <input type="hidden" name="form-name" value="newsletter" />
           
@@ -333,7 +333,7 @@
             Subscribe
           </button>
           
-          <div data-netlify-recaptcha="true" class="flex justify-center"></div>
+          <div id="footer-recaptcha-container" class="flex justify-center hidden"></div>
         </form>
       `;
     } catch (error) {
@@ -342,8 +342,50 @@
   }
 
   // Initialize newsletter component
-  document.addEventListener('DOMContentLoaded', loadNewsletterComponent);
-  document.addEventListener('astro:page-load', loadNewsletterComponent);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadNewsletterComponent();
+    setupFooterRecaptcha();
+  });
+  document.addEventListener('astro:page-load', () => {
+    loadNewsletterComponent();
+    setupFooterRecaptcha();
+  });
+  
+  // Setup conditional reCAPTCHA for footer newsletter
+  function setupFooterRecaptcha() {
+    const form = document.getElementById('footer-newsletter-form');
+    const emailInput = document.getElementById('footer-email');
+    const recaptchaContainer = document.getElementById('footer-recaptcha-container');
+    
+    if (!form || !emailInput || !recaptchaContainer) return;
+    
+    let recaptchaLoaded = false;
+    
+    const loadRecaptcha = () => {
+      if (recaptchaLoaded) return;
+      recaptchaLoaded = true;
+      
+      // Add the data-netlify-recaptcha attribute
+      form.setAttribute('data-netlify-recaptcha', 'true');
+      
+      // Create reCAPTCHA div
+      recaptchaContainer.innerHTML = '<div data-netlify-recaptcha="true"></div>';
+      recaptchaContainer.classList.remove('hidden');
+    };
+    
+    // Trigger reCAPTCHA load on first form interaction
+    const interactionEvents = ['focus', 'click', 'input'];
+    const onFirstInteraction = () => {
+      loadRecaptcha();
+      interactionEvents.forEach(event => {
+        emailInput.removeEventListener(event, onFirstInteraction);
+      });
+    };
+    
+    interactionEvents.forEach(event => {
+      emailInput.addEventListener(event, onFirstInteraction, { once: true, passive: true });
+    });
+  }
 </script>
 
 <style>

@@ -47,7 +47,6 @@ const consentId = `consent-${formId}`;
     method="POST"
     data-netlify="true"
     data-netlify-honeypot="bot-field"
-    data-netlify-recaptcha="true"
     action="/thank-you"
     class="newsletter-form space-y-4"
     id={formId}
@@ -173,9 +172,9 @@ const consentId = `consent-${formId}`;
       </svg>
     </button>
 
-    <!-- reCAPTCHA -->
+    <!-- reCAPTCHA - Conditionally loaded -->
     <div class="flex justify-center">
-      <div data-netlify-recaptcha="true"></div>
+      <div id="recaptcha-container" class="hidden"></div>
     </div>
   </form>
 
@@ -226,6 +225,8 @@ const consentId = `consent-${formId}`;
       this.consentCheckbox = container.querySelector('input[type="checkbox"]');
       this.successMessage = container.querySelector('.newsletter-success');
       this.errorMessage = container.querySelector('.newsletter-error');
+      this.recaptchaContainer = container.querySelector('#recaptcha-container');
+      this.recaptchaLoaded = false;
       
       this.init();
     }
@@ -236,6 +237,39 @@ const consentId = `consent-${formId}`;
       this.setupValidation();
       this.setupFormSubmission();
       this.setupRetryButton();
+      this.setupConditionalRecaptcha();
+    }
+    
+    setupConditionalRecaptcha() {
+      // Load reCAPTCHA only when user starts interacting with form
+      const loadRecaptcha = () => {
+        if (this.recaptchaLoaded) return;
+        this.recaptchaLoaded = true;
+        
+        // Add the data-netlify-recaptcha attribute
+        this.form.setAttribute('data-netlify-recaptcha', 'true');
+        
+        // Create reCAPTCHA div
+        if (this.recaptchaContainer) {
+          this.recaptchaContainer.innerHTML = '<div data-netlify-recaptcha="true"></div>';
+          this.recaptchaContainer.classList.remove('hidden');
+        }
+      };
+      
+      // Trigger reCAPTCHA load on first form interaction
+      const interactionEvents = ['focus', 'click', 'input'];
+      const onFirstInteraction = () => {
+        loadRecaptcha();
+        interactionEvents.forEach(event => {
+          this.emailInput.removeEventListener(event, onFirstInteraction);
+          this.submitButton.removeEventListener(event, onFirstInteraction);
+        });
+      };
+      
+      interactionEvents.forEach(event => {
+        this.emailInput.addEventListener(event, onFirstInteraction, { once: true, passive: true });
+        this.submitButton.addEventListener(event, onFirstInteraction, { once: true, passive: true });
+      });
     }
 
     setupValidation() {

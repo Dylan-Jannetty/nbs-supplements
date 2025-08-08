@@ -382,12 +382,27 @@
   
   /* Custom Component Classes - Supplement Industry Specific */
   .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--nbs-primary)), hsl(var(--nbs-secondary)));
+    background: linear-gradient(135deg, hsl(var(--nbs-primary)) 0%, hsl(var(--nbs-secondary)) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease-in-out infinite;
+    color: hsl(var(--nbs-primary)); /* Solid fallback for accessibility and CLS */
+    background-size: 100% 100%; /* Fixed size to prevent shifts */
+    will-change: auto; /* Remove will-change to prevent layer creation */
+    contain: paint; /* Isolate paint operations */
+  }
+  
+  /* Reduced motion safe gradient animation */
+  @media (prefers-reduced-motion: no-preference) {
+    .gradient-text-animated {
+      background: linear-gradient(135deg, hsl(var(--nbs-primary)), hsl(var(--nbs-secondary)));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradient-shift 3s ease-in-out infinite;
+      contain: paint layout;
+    }
   }
   
   .glass-effect {
@@ -458,6 +473,18 @@
     color: hsl(var(--nbs-success));
     font-weight: 500;
     font-size: 0.875rem;
+    min-height: 2.5rem; /* Reserve exact height */
+    min-width: fit-content; /* Prevent collapsing */
+    contain: layout; /* Isolate layout changes */
+    white-space: nowrap; /* Prevent text wrapping shifts */
+  }
+  
+  /* SVG icon containers with reserved space */
+  .trust-signal svg {
+    width: 1.25rem; /* 20px exact */
+    height: 1.25rem; /* 20px exact */
+    flex-shrink: 0; /* Prevent icon shrinking */
+    display: block; /* Prevent baseline alignment shifts */
   }
   
   /* Animation Classes */
@@ -466,7 +493,8 @@
   }
   
   .animate-slide-up {
-    animation: slide-up 0.6s ease-out;
+    animation: fade-in-stable 0.6s ease-out;
+    contain: layout style; /* Prevent layout impacts */
   }
   
   .animate-scale-in {
@@ -807,14 +835,25 @@
   }
 }
 
-@keyframes slide-up {
+/* Layout-stable fade animation without transforms */
+@keyframes fade-in-stable {
   from {
     opacity: 0;
-    transform: translateY(30px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+  }
+}
+
+/* Original slide-up kept for specific use cases */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0); /* Use 3d transform for better performance */
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
