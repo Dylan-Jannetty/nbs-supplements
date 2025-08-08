@@ -9,13 +9,13 @@ class ProductComparison {
     this.options = {
       currentProduct: {
         name: "Catalyst Pre-Workout",
-        price: 39.99,
+        price: 30.00,
         features: ["Clinical doses", "Natural ingredients", "Third-party tested", "Pharmacist formulated"],
         rating: 4.8
       },
       ...options
     };
-    
+
     this.isExpanded = false;
     this.competitors = [
       {
@@ -43,7 +43,7 @@ class ProductComparison {
         clinicalDoses: false
       }
     ];
-    
+
     this.comparisonFeatures = [
       { feature: "Clinical Doses", catalyst: true, description: "All ingredients at research-backed doses" },
       { feature: "Natural Ingredients", catalyst: true, description: "No artificial colors, flavors, or sweeteners" },
@@ -53,7 +53,7 @@ class ProductComparison {
       { feature: "USA Manufacturing", catalyst: true, description: "FDA-registered facility" },
       { feature: "Money-Back Guarantee", catalyst: true, description: "30-day satisfaction guarantee" }
     ];
-    
+
     this.init();
   }
 
@@ -62,7 +62,7 @@ class ProductComparison {
       console.warn('ProductComparison: Container not found');
       return;
     }
-    
+
     this.render();
     this.attachEvents();
   }
@@ -269,7 +269,7 @@ class ProductComparison {
   renderStars(rating, colorClass) {
     const fullStars = Math.floor(rating);
     const stars = [];
-    
+
     for (let i = 0; i < 5; i++) {
       const isFilled = i < fullStars;
       stars.push(`
@@ -278,7 +278,7 @@ class ProductComparison {
         </svg>
       `);
     }
-    
+
     return `<div class="flex">${stars.join('')}</div>`;
   }
 
@@ -311,20 +311,20 @@ class ProductComparison {
   toggleComparison() {
     this.isExpanded = !this.isExpanded;
     this.render();
-    
+
     // Track interaction
     this.trackComparisonToggle();
-    
+
     // Smooth scroll to comparison if expanding
     if (this.isExpanded) {
       setTimeout(() => {
-        this.container.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+        this.container.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
       }, 100);
     }
-    
+
     // Dispatch event
     this.container.dispatchEvent(new CustomEvent('comparisonToggled', {
       detail: { expanded: this.isExpanded },
@@ -335,9 +335,9 @@ class ProductComparison {
   closeComparison() {
     this.isExpanded = false;
     this.render();
-    
+
     this.trackComparisonToggle();
-    
+
     this.container.dispatchEvent(new CustomEvent('comparisonClosed', {
       bubbles: true
     }));
@@ -350,7 +350,7 @@ class ProductComparison {
         action: this.isExpanded ? 'expanded' : 'collapsed'
       });
     }
-    
+
     // Custom analytics
     if (typeof window !== 'undefined' && window.ProductEnhancements?.analytics) {
       window.ProductEnhancements.analytics.track('comparison_interaction', {

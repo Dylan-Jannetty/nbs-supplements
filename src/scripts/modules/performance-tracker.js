@@ -7,12 +7,12 @@ class PerformanceTracker {
   constructor(options = {}) {
     this.options = {
       productName: 'Catalyst Pre-Workout',
-      price: 39.99,
+      price: 30.00,
       enableReporting: true,
       reportInterval: 30000, // 30 seconds
       ...options
     };
-    
+
     this.metrics = {
       pageLoadTime: 0,
       firstContentfulPaint: 0,
@@ -21,7 +21,7 @@ class PerformanceTracker {
       cumulativeLayoutShift: 0,
       interactionToNextPaint: 0
     };
-    
+
     this.behaviorMetrics = {
       timeOnPage: 0,
       scrollDepth: 0,
@@ -30,18 +30,18 @@ class PerformanceTracker {
       purchaseClicks: 0,
       exitIntent: false
     };
-    
+
     this.pageStartTime = Date.now();
     this.observers = [];
     this.eventListeners = [];
     this.reportTimer = null;
-    
+
     this.init();
   }
 
   init() {
     if (typeof window === 'undefined') return;
-    
+
     this.measureCoreWebVitals();
     this.setupBehaviorTracking();
     this.startReporting();
@@ -122,7 +122,7 @@ class PerformanceTracker {
     const scrollHandler = this.throttle(() => {
       this.trackScrollDepth();
     }, 100);
-    
+
     window.addEventListener('scroll', scrollHandler, { passive: true });
     this.eventListeners.push({ element: window, event: 'scroll', handler: scrollHandler });
 
@@ -130,7 +130,7 @@ class PerformanceTracker {
     const clickHandler = (event) => {
       this.trackClick(event);
     };
-    
+
     document.addEventListener('click', clickHandler, { passive: true });
     this.eventListeners.push({ element: document, event: 'click', handler: clickHandler });
 
@@ -138,7 +138,7 @@ class PerformanceTracker {
     const exitHandler = (event) => {
       this.trackExitIntent(event);
     };
-    
+
     document.addEventListener('mouseleave', exitHandler);
     this.eventListeners.push({ element: document, event: 'mouseleave', handler: exitHandler });
 
@@ -148,7 +148,7 @@ class PerformanceTracker {
         this.behaviorMetrics.formInteractions++;
       }
     };
-    
+
     document.addEventListener('focusin', formHandler, { passive: true });
     this.eventListeners.push({ element: document, event: 'focusin', handler: formHandler });
 
@@ -157,7 +157,7 @@ class PerformanceTracker {
       this.reportMetrics();
       this.performFinalAnalysis();
     };
-    
+
     window.addEventListener('beforeunload', unloadHandler);
     this.eventListeners.push({ element: window, event: 'beforeunload', handler: unloadHandler });
   }
@@ -166,7 +166,7 @@ class PerformanceTracker {
     const scrollTop = window.pageYOffset;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = Math.min(100, (scrollTop / docHeight) * 100);
-    
+
     this.behaviorMetrics.scrollDepth = Math.max(
       this.behaviorMetrics.scrollDepth,
       scrollPercent
@@ -175,16 +175,16 @@ class PerformanceTracker {
 
   trackClick(event) {
     this.behaviorMetrics.clicksCount++;
-    
+
     const target = event.target;
     const text = target.textContent?.toLowerCase() || '';
-    
+
     // Track purchase-related clicks
-    if (text.includes('buy') || 
-        text.includes('cart') || 
-        text.includes('order') ||
-        text.includes('purchase') ||
-        target.classList.contains('purchase-button')) {
+    if (text.includes('buy') ||
+      text.includes('cart') ||
+      text.includes('order') ||
+      text.includes('purchase') ||
+      target.classList.contains('purchase-button')) {
       this.behaviorMetrics.purchaseClicks++;
     }
   }
@@ -192,7 +192,7 @@ class PerformanceTracker {
   trackExitIntent(event) {
     if (event.clientY <= 0 && !this.behaviorMetrics.exitIntent) {
       this.behaviorMetrics.exitIntent = true;
-      
+
       // Track exit intent event
       this.trackEvent('exit_intent', {
         timeOnPage: Date.now() - this.pageStartTime,
@@ -203,12 +203,12 @@ class PerformanceTracker {
 
   startReporting() {
     if (!this.options.enableReporting) return;
-    
+
     // Initial report after 5 seconds
     setTimeout(() => {
       this.reportMetrics();
     }, 5000);
-    
+
     // Periodic reporting
     this.reportTimer = setInterval(() => {
       this.reportMetrics();
@@ -226,15 +226,15 @@ class PerformanceTracker {
       product: this.options.productName,
       price: this.options.price,
       timestamp: currentTime,
-      
+
       // Performance metrics
       performance: {
         ...this.metrics
       },
-      
+
       // User behavior
       behavior: this.behaviorMetrics,
-      
+
       // Browser/device info
       browser: {
         userAgent: navigator.userAgent,
@@ -248,7 +248,7 @@ class PerformanceTracker {
 
     // Send to analytics platforms
     this.sendToAnalytics(performanceData);
-    
+
     // Development logging
     if (process.env.NODE_ENV === 'development') {
       this.logMetrics();
@@ -288,7 +288,7 @@ class PerformanceTracker {
   performFinalAnalysis() {
     const conversionScore = this.analyzeConversionPotential();
     const resourceAnalysis = this.analyzeResourcePerformance();
-    
+
     const finalData = {
       conversion_score: conversionScore,
       resource_performance: resourceAnalysis,
@@ -311,17 +311,17 @@ class PerformanceTracker {
 
   analyzeConversionPotential() {
     let score = 100; // Start with perfect score
-    
+
     // Performance deductions
     if (this.metrics.largestContentfulPaint > 2500) score -= 20;
     if (this.metrics.cumulativeLayoutShift > 0.1) score -= 15;
     if (this.metrics.firstInputDelay > 100) score -= 10;
-    
+
     // Engagement deductions
     if (this.behaviorMetrics.timeOnPage < 30000) score -= 15; // Less than 30s
     if (this.behaviorMetrics.scrollDepth < 25) score -= 20; // Minimal scroll
     if (this.behaviorMetrics.purchaseClicks === 0 && this.behaviorMetrics.timeOnPage > 60000) score -= 25;
-    
+
     return Math.max(0, score);
   }
 
@@ -336,12 +336,12 @@ class PerformanceTracker {
 
     resources.forEach(resource => {
       const duration = resource.responseEnd - resource.startTime;
-      
+
       // Track transfer size if available
       if ('transferSize' in resource) {
         analysis.totalTransferSize += resource.transferSize || 0;
       }
-      
+
       // Identify slow resources (>1s)
       if (duration > 1000) {
         analysis.slowResources.push({
@@ -350,10 +350,10 @@ class PerformanceTracker {
           type: resource.initiatorType
         });
       }
-      
+
       // Track critical resources
-      if (['css', 'script'].includes(resource.initiatorType) || 
-          resource.name.includes('font')) {
+      if (['css', 'script'].includes(resource.initiatorType) ||
+        resource.name.includes('font')) {
         analysis.criticalResourcesTime += duration;
       }
     });
@@ -367,9 +367,9 @@ class PerformanceTracker {
       FID: 100,  // 100ms
       CLS: 0.1   // 0.1
     };
-    
+
     const violations = [];
-    
+
     if (this.metrics.largestContentfulPaint > budgets.LCP) {
       violations.push({
         metric: 'LCP',
@@ -377,7 +377,7 @@ class PerformanceTracker {
         budget: budgets.LCP
       });
     }
-    
+
     if (this.metrics.firstInputDelay > budgets.FID) {
       violations.push({
         metric: 'FID',
@@ -385,7 +385,7 @@ class PerformanceTracker {
         budget: budgets.FID
       });
     }
-    
+
     if (this.metrics.cumulativeLayoutShift > budgets.CLS) {
       violations.push({
         metric: 'CLS',
@@ -393,7 +393,7 @@ class PerformanceTracker {
         budget: budgets.CLS
       });
     }
-    
+
     return violations;
   }
 
@@ -406,12 +406,12 @@ class PerformanceTracker {
       FCP: `${this.metrics.firstContentfulPaint.toFixed(0)}ms`
     });
     console.log('User Behavior:', this.behaviorMetrics);
-    
+
     const violations = this.checkPerformanceBudgets();
     if (violations.length > 0) {
       console.warn('⚠️ Performance Budget Violations:', violations);
     }
-    
+
     console.groupEnd();
   }
 
@@ -419,7 +419,7 @@ class PerformanceTracker {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', eventName, data);
     }
-    
+
     if (typeof window !== 'undefined' && window.ProductEnhancements?.analytics) {
       window.ProductEnhancements.analytics.track(eventName, data);
     }
@@ -429,10 +429,10 @@ class PerformanceTracker {
   throttle(func, delay) {
     let timeoutId;
     let lastExecTime = 0;
-    
+
     return (...args) => {
       const currentTime = Date.now();
-      
+
       if (currentTime - lastExecTime > delay) {
         func(...args);
         lastExecTime = currentTime;
@@ -450,7 +450,7 @@ class PerformanceTracker {
   getMetrics() {
     return {
       performance: { ...this.metrics },
-      behavior: { 
+      behavior: {
         ...this.behaviorMetrics,
         timeOnPage: Date.now() - this.pageStartTime
       }
@@ -470,17 +470,17 @@ class PerformanceTracker {
     if (this.reportTimer) {
       clearInterval(this.reportTimer);
     }
-    
+
     // Remove event listeners
     this.eventListeners.forEach(({ element, event, handler }) => {
       element.removeEventListener(event, handler);
     });
-    
+
     // Disconnect observers
     this.observers.forEach(observer => {
       observer.disconnect();
     });
-    
+
     // Final report
     this.reportMetrics();
   }

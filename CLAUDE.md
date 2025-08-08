@@ -68,7 +68,7 @@ Component library configured via `components.json`:
 ### Gumroad Implementation
 The site uses Gumroad for payment processing:
 - **Hosted Checkout**: No complex cart state management needed
-- **Product Integration**: Simple embed buttons for Catalyst pre-workout ($39.99)
+- **Product Integration**: Simple embed buttons for Catalyst pre-workout ($30.00)
 - **Transaction Model**: 3.5% + 30¢ per transaction fee structure
 
 ### Product Pages

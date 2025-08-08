@@ -220,7 +220,7 @@ export class StructuredDataGenerator {
         '@type': 'Offer',
         url: 'https://gumroad.com/l/nbs-catalyst',
         priceCurrency: 'USD',
-        price: '39.99',
+        price: '30.00',
         availability: 'https://schema.org/InStock',
         seller: {
           '@type': 'Organization',

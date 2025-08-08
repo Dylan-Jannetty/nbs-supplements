@@ -18,12 +18,11 @@ const seoData = {
 const structuredData = StructuredDataGenerator.generateHomepageSchema();
 ---
 
-<BaseLayout 
-  title={seoData.title} 
+<BaseLayout
+  title={seoData.title}
   description={seoData.description}
   structuredData={structuredData}
 >
-
   <!-- Hero Section -->
   <section
     class="relative bg-gradient-to-br from-nbs-clinical via-background to-nbs-primary/5 py-20 lg:py-32 overflow-hidden"
@@ -106,7 +105,7 @@ const structuredData = StructuredDataGenerator.generateHomepageSchema();
               class="gumroad-button inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-nbs-primary hover:bg-nbs-primary/90 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-nbs-primary focus:ring-offset-2 shadow-lg hover:shadow-xl"
               data-gumroad-single-product="true"
             >
-              Shop Catalyst - $39.99
+              Shop Catalyst - $30.00
               <svg
                 class="ml-2 w-5 h-5"
                 fill="none"
@@ -142,7 +141,9 @@ const structuredData = StructuredDataGenerator.generateHomepageSchema();
               class="aspect-square bg-gradient-to-br from-nbs-clinical to-nbs-primary/5 rounded-xl border-2 border-nbs-primary/20 flex items-center justify-center mb-6"
               style="contain: layout;"
             >
-              <div class="text-center text-nbs-trust/60 w-full h-full flex items-center justify-center">
+              <div
+                class="text-center text-nbs-trust/60 w-full h-full flex items-center justify-center"
+              >
                 <Image
                   src={catalystStacked}
                   alt="Catalyst Pre-Workout - Clean, pharmacist-formulated natural pre-workout supplement bottles"
@@ -502,7 +503,7 @@ const structuredData = StructuredDataGenerator.generateHomepageSchema();
             <div class="clinical-card p-8 text-center">
               <div class="mb-6">
                 <div class="text-4xl font-bold text-nbs-primary mb-2">
-                  $39.99
+                  $30.00
                 </div>
                 <div class="text-muted-foreground">
                   30 servings | $1.33 per workout
