@@ -165,7 +165,7 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
     </style>
     
     <!-- Google Analytics 4 with Enhanced E-commerce - Deferred for INP -->
-    <!-- <script>
+    <script>
       // Load GA4 after page load to improve INP
       window.addEventListener('load', function() {
         const script = document.createElement('script');
@@ -173,8 +173,7 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-117M1HYTL2';
         document.head.appendChild(script);
       });
-    </script> -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-117M1HYTL2"></script>
+    </script>
 
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -230,6 +229,8 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
 
     <!-- Load Analytics Modules -->
     <script src="/scripts/blog-tracking.js" is:inline></script>
+    <script src="/scripts/contact-tracking.js" is:inline></script>
+    <script src="/scripts/product-tracking.js" is:inline></script>
     
     <!-- Preload critical resources for LCP optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
@@ -311,169 +312,7 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       window.toggleTheme = toggleTheme;
     </script>
     
-    <!-- E-commerce and Engagement Tracking -->
-    <script>
-      // Initialize scroll tracking and other engagement features
-      document.addEventListener('DOMContentLoaded', function() {
-        // Scroll depth tracking
-        let scrollTracked = [];
-        
-        window.trackScrollDepth = function() {
-          const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-          const milestones = [25, 50, 75, 90];
-          
-          milestones.forEach(milestone => {
-            if (scrollPercent >= milestone && !scrollTracked.includes(milestone)) {
-              scrollTracked.push(milestone);
-              if (typeof gtag !== 'undefined') {
-                gtag('event', 'scroll', {
-                  percent_scrolled: milestone,
-                  engagement_time_msec: Date.now() - performance.timeOrigin
-                });
-              }
-            }
-          });
-        };
-
-        // Optimized scroll tracking
-        let ticking = false;
-        const optimizedScrollHandler = () => {
-          if (!ticking) {
-            requestAnimationFrame(() => {
-              trackScrollDepth();
-              ticking = false;
-            });
-            ticking = true;
-          }
-        };
-        window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
-
-        // Newsletter signup tracking
-        window.trackNewsletterSignup = function(method = 'newsletter_form') {
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'generate_lead', {
-              currency: 'USD',
-              value: 5.00,
-              method: method,
-              content_group: 'newsletter'
-            });
-          }
-        };
-
-        // Contact form tracking
-        window.trackContactForm = function(formType = 'contact') {
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'form_submit', {
-              form_name: formType,
-              engagement_time_msec: Date.now() - performance.timeOrigin,
-              content_group: 'contact'
-            });
-          }
-        };
-
-        // Product view tracking
-        window.trackProductView = function(productData = {}) {
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'view_item', {
-              currency: 'USD',
-              value: productData.price || 39.99,
-              items: [{
-                item_id: productData.id || 'catalyst-preworkout',
-                item_name: productData.name || 'Catalyst Pre-Workout',
-                category: 'Supplements',
-                price: productData.price || 39.99,
-                quantity: 1
-              }]
-            });
-          }
-        };
-
-        // Purchase tracking
-        window.trackPurchase = function(orderId, value, items) {
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'purchase', {
-              transaction_id: orderId,
-              value: value,
-              currency: 'USD',
-              items: items,
-              affiliation: 'NBS Supplements',
-              shipping: 0,
-              tax: 0
-            });
-          }
-        };
-
-        // Gumroad integration
-        window.trackGumroadClick = function(element) {
-          const productName = element.textContent || 'Catalyst Pre-Workout';
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'add_to_cart', {
-              currency: 'USD',
-              value: 39.99,
-              items: [{
-                item_id: 'catalyst-preworkout',
-                item_name: productName,
-                category: 'Supplements',
-                price: 39.99,
-                quantity: 1
-              }]
-            });
-          }
-        };
-
-        // Simplified Gumroad loading
-        window.loadGumroad = function() {
-          if (window.GumroadOverlay || document.getElementById('gumroad-script')) return;
-          
-          const script = document.createElement('script');
-          script.id = 'gumroad-script';
-          script.src = 'https://gumroad.com/js/gumroad.js';
-          script.async = true;
-          script.onload = () => {
-            if (window.GumroadOverlay) {
-              const originalOpen = window.GumroadOverlay.open;
-              window.GumroadOverlay.open = function(...args) {
-                if (typeof gtag !== 'undefined') {
-                  gtag('event', 'begin_checkout', {
-                    currency: 'USD', value: 39.99,
-                    items: [{ item_id: 'catalyst-preworkout', item_name: 'Catalyst Pre-Workout', category: 'Supplements', price: 39.99, quantity: 1 }]
-                  });
-                }
-                return originalOpen.apply(this, args);
-              };
-            }
-          };
-          document.head.appendChild(script);
-        };
-
-        // Auto-setup Gumroad buttons
-        const gumroadButtons = document.querySelectorAll('.gumroad-button, [data-gumroad-single-product]');
-        let gumroadLoaded = false;
-        
-        gumroadButtons.forEach(button => {
-          button.addEventListener('mouseenter', () => {
-            if (!gumroadLoaded) { loadGumroad(); gumroadLoaded = true; }
-          }, { passive: true, once: true });
-          
-          button.addEventListener('click', () => {
-            if (!gumroadLoaded) { loadGumroad(); gumroadLoaded = true; }
-            trackGumroadClick(button);
-          }, { passive: true });
-        });
-
-        // Listen for Gumroad purchases
-        window.addEventListener('message', (event) => {
-          if (event.origin === 'https://gumroad.com' && event.data?.type === 'gumroad:purchase_complete') {
-            const purchaseData = event.data.data;
-            trackPurchase(
-              purchaseData.order_id || 'gumroad_' + Date.now(),
-              purchaseData.price || 39.99,
-              [{ item_id: 'catalyst-preworkout', item_name: 'Catalyst Pre-Workout', category: 'Supplements', price: purchaseData.price || 39.99, quantity: 1 }]
-            );
-          }
-        });
-      });
-    </script>
+    <!-- Core analytics functionality now handled by modular scripts -->
 
     <!-- Core Web Vitals Performance Monitoring -->
     <script>

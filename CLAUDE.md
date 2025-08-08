@@ -36,7 +36,7 @@ The project uses a sophisticated CSS custom properties system with automatic lig
 Two primary layouts handle different content types:
 
 - **BaseLayout.astro**: Master layout with comprehensive SEO (meta tags, Schema.org, Open Graph), theme system, and slot-based content insertion
-- **BlogLayout.astro**: Article-specific layout extending BaseLayout with breadcrumbs, social sharing, reading time, and newsletter CTAs
+- **BlogLayout.astro**: Article-specific layout extending BaseLayout with social sharing, reading time, and newsletter CTAs
 
 ### Content Management
 - **Content Collections**: Blog posts managed in `src/content/blog/` with TypeScript validation

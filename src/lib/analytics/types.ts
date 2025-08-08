@@ -84,6 +84,12 @@ export interface FormSubmitEvent extends AnalyticsEvent {
   content_group: 'contact';
 }
 
+export interface FAQInteractionEvent extends AnalyticsEvent {
+  faq_question: string;
+  action: 'view' | 'expand' | 'click';
+  content_type: 'faq';
+}
+
 // Utility types for analytics configuration
 export interface AnalyticsConfig {
   measurementId: string;
@@ -107,5 +113,10 @@ export type AnalyticsEventName =
   | 'begin_checkout'
   | 'generate_lead'
   | 'form_submit'
+  | 'form_field_interaction'
+  | 'form_validation_error'
+  | 'form_progress'
+  | 'form_abandonment'
+  | 'faq_interaction'
   | 'scroll'
   | 'page_view';
