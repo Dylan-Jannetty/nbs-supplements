@@ -156,104 +156,160 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
     
     <!-- Critical CSS for above-the-fold content -->
     <style>
-      /* Critical CSS for initial paint */
-      body { font-family: 'Inter', system-ui, sans-serif; }
+      /* Critical CSS for initial paint with fallback fonts */
+      body { 
+        font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+        font-display: swap;
+      }
       .hero-section { min-height: 60vh; }
       .nbs-primary { color: hsl(203 89% 53%); }
       .nbs-trust { color: hsl(203 23% 30%); }
       .clinical-card { background: hsl(210 20% 98%); border-radius: 0.5rem; }
+      
+      /* Prevent layout shift during font load */
+      * {
+        font-display: swap;
+      }
     </style>
     
-    <!-- Google Analytics 4 with Enhanced E-commerce - Deferred for INP -->
-    <script>
-      // Load GA4 after page load to improve INP
-      window.addEventListener('load', function() {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-117M1HYTL2';
-        document.head.appendChild(script);
-      });
-    </script>
-
+    <!-- Performance-Optimized Google Analytics 4 -->
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      // Configure GA4 with enhanced e-commerce
-      gtag('config', 'G-117M1HYTL2', {
-        // Enhanced e-commerce settings
-        allow_enhanced_conversions: true,
-        send_page_view: true,
-        // Privacy settings
-        anonymize_ip: true,
-        // Performance settings
-        cookie_expires: 60 * 60 * 24 * 28, // 28 days
-      });
-
-      // Track page views with enhanced data
-      gtag('event', 'page_view', {
-        page_title: document.title,
-        page_location: window.location.href,
-        content_group1: 'NBS Supplements',
-        custom_map: {
-          dimension1: 'supplement_site'
-        }
-      });
-    </script>
-
-    <!-- Analytics Initialization -->
-    <script is:inline>
-      // Initialize analytics with modular system
+      // Initialize dataLayer and gtag function immediately
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
       gtag('js', new Date());
-
-      // Configure GA4 with enhanced settings
-      gtag('config', 'G-117M1HYTL2', {
-        allow_enhanced_conversions: true,
-        send_page_view: true,
-        anonymize_ip: true,
-        cookie_expires: 60 * 60 * 24 * 28, // 28 days
+      
+      // Load GA4 script lazily for better performance
+      function loadGoogleAnalytics() {
+        if (window.gtag._loaded) return;
+        window.gtag._loaded = true;
+        
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-117M1HYTL2';
+        script.onload = function() {
+          // Configure GA4 after script loads
+          gtag('config', 'G-117M1HYTL2', {
+            allow_enhanced_conversions: true,
+            send_page_view: true,
+            anonymize_ip: true,
+            cookie_expires: 60 * 60 * 24 * 28, // 28 days
+            custom_map: { dimension1: 'supplement_site' }
+          });
+          
+          // Track initial page view
+          gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href,
+            content_group1: 'NBS Supplements'
+          });
+        };
+        document.head.appendChild(script);
+      }
+      
+      // Load analytics on user interaction or after delay
+      let analyticsLoaded = false;
+      function initAnalytics() {
+        if (analyticsLoaded) return;
+        analyticsLoaded = true;
+        
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGoogleAnalytics, { timeout: 2000 });
+        } else {
+          setTimeout(loadGoogleAnalytics, 1000);
+        }
+      }
+      
+      // Load on first user interaction
+      const interactionEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+      const loadOnInteraction = function() {
+        initAnalytics();
+        interactionEvents.forEach(event => {
+          document.removeEventListener(event, loadOnInteraction, { passive: true });
+        });
+      };
+      
+      interactionEvents.forEach(event => {
+        document.addEventListener(event, loadOnInteraction, { passive: true });
       });
-
-      // Track initial page view
-      gtag('event', 'page_view', {
-        page_title: document.title,
-        page_location: window.location.href,
-        content_group1: 'NBS Supplements',
-        custom_map: { dimension1: 'supplement_site' }
-      });
+      
+      // Fallback: load after 3 seconds if no interaction
+      setTimeout(initAnalytics, 3000);
     </script>
 
-    <!-- Load Analytics Modules -->
-    <script src="/scripts/blog-tracking.js" is:inline></script>
-    <script src="/scripts/contact-tracking.js" is:inline></script>
-    <script src="/scripts/product-tracking.js" is:inline></script>
+    <!-- Load Analytics Modules - Deferred for performance -->
+    <script>
+      // Load analytics modules after page interaction or delay
+      function loadAnalyticsModules() {
+        if (window.analyticsModulesLoaded) return;
+        window.analyticsModulesLoaded = true;
+        
+        const scripts = [
+          '/scripts/blog-tracking.js',
+          '/scripts/contact-tracking.js', 
+          '/scripts/product-tracking.js'
+        ];
+        
+        scripts.forEach((src, index) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.async = true;
+          script.defer = true;
+          
+          // Load scripts with slight delay to prevent blocking
+          setTimeout(() => {
+            document.head.appendChild(script);
+          }, index * 100);
+        });
+      }
+      
+      // Load analytics modules on first user interaction
+      const interactionEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+      const loadOnInteraction = function() {
+        loadAnalyticsModules();
+        interactionEvents.forEach(event => {
+          document.removeEventListener(event, loadOnInteraction, { passive: true });
+        });
+      };
+      
+      interactionEvents.forEach(event => {
+        document.addEventListener(event, loadOnInteraction, { passive: true });
+      });
+      
+      // Fallback: load after 2 seconds if no interaction
+      setTimeout(loadAnalyticsModules, 2000);
+    </script>
     
-    <!-- Preload critical resources for LCP optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <!-- Optimized font loading for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" /></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
+    
+    <!-- Critical font face for immediate rendering -->
+    <style>
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial'), local('Helvetica'), local('system-ui'), local('sans-serif');
+        font-display: swap;
+        font-weight: 100 900;
+        font-style: normal;
+        ascent-override: 90.2%;
+        descent-override: 22.35%;
+        line-gap-override: 0%;
+      }
+    </style>
     
     <!-- Preload critical images for LCP -->
     {Astro.url.pathname === '/' && (
       <link rel="preload" as="image" href="/src/images/catalyst-stacked.png" />
     )}
     
-    <!-- DNS prefetch for third-party resources -->
+    <!-- Strategic resource hints for performance -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="https://gumroad.com" />
-    
-    <!-- Preconnect to critical third-party origins -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <link rel="preconnect" href="https://gumroad.com" crossorigin />
-    
-    <!-- Performance hints for better resource loading -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://gumroad.com" />
     
     <!-- Critical resource hints for faster loading -->
     <meta name="format-detection" content="telephone=no" />
@@ -314,26 +370,35 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
     
     <!-- Core analytics functionality now handled by modular scripts -->
 
-    <!-- Core Web Vitals Performance Monitoring -->
+    <!-- Core Web Vitals Performance Monitoring - Deferred -->
     <script>
-      // Import and initialize performance monitoring
-      import('/src/lib/performance-monitor.js').then(({ performanceMonitor }) => {
-        // Performance monitoring is automatically initialized
-        
-        // Report summary when user is about to leave
-        window.addEventListener('beforeunload', () => {
-          performanceMonitor.reportSummary();
-        });
-        
-        // Report summary on visibility change (tab switching)
-        document.addEventListener('visibilitychange', () => {
-          if (document.visibilityState === 'hidden') {
+      // Load performance monitoring after critical resources
+      function loadPerformanceMonitoring() {
+        import('/src/lib/performance-monitor.js').then(({ performanceMonitor }) => {
+          // Performance monitoring is automatically initialized
+          
+          // Report summary when user is about to leave
+          window.addEventListener('beforeunload', () => {
             performanceMonitor.reportSummary();
-          }
+          });
+          
+          // Report summary on visibility change (tab switching)  
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+              performanceMonitor.reportSummary();
+            }
+          });
+        }).catch(err => {
+          console.warn('Performance monitoring failed to load:', err);
         });
-      }).catch(err => {
-        console.warn('Performance monitoring failed to load:', err);
-      });
+      }
+      
+      // Load performance monitoring after page load
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadPerformanceMonitoring, { timeout: 3000 });
+      } else {
+        setTimeout(loadPerformanceMonitoring, 1500);
+      }
     </script>
   </body>
 </html>
