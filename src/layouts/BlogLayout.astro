@@ -237,6 +237,96 @@ const seoData = {
         window.trackBlogEngagement('view', articleTitle);
       }
 
+      // Reading progress tracking implementation
+      let progressTracked = [];
+      let readingStartTime = Date.now();
+      let hasScrolled = false;
+      
+      const trackReadingProgress = () => {
+        const article = document.querySelector('article');
+        if (!article) return;
+        
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const scrollTop = window.scrollY;
+        
+        // Calculate reading progress based on article content
+        const articleStart = articleTop;
+        const articleEnd = articleTop + articleHeight - windowHeight;
+        const progressRange = articleEnd - articleStart;
+        
+        if (progressRange <= 0) return;
+        
+        const currentProgress = Math.min(100, Math.max(0, 
+          ((scrollTop - articleStart) / progressRange) * 100
+        ));
+        
+        const progressMilestones = [25, 50, 75, 100];
+        progressMilestones.forEach(milestone => {
+          if (currentProgress >= milestone && !progressTracked.includes(milestone)) {
+            progressTracked.push(milestone);
+            hasScrolled = true;
+            
+            const readingTimeSeconds = Math.round((Date.now() - readingStartTime) / 1000);
+            
+            if (typeof window.trackReadingProgress === 'function') {
+              window.trackReadingProgress(articleTitle, milestone, readingTimeSeconds, category);
+            } else if (typeof window.trackBlogEngagement === 'function') {
+              window.trackBlogEngagement('reading_progress', `${articleTitle} - ${milestone}%`);
+            }
+            
+            // Track reading completion at 100%
+            if (milestone === 100) {
+              const totalReadingTime = Date.now() - readingStartTime;
+              
+              if (typeof window.trackReadingComplete === 'function') {
+                window.trackReadingComplete(articleTitle, totalReadingTime, estimatedReadingTime, category);
+              }
+            }
+          }
+        });
+      };
+      
+      // Optimized scroll tracking for reading progress
+      let progressTicking = false;
+      const optimizedProgressHandler = () => {
+        if (!progressTicking) {
+          requestAnimationFrame(() => {
+            trackReadingProgress();
+            progressTicking = false;
+          });
+          progressTicking = true;
+        }
+      };
+      
+      window.addEventListener('scroll', optimizedProgressHandler, { passive: true });
+      
+      // Track time spent before leaving (for engagement metrics)
+      const trackTimeSpent = () => {
+        if (hasScrolled && progressTracked.length > 0) {
+          const totalTime = Date.now() - readingStartTime;
+          const maxProgress = Math.max(...progressTracked);
+          
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'blog_time_spent', {
+              content_type: 'article',
+              content_id: articleTitle,
+              time_spent_seconds: Math.round(totalTime / 1000),
+              max_progress_percent: maxProgress,
+              content_category: category || 'uncategorized'
+            });
+          }
+        }
+      };
+      
+      window.addEventListener('beforeunload', trackTimeSpent);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+          trackTimeSpent();
+        }
+      });
+
       // Track newsletter signup from blog article
       const newsletterForm = document.querySelector('form[name="blog-newsletter"]');
       if (newsletterForm) {
@@ -254,8 +344,11 @@ const seoData = {
       productCTAs.forEach(cta => {
         cta.addEventListener('click', function() {
           const ctaText = this.textContent.trim();
+          const currentProgress = progressTracked.length > 0 ? Math.max(...progressTracked) : 0;
+          const currentReadingTime = Date.now() - readingStartTime;
+          
           if (typeof window.trackBlogProductCTA === 'function') {
-            window.trackBlogProductCTA(articleTitle, ctaText);
+            window.trackBlogProductCTA(articleTitle, ctaText, currentProgress, currentReadingTime);
           } else if (typeof window.trackBlogEngagement === 'function') {
             window.trackBlogEngagement('cta_click', articleTitle);
           }
