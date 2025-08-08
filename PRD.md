@@ -275,7 +275,7 @@ Based on provided content, organized into sections:
 <a href="https://gumroad.com/l/catalyst-preworkout" 
    class="gumroad-button" 
    data-gumroad-single-product="true">
-  Buy Catalyst Pre-Workout - $39.99
+  Buy Catalyst Pre-Workout - $30.00
 </a>
 
 <!-- Gumroad embed script -->

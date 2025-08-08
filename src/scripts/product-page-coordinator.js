@@ -14,75 +14,75 @@ export class ProductPageCoordinator {
       // Product configuration
       product: {
         name: 'Catalyst Pre-Workout',
-        price: 39.99,
+        price: 30.00,
         gumroadUrl: 'https://gumroad.com/l/nbs-catalyst'
       },
-      
+
       // Ingredients data
       ingredients: [],
-      
+
       // Module configurations
       enableQuantitySelector: true,
       enableProductComparison: true,
       enablePerformanceTracking: true,
       enableEnhancedFeatures: true,
-      
+
       // Container selectors
       quantitySelectorContainer: '#quantity-selector',
       comparisonContainer: '#product-comparison',
-      
+
       // Analytics configuration
       enableAnalytics: true,
       analyticsProvider: 'gtag', // 'gtag' | 'custom' | 'both'
-      
+
       ...config
     };
-    
+
     this.modules = {};
     this.analytics = new AnalyticsManager(this.config);
     this.isInitialized = false;
-    
+
     // Make analytics globally available
     if (typeof window !== 'undefined') {
       window.ProductEnhancements = window.ProductEnhancements || {};
       window.ProductEnhancements.analytics = this.analytics;
     }
-    
+
     this.init();
   }
 
   async init() {
     try {
       console.log('🚀 Initializing Product Page Coordinator...');
-      
+
       // Wait for DOM to be ready
       if (document.readyState === 'loading') {
         await new Promise(resolve => {
           document.addEventListener('DOMContentLoaded', resolve);
         });
       }
-      
+
       // Initialize modules based on configuration
       await this.initializeModules();
-      
+
       // Set up inter-module communication
       this.setupEventHandlers();
-      
+
       // Initialize analytics tracking
       this.initializeAnalytics();
-      
+
       // Set up error handling
       this.setupErrorHandling();
-      
+
       this.isInitialized = true;
       console.log('✅ Product Page Coordinator initialized successfully');
-      
+
       // Dispatch ready event
       this.dispatchEvent('productPageReady', {
         modules: Object.keys(this.modules),
         config: this.config
       });
-      
+
     } catch (error) {
       console.error('❌ Failed to initialize Product Page Coordinator:', error);
       this.handleInitializationError(error);
@@ -91,25 +91,25 @@ export class ProductPageCoordinator {
 
   async initializeModules() {
     const initPromises = [];
-    
+
     // Initialize Performance Tracker first (for early metrics collection)
     if (this.config.enablePerformanceTracking) {
       initPromises.push(this.initPerformanceTracker());
     }
-    
+
     // Initialize other modules in parallel
     if (this.config.enableQuantitySelector) {
       initPromises.push(this.initQuantitySelector());
     }
-    
+
     if (this.config.enableProductComparison) {
       initPromises.push(this.initProductComparison());
     }
-    
+
     if (this.config.enableEnhancedFeatures) {
       initPromises.push(this.initEnhancedFeatures());
     }
-    
+
     await Promise.all(initPromises);
   }
 
@@ -120,7 +120,7 @@ export class ProductPageCoordinator {
         console.warn('Quantity selector container not found:', this.config.quantitySelectorContainer);
         return;
       }
-      
+
       this.modules.quantitySelector = new QuantitySelector(container, {
         basePrice: this.config.product.price,
         gumroadUrl: this.config.product.gumroadUrl,
@@ -128,7 +128,7 @@ export class ProductPageCoordinator {
           this.handleQuantityChange(quantity, totalPrice, savings);
         }
       });
-      
+
       console.log('✓ Quantity Selector initialized');
     } catch (error) {
       console.error('Failed to initialize Quantity Selector:', error);
@@ -142,21 +142,21 @@ export class ProductPageCoordinator {
         console.warn('Product comparison container not found:', this.config.comparisonContainer);
         return;
       }
-      
+
       this.modules.productComparison = new ProductComparison(container, {
         currentProduct: {
           name: this.config.product.name,
           price: this.config.product.price,
           features: [
             "Clinical doses",
-            "Natural ingredients", 
+            "Natural ingredients",
             "Third-party tested",
             "Pharmacist formulated"
           ],
           rating: 4.8
         }
       });
-      
+
       console.log('✓ Product Comparison initialized');
     } catch (error) {
       console.error('Failed to initialize Product Comparison:', error);
@@ -170,7 +170,7 @@ export class ProductPageCoordinator {
         price: this.config.product.price,
         enableReporting: this.config.enableAnalytics
       });
-      
+
       console.log('✓ Performance Tracker initialized');
     } catch (error) {
       console.error('Failed to initialize Performance Tracker:', error);
@@ -183,7 +183,7 @@ export class ProductPageCoordinator {
         product: this.config.product,
         ingredients: this.config.ingredients
       });
-      
+
       console.log('✓ Enhanced Features initialized');
     } catch (error) {
       console.error('Failed to initialize Enhanced Features:', error);
@@ -199,11 +199,11 @@ export class ProductPageCoordinator {
         price: tier.price,
         savings: tier.savings
       });
-      
+
       // Update any other modules that need to know about quantity changes
       this.broadcastToModules('quantityUpdated', { quantity, tier });
     });
-    
+
     // Listen for comparison interactions
     document.addEventListener('comparisonToggled', (event) => {
       const { expanded } = event.detail;
@@ -211,18 +211,18 @@ export class ProductPageCoordinator {
         action: expanded ? 'expand' : 'collapse'
       });
     });
-    
+
     // Listen for performance session end
     document.addEventListener('performanceSessionEnd', (event) => {
       const { detail } = event;
       this.handleSessionEnd(detail);
     });
-    
+
     // Global error handling
     window.addEventListener('error', (event) => {
       this.handleError('JavaScript Error', event.error);
     });
-    
+
     window.addEventListener('unhandledrejection', (event) => {
       this.handleError('Unhandled Promise Rejection', event.reason);
     });
@@ -236,7 +236,7 @@ export class ProductPageCoordinator {
       modules: Object.keys(this.modules),
       timestamp: Date.now()
     });
-    
+
     // Set up enhanced ecommerce tracking
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'view_item', {
@@ -271,12 +271,12 @@ export class ProductPageCoordinator {
     this.currentQuantity = quantity;
     this.currentTotalPrice = totalPrice;
     this.currentSavings = savings;
-    
+
     // Update enhanced features if needed
     if (this.modules.enhancedFeatures) {
       // Could update sticky button price, etc.
     }
-    
+
     // Enhanced ecommerce tracking
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'add_to_cart', {
@@ -304,13 +304,13 @@ export class ProductPageCoordinator {
       },
       modules: this.getModuleStatuses()
     };
-    
+
     this.analytics.track('session_complete', sessionData);
   }
 
   handleError(source, error) {
     console.error(`${source}:`, error);
-    
+
     this.analytics.track('error_occurred', {
       source,
       error: error.message || error.toString(),
@@ -322,10 +322,10 @@ export class ProductPageCoordinator {
   handleInitializationError(error) {
     // Fallback initialization for critical features
     console.warn('Attempting fallback initialization...');
-    
+
     // At minimum, ensure purchase buttons work
     this.setupFallbackPurchaseButtons();
-    
+
     this.analytics.track('initialization_error', {
       error: error.message,
       stack: error.stack,
@@ -404,16 +404,16 @@ export class ProductPageCoordinator {
         }
       }
     });
-    
+
     // Clean up analytics
     if (this.analytics && typeof this.analytics.destroy === 'function') {
       this.analytics.destroy();
     }
-    
+
     // Clear references
     this.modules = {};
     this.isInitialized = false;
-    
+
     console.log('Product Page Coordinator destroyed');
   }
 }
@@ -424,7 +424,7 @@ class AnalyticsManager {
     this.config = config;
     this.eventQueue = [];
     this.isReady = false;
-    
+
     this.init();
   }
 
@@ -433,7 +433,7 @@ class AnalyticsManager {
     if (this.config.enableAnalytics) {
       this.setupProviders();
     }
-    
+
     this.isReady = true;
     this.flushEventQueue();
   }
@@ -494,15 +494,15 @@ class AnalyticsManager {
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   // Check if we're on a product page
-  if (document.body.classList.contains('product-page') || 
-      window.location.pathname.includes('/products/')) {
-    
+  if (document.body.classList.contains('product-page') ||
+    window.location.pathname.includes('/products/')) {
+
     // Get configuration from data attributes or window object
     const config = window.PRODUCT_PAGE_CONFIG || {};
-    
+
     // Initialize coordinator
     window.ProductPageCoordinator = new ProductPageCoordinator(config);
-    
+
     // Make coordinator globally accessible for debugging
     if (process.env.NODE_ENV === 'development') {
       window.ProductEnhancements = window.ProductEnhancements || {};

@@ -18,7 +18,7 @@ const CATALYST_PRODUCT: EcommerceItem = {
   item_id: 'catalyst-preworkout',
   item_name: 'Catalyst Pre-Workout',
   category: 'Supplements',
-  price: 39.99,
+  price: 30.00,
   quantity: 1
 };
 

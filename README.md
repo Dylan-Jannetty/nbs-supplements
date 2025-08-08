@@ -9,7 +9,7 @@ A modern, professional e-commerce website for **NBS (No Bullsh*t) Supplements**,
 ## ✨ Features
 
 ### 🛍️ E-commerce Functionality
-- **Single Product Focus**: Streamlined experience featuring Catalyst pre-workout ($39.99)
+- **Single Product Focus**: Streamlined experience featuring Catalyst pre-workout ($30.00)
 - **Gumroad Integration**: Secure payment processing with hosted checkout
 - **Professional Product Pages**: Detailed ingredient breakdowns and clinical dosing information
 

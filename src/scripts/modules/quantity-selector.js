@@ -7,12 +7,12 @@ class QuantitySelector {
   constructor(container, options = {}) {
     this.container = typeof container === 'string' ? document.getElementById(container) : container;
     this.options = {
-      basePrice: 39.99,
+      basePrice: 30.00,
       gumroadUrl: 'https://gumroad.com/l/nbs-catalyst',
-      onQuantityChange: () => {},
+      onQuantityChange: () => { },
       ...options
     };
-    
+
     this.selectedQuantity = 1;
     this.pricingTiers = [
       {
@@ -40,7 +40,7 @@ class QuantitySelector {
         badge: "Best Value"
       }
     ];
-    
+
     this.init();
   }
 
@@ -49,7 +49,7 @@ class QuantitySelector {
       console.warn('QuantitySelector: Container not found');
       return;
     }
-    
+
     this.render();
     this.attachEvents();
     this.updateSelection(1); // Default to 1 container
@@ -104,7 +104,7 @@ class QuantitySelector {
     const isSelected = this.selectedQuantity === tier.quantity;
     const popularClass = tier.popular ? 'scale-105 relative' : '';
     const selectedClass = isSelected ? 'ring-2 ring-nbs-primary bg-nbs-primary/5' : 'hover:ring-1 hover:ring-nbs-primary/50';
-    
+
     return `
       <div class="card cursor-pointer transition-all duration-200 hover:shadow-md ${selectedClass} ${popularClass}" 
            data-quantity="${tier.quantity}">
@@ -209,22 +209,22 @@ class QuantitySelector {
   updateSelection(quantity) {
     this.selectedQuantity = quantity;
     const currentTier = this.getCurrentTier();
-    
+
     // Update visual selection
     this.updateVisualSelection();
-    
+
     // Update summary
     this.updateSummary();
-    
+
     // Show/hide bulk benefits
     this.updateBulkBenefits();
-    
+
     // Track selection
     this.trackQuantitySelection(quantity, currentTier);
-    
+
     // Notify callback
     this.options.onQuantityChange(quantity, currentTier.price, currentTier.savings);
-    
+
     // Dispatch custom event
     this.container.dispatchEvent(new CustomEvent('quantityChanged', {
       detail: { quantity, tier: currentTier },
@@ -238,7 +238,7 @@ class QuantitySelector {
       card.classList.remove('ring-2', 'ring-nbs-primary', 'bg-nbs-primary/5');
       card.classList.add('hover:ring-1', 'hover:ring-nbs-primary/50');
     });
-    
+
     // Add selection to current card
     const selectedCard = this.container.querySelector(`[data-quantity="${this.selectedQuantity}"]`);
     if (selectedCard) {
@@ -249,25 +249,25 @@ class QuantitySelector {
 
   updateSummary() {
     const currentTier = this.getCurrentTier();
-    
+
     // Update summary text
     const titleEl = this.container.querySelector('[data-summary-title]');
     const descriptionEl = this.container.querySelector('[data-summary-description]');
     const priceEl = this.container.querySelector('[data-summary-price]');
     const savingsEl = this.container.querySelector('[data-summary-savings]');
-    
+
     if (titleEl) {
       titleEl.textContent = `${this.selectedQuantity} ${this.selectedQuantity === 1 ? 'Container' : 'Containers'} Selected`;
     }
-    
+
     if (descriptionEl) {
       descriptionEl.textContent = `${this.getSupplyDuration(this.selectedQuantity)} of premium pre-workout`;
     }
-    
+
     if (priceEl) {
       priceEl.textContent = `$${currentTier.price.toFixed(2)}`;
     }
-    
+
     if (savingsEl) {
       if (currentTier.savings > 0) {
         savingsEl.textContent = `You save $${currentTier.savings.toFixed(2)}!`;
@@ -281,10 +281,10 @@ class QuantitySelector {
   updateBulkBenefits() {
     const bulkBenefits = this.container.querySelector('[data-bulk-benefits]');
     if (!bulkBenefits) return;
-    
+
     if (this.selectedQuantity > 1) {
       bulkBenefits.style.display = '';
-      
+
       // Update benefits list based on quantity
       const benefitsList = bulkBenefits.querySelector('[data-benefits-list]');
       if (benefitsList) {
@@ -293,15 +293,15 @@ class QuantitySelector {
           '• Lock in current pricing',
           '• Free shipping (orders over $50)'
         ];
-        
+
         if (this.selectedQuantity >= 3) {
           benefits.push('• Priority customer support');
         }
-        
+
         if (this.selectedQuantity >= 6) {
           benefits.push('• Early access to new products');
         }
-        
+
         benefitsList.innerHTML = benefits.map(benefit => `<li>${benefit}</li>`).join('');
       }
     } else {
@@ -333,7 +333,7 @@ class QuantitySelector {
         savings: tier.savings
       });
     }
-    
+
     // Custom analytics
     if (typeof window !== 'undefined' && window.ProductEnhancements?.analytics) {
       window.ProductEnhancements.analytics.track('quantity_selected', {

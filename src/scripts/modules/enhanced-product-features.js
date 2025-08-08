@@ -8,13 +8,13 @@ class EnhancedProductFeatures {
     this.options = {
       product: {
         name: 'Catalyst Pre-Workout',
-        price: 39.99,
+        price: 30.00,
         gumroadUrl: 'https://gumroad.com/l/nbs-catalyst'
       },
       ingredients: [],
       ...options
     };
-    
+
     this.state = {
       scrollProgress: 0,
       showStickyButton: false,
@@ -29,13 +29,13 @@ class EnhancedProductFeatures {
         exitIntentTriggered: false
       }
     };
-    
+
     this.elements = {};
     this.observers = [];
     this.eventListeners = [];
     this.timers = [];
     this.pageStartTime = Date.now();
-    
+
     this.init();
   }
 
@@ -53,16 +53,16 @@ class EnhancedProductFeatures {
   createElements() {
     // Create progress indicator
     this.createProgressIndicator();
-    
+
     // Create sticky purchase button
     this.createStickyButton();
-    
+
     // Create social proof notifications
     this.createSocialProofContainer();
-    
+
     // Create navigation dots
     this.createNavigationDots();
-    
+
     // Enhance ingredient cards
     this.enhanceIngredientCards();
   }
@@ -74,7 +74,7 @@ class EnhancedProductFeatures {
       <div class="h-full bg-gradient-to-r from-nbs-primary to-nbs-secondary transition-all duration-300 ease-out" 
            style="width: 0%" data-progress-bar></div>
     `;
-    
+
     document.body.appendChild(progressBar);
     this.elements.progressIndicator = progressBar;
     this.elements.progressBar = progressBar.querySelector('[data-progress-bar]');
@@ -106,7 +106,7 @@ class EnhancedProductFeatures {
         </div>
       </div>
     `;
-    
+
     document.body.appendChild(stickyButton);
     this.elements.stickyButton = stickyButton;
   }
@@ -127,10 +127,10 @@ class EnhancedProductFeatures {
         </div>
       </div>
     `;
-    
+
     document.body.appendChild(container);
     this.elements.socialProof = container;
-    
+
     this.recentPurchases = [
       { name: "Jessica M.", time: "2 minutes ago", location: "California" },
       { name: "Ryan K.", time: "8 minutes ago", location: "Texas" },
@@ -151,7 +151,7 @@ class EnhancedProductFeatures {
       dot.className = 'nav-dot w-3 h-3 rounded-full bg-muted hover:bg-nbs-primary transition-colors duration-200';
       dot.setAttribute('aria-label', `Go to ${sectionId.replace('-', ' ')}`);
       dot.setAttribute('data-target', sectionId);
-      
+
       dot.addEventListener('click', () => {
         this.smoothScrollTo(sectionId);
       });
@@ -169,7 +169,7 @@ class EnhancedProductFeatures {
     if (!container) {
       container = document.querySelector('[data-ingredient-cards]');
     }
-    
+
     if (!container || !this.options.ingredients.length) return;
 
     // Render interactive ingredient cards
@@ -221,29 +221,29 @@ class EnhancedProductFeatures {
       const scrollTop = window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = Math.min(100, (scrollTop / docHeight) * 100);
-      
+
       // Update progress
       this.state.scrollProgress = scrollPercent;
       this.updateProgressBar();
-      
+
       // Show/hide sticky button
       const shouldShow = scrollTop > 800;
       if (shouldShow !== this.state.showStickyButton) {
         this.state.showStickyButton = shouldShow;
         this.updateStickyButton();
       }
-      
+
       // Update metrics
       this.state.purchaseMetrics.scrollDepth = Math.max(
         this.state.purchaseMetrics.scrollDepth,
         scrollPercent
       );
-      
+
       // Update navigation dots
       this.updateNavigationDots();
-      
+
     }, 16); // 60fps
-    
+
     window.addEventListener('scroll', scrollHandler, { passive: true });
     this.eventListeners.push({ element: window, event: 'scroll', handler: scrollHandler });
   }
@@ -270,7 +270,7 @@ class EnhancedProductFeatures {
         this.showExitIntentModal();
       }
     };
-    
+
     document.addEventListener('mouseleave', exitHandler);
     this.eventListeners.push({ element: document, event: 'mouseleave', handler: exitHandler });
   }
@@ -280,12 +280,12 @@ class EnhancedProductFeatures {
     const timer1 = setTimeout(() => {
       this.showSocialProofNotification();
     }, 10000);
-    
+
     // Then show every 15 seconds
     const timer2 = setInterval(() => {
       this.showSocialProofNotification();
     }, 15000);
-    
+
     this.timers.push(timer1, timer2);
   }
 
@@ -303,7 +303,7 @@ class EnhancedProductFeatures {
           setTimeout(() => {
             entry.target.classList.add('animate-in');
           }, index * 100);
-          
+
           observer.unobserve(entry.target);
         }
       });
@@ -329,7 +329,7 @@ class EnhancedProductFeatures {
     const timer = setInterval(() => {
       this.state.purchaseMetrics.timeOnPage = Date.now() - this.pageStartTime;
     }, 5000);
-    
+
     this.timers.push(timer);
   }
 
@@ -342,7 +342,7 @@ class EnhancedProductFeatures {
 
   updateStickyButton() {
     if (!this.elements.stickyButton) return;
-    
+
     if (this.state.showStickyButton) {
       this.elements.stickyButton.classList.remove('translate-y-16', 'opacity-0');
       this.elements.stickyButton.classList.add('translate-y-0', 'opacity-100');
@@ -355,7 +355,7 @@ class EnhancedProductFeatures {
   updateNavigationDots() {
     const dots = this.elements.navigationDots?.querySelectorAll('.nav-dot');
     if (!dots) return;
-    
+
     const sections = ['ingredient-breakdown', 'reviews', 'faq'];
     sections.forEach((sectionId, index) => {
       const section = document.getElementById(sectionId);
@@ -376,7 +376,7 @@ class EnhancedProductFeatures {
     } else if (action === 'click') {
       this.state.purchaseMetrics.buttonClicks++;
     }
-    
+
     this.trackEvent('purchase_intent', {
       action,
       count: this.state.purchaseMetrics[action === 'hover' ? 'buttonHovers' : 'buttonClicks']
@@ -386,23 +386,23 @@ class EnhancedProductFeatures {
   async handlePurchase(buttonElement) {
     this.state.isLoading = true;
     this.updatePurchaseButtonState(buttonElement, true);
-    
+
     // Add ripple effect
     this.addRippleEffect(buttonElement);
-    
+
     // Simulate brief loading for better UX
     await new Promise(resolve => setTimeout(resolve, 800));
-    
+
     // Track purchase attempt
     this.trackEvent('purchase_attempted', {
       product: this.options.product.name,
       price: this.options.product.price,
       metrics: this.state.purchaseMetrics
     });
-    
+
     // Open Gumroad
     window.open(this.options.product.gumroadUrl, '_blank');
-    
+
     this.state.isLoading = false;
     this.updatePurchaseButtonState(buttonElement, false);
   }
@@ -410,7 +410,7 @@ class EnhancedProductFeatures {
   updatePurchaseButtonState(button, isLoading) {
     const textEl = button.querySelector('.purchase-text');
     const spinnerEl = button.querySelector('.loading-spinner');
-    
+
     if (textEl && spinnerEl) {
       if (isLoading) {
         textEl.classList.add('hidden');
@@ -428,7 +428,7 @@ class EnhancedProductFeatures {
     const ripple = document.createElement('span');
     const rect = button.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
-    
+
     ripple.style.width = ripple.style.height = size + 'px';
     ripple.style.left = '50%';
     ripple.style.top = '50%';
@@ -438,7 +438,7 @@ class EnhancedProductFeatures {
     ripple.style.transform = 'translate(-50%, -50%) scale(0)';
     ripple.style.animation = 'ripple-animation 0.6s linear';
     ripple.style.pointerEvents = 'none';
-    
+
     // Add CSS keyframes if not already added
     if (!document.head.querySelector('style[data-ripple]')) {
       const style = document.createElement('style');
@@ -453,18 +453,18 @@ class EnhancedProductFeatures {
       `;
       document.head.appendChild(style);
     }
-    
+
     button.style.position = 'relative';
     button.style.overflow = 'hidden';
     button.appendChild(ripple);
-    
+
     setTimeout(() => ripple.remove(), 600);
   }
 
   showExitIntentModal() {
     this.state.purchaseMetrics.exitIntentTriggered = true;
     this.state.showExitIntent = true;
-    
+
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm';
     modal.innerHTML = `
@@ -495,9 +495,9 @@ class EnhancedProductFeatures {
         </div>
       </div>
     `;
-    
+
     document.body.appendChild(modal);
-    
+
     // Event listeners
     modal.addEventListener('click', (e) => {
       if (e.target.closest('[data-close-modal]') || e.target === modal) {
@@ -507,12 +507,12 @@ class EnhancedProductFeatures {
         modal.remove();
       }
     });
-    
+
     this.trackEvent('exit_intent', {
       timeOnPage: Date.now() - this.pageStartTime,
       scrollDepth: this.state.purchaseMetrics.scrollDepth
     });
-    
+
     // Auto-remove after 10 seconds
     setTimeout(() => {
       if (modal.parentNode) modal.remove();
@@ -530,7 +530,7 @@ class EnhancedProductFeatures {
 
       // Show notification
       this.elements.socialProof.style.transform = 'translateX(0)';
-      
+
       // Hide after 5 seconds
       setTimeout(() => {
         this.elements.socialProof.style.transform = 'translateX(-100%)';
@@ -543,7 +543,7 @@ class EnhancedProductFeatures {
   smoothScrollTo(elementId) {
     const element = document.getElementById(elementId);
     if (!element) return;
-    
+
     const headerOffset = 80;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -561,7 +561,7 @@ class EnhancedProductFeatures {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', eventName, data);
     }
-    
+
     // Custom analytics
     if (typeof window !== 'undefined' && window.ProductEnhancements?.analytics) {
       window.ProductEnhancements.analytics.track(eventName, data);
@@ -571,10 +571,10 @@ class EnhancedProductFeatures {
   throttle(func, delay) {
     let timeoutId;
     let lastExecTime = 0;
-    
+
     return (...args) => {
       const currentTime = Date.now();
-      
+
       if (currentTime - lastExecTime > delay) {
         func(...args);
         lastExecTime = currentTime;
@@ -613,15 +613,15 @@ class EnhancedProductFeatures {
   destroy() {
     // Clear timers
     this.timers.forEach(timer => clearTimeout(timer) || clearInterval(timer));
-    
+
     // Remove event listeners
     this.eventListeners.forEach(({ element, event, handler }) => {
       element.removeEventListener(event, handler);
     });
-    
+
     // Disconnect observers
     this.observers.forEach(observer => observer.disconnect());
-    
+
     // Remove created elements
     Object.values(this.elements).forEach(element => {
       if (element && element.parentNode) {

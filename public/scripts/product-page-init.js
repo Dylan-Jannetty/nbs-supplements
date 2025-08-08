@@ -3,14 +3,14 @@
  * Lightweight initialization without ES6 module dependencies
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Configuration from global window object
   const config = window.PRODUCT_PAGE_CONFIG || {
     product: {
       name: 'Catalyst Pre-Workout',
-      price: 39.99,
+      price: 30.00,
       gumroadUrl: 'https://gumroad.com/l/nbs-catalyst'
     },
     ingredients: []
@@ -38,7 +38,7 @@
     ];
 
     // Add click handlers to quantity cards
-    container.addEventListener('click', function(e) {
+    container.addEventListener('click', function (e) {
       const quantityCard = e.target.closest('[data-quantity]');
       if (!quantityCard) return;
 
@@ -112,12 +112,12 @@
     const toggleButton = container.querySelector('[data-toggle-comparison]');
     if (!toggleButton) return;
 
-    toggleButton.addEventListener('click', function() {
+    toggleButton.addEventListener('click', function () {
       // For now, just track the interaction
       trackEvent('comparison_requested', {
         product: config.product.name
       });
-      
+
       // Could expand with full comparison table here
       alert('Product comparison feature coming soon!');
     });
@@ -129,12 +129,12 @@
       let hoverCount = 0;
       let clickCount = 0;
 
-      button.addEventListener('mouseenter', function() {
+      button.addEventListener('mouseenter', function () {
         hoverCount++;
         trackEvent('purchase_intent_hover', { count: hoverCount });
       });
 
-      button.addEventListener('click', function(e) {
+      button.addEventListener('click', function (e) {
         clickCount++;
         trackEvent('purchase_intent_click', { count: clickCount });
 
@@ -152,7 +152,7 @@
         setTimeout(() => {
           button.disabled = false;
           button.textContent = originalText;
-          
+
           // Open purchase link
           window.open(config.product.gumroadUrl, '_blank');
         }, 800);
@@ -175,11 +175,11 @@
     }
 
     // Update progress on scroll
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
       const scrollTop = window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = Math.min(100, (scrollTop / docHeight) * 100);
-      
+
       if (progressBar) {
         progressBar.style.width = `${scrollPercent}%`;
       }
@@ -213,10 +213,10 @@
     }
 
     // Show/hide based on scroll position
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
       const scrollTop = window.pageYOffset;
       const shouldShow = scrollTop > 800;
-      
+
       if (shouldShow) {
         stickyButton.classList.remove('translate-y-16', 'opacity-0');
         stickyButton.classList.add('translate-y-0', 'opacity-100');
@@ -229,7 +229,7 @@
     // Add purchase functionality to sticky button
     const stickyPurchaseBtn = stickyButton.querySelector('.purchase-button');
     if (stickyPurchaseBtn) {
-      stickyPurchaseBtn.addEventListener('click', function() {
+      stickyPurchaseBtn.addEventListener('click', function () {
         trackEvent('sticky_purchase_click', { product: config.product.name });
         window.open(config.product.gumroadUrl, '_blank');
       });
@@ -239,10 +239,10 @@
   // Wishlist functionality
   function initWishlist() {
     const wishlistButtons = document.querySelectorAll('.wishlist-button');
-    
+
     wishlistButtons.forEach(button => {
       const productName = button.dataset.product || config.product.name;
-      
+
       // Load saved state
       let wishlist = [];
       try {
@@ -250,16 +250,16 @@
       } catch (e) {
         console.warn('Could not load wishlist from localStorage');
       }
-      
+
       const isInWishlist = wishlist.some(item => item.name === productName);
       updateWishlistButton(button, isInWishlist);
-      
-      button.addEventListener('click', function() {
+
+      button.addEventListener('click', function () {
         const currentlyInWishlist = button.classList.contains('active');
         const newState = !currentlyInWishlist;
-        
+
         updateWishlistButton(button, newState);
-        
+
         // Update localStorage
         try {
           if (newState) {
@@ -275,18 +275,18 @@
         } catch (e) {
           console.warn('Could not save to localStorage');
         }
-        
+
         trackEvent('wishlist_toggle', {
           product: productName,
           action: newState ? 'added' : 'removed'
         });
       });
     });
-    
+
     function updateWishlistButton(button, isInWishlist) {
       const textEl = button.querySelector('.wishlist-text');
       const heartEl = button.querySelector('.wishlist-heart');
-      
+
       if (isInWishlist) {
         button.classList.add('active');
         if (textEl) textEl.textContent = 'In Wishlist';
@@ -303,7 +303,7 @@
   function initAnimations() {
     const observeElements = document.querySelectorAll('[data-observe]');
     console.log(`🎭 Animation system: Found ${observeElements.length} elements with [data-observe]`);
-    
+
     if (observeElements.length === 0) {
       console.warn('⚠️  No elements found with [data-observe] attribute');
       return;
@@ -315,19 +315,19 @@
         if (entry.isIntersecting) {
           const element = entry.target;
           const elementInfo = `${element.tagName}${element.id ? '#' + element.id : ''}${element.className ? '.' + element.className.split(' ').join('.') : ''}`;
-          
+
           console.log(`👁️  Element in view: ${elementInfo}`);
-          
+
           setTimeout(() => {
             element.classList.add('animate-in');
             console.log(`✨ Added animate-in class to: ${elementInfo}`);
-            
+
             // Verify the element is actually visible after animation
             setTimeout(() => {
               const computedStyle = window.getComputedStyle(element);
               const opacity = computedStyle.opacity;
               const transform = computedStyle.transform;
-              
+
               if (opacity === '0') {
                 console.error(`❌ Animation failed - element still has opacity: 0`, {
                   element: elementInfo,
@@ -339,9 +339,9 @@
                 console.log(`✅ Animation success: ${elementInfo} is now visible (opacity: ${opacity})`);
               }
             }, 650); // Wait for 0.6s transition + small buffer
-            
+
           }, index * 100);
-          
+
           observer.unobserve(entry.target);
         }
       });
@@ -356,23 +356,23 @@
       const computedStyle = window.getComputedStyle(el);
       const opacity = computedStyle.opacity;
       const transform = computedStyle.transform;
-      
+
       console.log(`🎯 Observing element ${index + 1}:`, {
         element: `${el.tagName}${el.id ? '#' + el.id : ''}`,
         initialOpacity: opacity,
         initialTransform: transform
       });
-      
+
       observer.observe(el);
     });
-    
+
     // Fallback: If any elements are still invisible after 5 seconds, force them visible
     setTimeout(() => {
       const invisibleElements = Array.from(observeElements).filter(el => {
         const style = window.getComputedStyle(el);
         return style.opacity === '0';
       });
-      
+
       if (invisibleElements.length > 0) {
         console.warn(`⚡ Fallback: Force-showing ${invisibleElements.length} invisible elements`);
         invisibleElements.forEach(el => {
@@ -387,7 +387,7 @@
   // Initialize all features when DOM is ready
   function init() {
     console.log('🚀 Initializing enhanced product page features...');
-    
+
     try {
       initQuantitySelector();
       initProductComparison();
@@ -396,19 +396,19 @@
       initStickyButton();
       initWishlist();
       initAnimations();
-      
+
       // Track page initialization
       trackEvent('product_page_initialized', {
         product: config.product.name,
         price: config.product.price,
         timestamp: Date.now()
       });
-      
+
       console.log('✅ Product page features initialized successfully');
-      
+
     } catch (error) {
       console.error('❌ Error initializing product page features:', error);
-      
+
       // Ensure basic purchase buttons still work
       document.querySelectorAll('.purchase-button').forEach(button => {
         button.addEventListener('click', () => {
