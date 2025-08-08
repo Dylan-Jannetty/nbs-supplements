@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/globals.css';
+import '../styles/layout-stability.css';
 import '../styles/product-enhancements.css';
 
 export interface Props {
@@ -154,21 +155,63 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       });
     </script>
     
-    <!-- Critical CSS for above-the-fold content -->
+    <!-- Critical CSS for above-the-fold content with CLS prevention -->
     <style>
-      /* Critical CSS for initial paint with fallback fonts */
+      /* Critical CSS for initial paint with exact fallback metrics */
       body { 
         font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
-        font-display: swap;
       }
-      .hero-section { min-height: 60vh; }
+      
+      /* Layout stability for hero section */
+      .hero-section { 
+        min-height: 60vh; 
+        contain: layout style;
+      }
+      
+      /* Color variables for immediate paint */
       .nbs-primary { color: hsl(203 89% 53%); }
       .nbs-trust { color: hsl(203 23% 30%); }
       .clinical-card { background: hsl(210 20% 98%); border-radius: 0.5rem; }
       
-      /* Prevent layout shift during font load */
-      * {
-        font-display: swap;
+      /* Text size reservations to prevent CLS */
+      .hero-title {
+        font-size: 2.25rem; /* 36px fallback before responsive classes load */
+        line-height: 2.5rem;
+        font-weight: 700;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.125rem; /* 18px fallback */
+        line-height: 1.75rem;
+        font-weight: 400;
+        min-height: 6rem; /* Reserve space for 3-4 lines */
+      }
+      
+      /* Trust badge containers with reserved space */
+      .trust-badge-container {
+        min-height: 3rem; /* Reserve space for badges */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      
+      .trust-signal {
+        min-height: 2.5rem;
+        min-width: 8rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      /* Gradient text stability */
+      .gradient-text {
+        color: hsl(203 89% 53%); /* Fallback color to prevent transparent text flash */
+        font-weight: inherit;
+      }
+      
+      /* Animation containment */
+      .animate-slide-up {
+        contain: style layout;
+        will-change: auto;
       }
     </style>
     
@@ -287,16 +330,54 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
     
-    <!-- Critical font face for immediate rendering -->
+    <!-- Optimized font faces for CLS prevention -->
     <style>
+      /* Exact Inter font metrics fallback */
       @font-face {
         font-family: 'Inter Fallback';
-        src: local('Arial'), local('Helvetica'), local('system-ui'), local('sans-serif');
-        font-display: swap;
-        font-weight: 100 900;
+        src: local('system-ui'), local('-apple-system'), local('Segoe UI'), local('Arial');
+        font-display: block;
+        font-weight: 400;
         font-style: normal;
-        ascent-override: 90.2%;
-        descent-override: 22.35%;
+        size-adjust: 100.06%;
+        ascent-override: 90.20%;
+        descent-override: 22.48%;
+        line-gap-override: 0%;
+      }
+      
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('system-ui'), local('-apple-system'), local('Segoe UI'), local('Arial');
+        font-display: block;
+        font-weight: 500;
+        font-style: normal;
+        size-adjust: 100.06%;
+        ascent-override: 90.20%;
+        descent-override: 22.48%;
+        line-gap-override: 0%;
+      }
+      
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('system-ui'), local('-apple-system'), local('Segoe UI'), local('Arial');
+        font-display: block;
+        font-weight: 600;
+        font-style: normal;
+        size-adjust: 100.06%;
+        ascent-override: 90.20%;
+        descent-override: 22.48%;
+        line-gap-override: 0%;
+      }
+      
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('system-ui'), local('-apple-system'), local('Segoe UI'), local('Arial');
+        font-display: block;
+        font-weight: 700;
+        font-style: normal;
+        size-adjust: 100.06%;
+        ascent-override: 90.20%;
+        descent-override: 22.48%;
         line-gap-override: 0%;
       }
     </style>
