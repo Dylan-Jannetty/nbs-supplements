@@ -18,7 +18,6 @@ class EnhancedProductFeatures {
     this.state = {
       scrollProgress: 0,
       showStickyButton: false,
-      showExitIntent: false,
       isLoading: false,
       wishlistAdded: false,
       purchaseMetrics: {
@@ -26,7 +25,6 @@ class EnhancedProductFeatures {
         buttonClicks: 0,
         scrollDepth: 0,
         timeOnPage: 0,
-        exitIntentTriggered: false
       }
     };
 
@@ -43,7 +41,6 @@ class EnhancedProductFeatures {
     this.createElements();
     this.setupScrollTracking();
     this.setupPurchaseTracking();
-    this.setupExitIntent();
     this.setupSocialProof();
     this.setupAnimations();
     this.setupWishlist();
@@ -243,16 +240,6 @@ class EnhancedProductFeatures {
     });
   }
 
-  setupExitIntent() {
-    const exitHandler = (e) => {
-      if (e.clientY <= 0 && !this.state.purchaseMetrics.exitIntentTriggered) {
-        this.showExitIntentModal();
-      }
-    };
-
-    document.addEventListener('mouseleave', exitHandler);
-    this.eventListeners.push({ element: document, event: 'mouseleave', handler: exitHandler });
-  }
 
   setupSocialProof() {
     // Show first notification after 10 seconds
@@ -421,64 +408,6 @@ class EnhancedProductFeatures {
     button.appendChild(ripple);
 
     setTimeout(() => ripple.remove(), 600);
-  }
-
-  showExitIntentModal() {
-    this.state.purchaseMetrics.exitIntentTriggered = true;
-    this.state.showExitIntent = true;
-
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm';
-    modal.innerHTML = `
-      <div class="card max-w-md mx-4 animate-in slide-in-from-bottom-4 duration-300">
-        <div class="card-header">
-          <div class="flex items-center justify-between">
-            <h3 class="card-title text-xl">Wait! Before you go...</h3>
-            <button class="text-muted-foreground hover:text-foreground" data-close-modal>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="card-content">
-          <p class="text-muted-foreground mb-4">
-            Get 10% off your first order of Catalyst! Use code <span class="font-bold text-nbs-primary">FIRST10</span>
-          </p>
-          <div class="flex gap-3">
-            <button class="btn btn-primary flex-1 bg-nbs-primary hover:bg-nbs-primary/90 purchase-button" 
-                    data-discount-purchase>
-              Get Discount
-            </button>
-            <button class="btn btn-outline flex-1" data-close-modal>
-              No Thanks
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // Event listeners
-    modal.addEventListener('click', (e) => {
-      if (e.target.closest('[data-close-modal]') || e.target === modal) {
-        modal.remove();
-      } else if (e.target.closest('[data-discount-purchase]')) {
-        this.handlePurchase(e.target);
-        modal.remove();
-      }
-    });
-
-    this.trackEvent('exit_intent', {
-      timeOnPage: Date.now() - this.pageStartTime,
-      scrollDepth: this.state.purchaseMetrics.scrollDepth
-    });
-
-    // Auto-remove after 10 seconds
-    setTimeout(() => {
-      if (modal.parentNode) modal.remove();
-    }, 10000);
   }
 
   showSocialProofNotification() {

@@ -23,21 +23,18 @@ interface PurchaseMetrics {
   buttonClicks: number;
   scrollDepth: number;
   timeOnPage: number;
-  exitIntentTriggered: boolean;
 }
 
 const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, ingredients }) => {
   // State management
   const [isLoading, setIsLoading] = useState(false);
   const [showStickyButton, setShowStickyButton] = useState(false);
-  const [showExitIntent, setShowExitIntent] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [purchaseMetrics, setPurchaseMetrics] = useState<PurchaseMetrics>({
     buttonHovers: 0,
     buttonClicks: 0,
     scrollDepth: 0,
     timeOnPage: 0,
-    exitIntentTriggered: false
   });
   const [recentPurchases] = useState([
     { name: "Jessica M.", time: "2 minutes ago", location: "California" },
@@ -51,7 +48,6 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
   const pageStartTime = useRef<number>(0);
   const stickyButtonRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
-  const exitIntentTimerRef = useRef<NodeJS.Timeout>();
 
   // Performance optimized scroll handler
   const handleScroll = useCallback(() => {
@@ -124,18 +120,6 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
     setIsLoading(false);
   }, [product, purchaseMetrics]);
 
-  // Exit intent detection
-  const handleMouseLeave = useCallback((e: MouseEvent) => {
-    if (e.clientY <= 0 && !purchaseMetrics.exitIntentTriggered) {
-      setShowExitIntent(true);
-      setPurchaseMetrics(prev => ({
-        ...prev,
-        exitIntentTriggered: true
-      }));
-      trackEvent('exit_intent', { timeOnPage: Date.now() - pageStartTime.current });
-    }
-  }, [purchaseMetrics.exitIntentTriggered]);
-
   // Wishlist functionality
   const handleWishlist = useCallback(() => {
     setWishlistAdded(!wishlistAdded);
@@ -197,7 +181,6 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
     
     const throttledScroll = throttle(handleScroll, 16); // 60fps
     window.addEventListener('scroll', throttledScroll);
-    document.addEventListener('mouseleave', handleMouseLeave);
 
     // Time tracking
     const interval = setInterval(() => {
@@ -215,13 +198,9 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
 
     return () => {
       window.removeEventListener('scroll', throttledScroll);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      clearInterval(interval);
-      if (exitIntentTimerRef.current) {
-        clearTimeout(exitIntentTimerRef.current);
-      }
+
     };
-  }, [handleScroll, handleMouseLeave, product.name]);
+  }, [handleScroll, product.name]);
 
   return (
     <>
@@ -418,47 +397,6 @@ const EnhancedProductPage: React.FC<ProductPageEnhancementsProps> = ({ product, 
           ))}
         </div>
       </div>
-
-      {/* Exit Intent Modal */}
-      {showExitIntent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <Card className="max-w-md mx-4 animate-in slide-in-from-bottom-4 duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-xl">Wait! Before you go...</CardTitle>
-                <button
-                  onClick={() => setShowExitIntent(false)}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Get 10% off your first order of Catalyst! Use code <span className="font-bold text-nbs-primary">FIRST10</span>
-              </p>
-              <div className="flex gap-3">
-                <Button
-                  onClick={handlePurchase}
-                  className="flex-1 bg-nbs-primary hover:bg-nbs-primary/90"
-                >
-                  Get Discount
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowExitIntent(false)}
-                  className="flex-1"
-                >
-                  No Thanks
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </>
   );
 };

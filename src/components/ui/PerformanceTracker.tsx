@@ -15,7 +15,6 @@ interface UserBehaviorMetrics {
   clicksCount: number;
   formInteractions: number;
   purchaseClicks: number;
-  exitIntent: boolean;
 }
 
 interface PerformanceTrackerProps {
@@ -44,7 +43,6 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
     clicksCount: 0,
     formInteractions: 0,
     purchaseClicks: 0,
-    exitIntent: false
   });
 
   const pageStartTime = useRef(Date.now());
@@ -143,12 +141,6 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
     // Track form interactions
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
       behaviorRef.current.formInteractions++;
-    }
-  }, []);
-
-  const trackExitIntent = useCallback((event: MouseEvent) => {
-    if (event.clientY <= 0 && !behaviorRef.current.exitIntent) {
-      behaviorRef.current.exitIntent = true;
     }
   }, []);
 
@@ -286,7 +278,6 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     document.addEventListener('click', trackClick, { passive: true });
-    document.addEventListener('mouseleave', trackExitIntent);
     
     // Report metrics periodically and on page unload
     const reportInterval = setInterval(reportMetrics, 30000); // Every 30 seconds
@@ -316,7 +307,6 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('click', trackClick);
-      document.removeEventListener('mouseleave', trackExitIntent);
       window.removeEventListener('beforeunload', handleBeforeUnload);
       clearInterval(reportInterval);
       if (scrollTimeout) clearTimeout(scrollTimeout);
@@ -324,7 +314,7 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
       // Disconnect performance observers
       observersRef.current.forEach(observer => observer.disconnect());
     };
-  }, [measureCoreWebVitals, trackScrollDepth, trackClick, trackExitIntent, reportMetrics, analyzeConversionPotential, analyzeResourcePerformance]);
+  }, [measureCoreWebVitals, trackScrollDepth, trackClick, reportMetrics, analyzeConversionPotential, analyzeResourcePerformance]);
 
   // Performance budget alerts (development only)
   useEffect(() => {

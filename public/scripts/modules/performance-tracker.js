@@ -28,7 +28,6 @@ class PerformanceTracker {
       clicksCount: 0,
       formInteractions: 0,
       purchaseClicks: 0,
-      exitIntent: false
     };
 
     this.pageStartTime = Date.now();
@@ -134,14 +133,6 @@ class PerformanceTracker {
     document.addEventListener('click', clickHandler, { passive: true });
     this.eventListeners.push({ element: document, event: 'click', handler: clickHandler });
 
-    // Exit intent tracking
-    const exitHandler = (event) => {
-      this.trackExitIntent(event);
-    };
-
-    document.addEventListener('mouseleave', exitHandler);
-    this.eventListeners.push({ element: document, event: 'mouseleave', handler: exitHandler });
-
     // Form interaction tracking
     const formHandler = (event) => {
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName)) {
@@ -189,17 +180,6 @@ class PerformanceTracker {
     }
   }
 
-  trackExitIntent(event) {
-    if (event.clientY <= 0 && !this.behaviorMetrics.exitIntent) {
-      this.behaviorMetrics.exitIntent = true;
-
-      // Track exit intent event
-      this.trackEvent('exit_intent', {
-        timeOnPage: Date.now() - this.pageStartTime,
-        scrollDepth: this.behaviorMetrics.scrollDepth
-      });
-    }
-  }
 
   startReporting() {
     if (!this.options.enableReporting) return;

@@ -12,6 +12,8 @@ import logo from "../images/logo.png";
 <header
   class="sticky top-0 z-50 w-full glass-effect border-b border-border/50"
   style="position: sticky; top: 0; z-index: 50;"
+  transition:name="header"
+  transition:persist
 >
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
@@ -22,7 +24,7 @@ import logo from "../images/logo.png";
           class="flex items-center space-x-2 text-foreground hover:text-nbs-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary rounded-md p-1"
           aria-label="NBS Supplements Home"
         >
-          <Image class="max-w-20 h-auto" src={logo} alt="NBS Logo" />
+          <Image class="max-w-20 h-auto" src={logo} alt="NBS Logo" transition:name="logo" />
         </a>
       </div>
 
@@ -397,19 +399,18 @@ import logo from "../images/logo.png";
     forceFixedPositioning();
   }
 
-  // Initialize components when DOM is loaded
-  document.addEventListener("DOMContentLoaded", () => {
+  // Initialize components when DOM is loaded or after view transitions
+  function initializeHeader() {
     initThemeToggle();
     initMobileMenu();
     initStickyHeaderFallback();
-  });
+  }
 
-  // Re-initialize when navigating in SPA-like behavior
-  document.addEventListener("astro:page-load", () => {
-    initThemeToggle();
-    initMobileMenu();
-    initStickyHeaderFallback();
-  });
+  // Initialize on DOM load (initial page load)
+  document.addEventListener("DOMContentLoaded", initializeHeader);
+
+  // Re-initialize after view transitions
+  document.addEventListener("astro:page-load", initializeHeader);
 </script>
 
 <style>

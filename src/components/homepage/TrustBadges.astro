@@ -64,7 +64,7 @@ const badges = [
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {
           badges.map((badge) => (
-            <div class="certification-badge flex flex-col items-center text-center p-6 group hover:scale-105 transition-transform duration-200">
+            <div class="certification-badge flex flex-col justify-between items-center text-center p-6 group hover:scale-105 transition-transform duration-200">
               <div
                 class={`w-16 h-16 bg-${badge.colorClass}/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-${badge.colorClass}/20 transition-colors`}
               >
@@ -85,9 +85,9 @@ const badges = [
                   />
                 </svg>
               </div>
-              <h3 class={`font-semibold text-${badge.colorClass} mb-2`}>
+              <h4 class={`font-semibold text-${badge.colorClass} mb-2`}>
                 {badge.title}
-              </h3>
+              </h4>
               <p class="text-xs text-muted-foreground">{badge.subtitle}</p>
             </div>
           ))
