@@ -40,7 +40,6 @@ class PurchaseTracker {
       buttonClicks: 0,
       scrollDepth: 0,
       timeOnPage: 0,
-      exitIntentTriggered: false,
       purchaseIntent: 0
     };
     this.startTime = Date.now();
@@ -294,72 +293,6 @@ class PerformanceMonitor {
   }
 }
 
-// Exit intent detection
-class ExitIntentManager {
-  constructor() {
-    this.triggered = false;
-    this.setupExitIntent();
-  }
-
-  setupExitIntent() {
-    document.addEventListener('mouseleave', (e) => {
-      if (e.clientY <= 0 && !this.triggered) {
-        this.triggered = true;
-        this.showExitIntentModal();
-      }
-    });
-  }
-
-  showExitIntentModal() {
-    // Check if modal already exists
-    if (document.querySelector('.exit-intent-modal')) return;
-
-    const modal = document.createElement('div');
-    modal.className = 'exit-intent-modal fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm';
-    modal.innerHTML = `
-      <div class="modal-content bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4 text-center">
-        <h3 class="text-xl font-bold mb-2">Wait! Before you go...</h3>
-        <p class="text-gray-600 dark:text-gray-300 mb-4">
-          Get 10% off your first order of Catalyst! Use code <strong class="text-blue-600">FIRST10</strong>
-        </p>
-        <div class="flex gap-3">
-          <button class="claim-discount flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            Claim Discount
-          </button>
-          <button class="dismiss-modal flex-1 border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded">
-            No Thanks
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // Add event listeners
-    modal.querySelector('.claim-discount').addEventListener('click', () => {
-      window.open('https://gumroad.com/l/nbs-catalyst', '_blank');
-      modal.remove();
-    });
-
-    modal.querySelector('.dismiss-modal').addEventListener('click', () => {
-      modal.remove();
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.remove();
-      }
-    });
-
-    // Auto-remove after 10 seconds
-    setTimeout(() => {
-      if (modal.parentNode) {
-        modal.remove();
-      }
-    }, 10000);
-  }
-}
-
 // Social proof manager
 class SocialProofManager {
   constructor() {
@@ -420,16 +353,24 @@ class SocialProofManager {
   }
 }
 
-// Initialize all enhancements when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize all enhancements 
+function initializeProductEnhancements() {
   console.log('🚀 Initializing product page enhancements...');
 
   try {
+    // Clean up existing instances to prevent duplicates
+    if (window.ProductEnhancements) {
+      Object.values(window.ProductEnhancements).forEach(instance => {
+        if (instance.cleanup && typeof instance.cleanup === 'function') {
+          instance.cleanup();
+        }
+      });
+    }
+
     const purchaseTracker = new PurchaseTracker();
     const smoothScrollManager = new SmoothScrollManager();
     const animationManager = new AnimationManager();
     const performanceMonitor = new PerformanceMonitor();
-    const exitIntentManager = new ExitIntentManager();
     const socialProofManager = new SocialProofManager();
 
     // Global reference for debugging
@@ -438,7 +379,6 @@ document.addEventListener('DOMContentLoaded', () => {
       smoothScrollManager,
       animationManager,
       performanceMonitor,
-      exitIntentManager,
       socialProofManager
     };
 
@@ -446,7 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (error) {
     console.error('❌ Error initializing product enhancements:', error);
   }
-});
+}
+
+// Initialize on DOM ready and after view transitions
+document.addEventListener('DOMContentLoaded', initializeProductEnhancements);
+document.addEventListener('astro:page-load', initializeProductEnhancements);
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
@@ -455,7 +399,6 @@ if (typeof module !== 'undefined' && module.exports) {
     SmoothScrollManager,
     AnimationManager,
     PerformanceMonitor,
-    ExitIntentManager,
     SocialProofManager
   };
 }

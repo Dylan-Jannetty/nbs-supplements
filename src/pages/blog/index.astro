@@ -281,7 +281,7 @@ const seoData = {
 
   <!-- Search and Filter JavaScript -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function initBlogSearch() {
       const searchInput = document.getElementById('blog-search') as HTMLInputElement;
       const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
       const articlesGrid = document.getElementById('articles-grid');
@@ -355,7 +355,6 @@ const seoData = {
           }
         }
       });
-    });
 
     // Track article clicks with enhanced function
     document.addEventListener('click', function(e) {
@@ -383,5 +382,10 @@ const seoData = {
         }
       }
     });
+    }
+
+    // Initialize on page load and after view transitions
+    document.addEventListener('DOMContentLoaded', initBlogSearch);
+    document.addEventListener('astro:page-load', initBlogSearch);
   </script>
 </BaseLayout>

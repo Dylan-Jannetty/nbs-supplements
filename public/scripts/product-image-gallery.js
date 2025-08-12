@@ -328,18 +328,58 @@ class ProductImageGallery {
   }
 }
 
-// Auto-initialize galleries on page load
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize gallery instances tracking
+window.productGalleryInstances = window.productGalleryInstances || new Map();
+
+// Auto-initialize galleries on page load and after view transitions
+function initializeProductGalleries() {
   const galleries = document.querySelectorAll('[data-product-gallery]');
+  
   galleries.forEach(container => {
+    // Check if this container already has a gallery instance
+    if (window.productGalleryInstances.has(container)) {
+      return; // Skip if already initialized
+    }
+    
     const imagesData = container.dataset.images ? JSON.parse(container.dataset.images) : [];
     const productName = container.dataset.productName || '';
     
-    new ProductImageGallery(container, {
+    const gallery = new ProductImageGallery(container, {
       images: imagesData,
       productName: productName
     });
+    
+    // Track the instance
+    window.productGalleryInstances.set(container, gallery);
   });
+}
+
+// Clean up removed galleries
+function cleanupProductGalleries() {
+  if (!window.productGalleryInstances) return;
+  
+  const activeContainers = document.querySelectorAll('[data-product-gallery]');
+  const activeSet = new Set(activeContainers);
+  
+  // Remove instances for containers that no longer exist
+  for (const [container, gallery] of window.productGalleryInstances.entries()) {
+    if (!activeSet.has(container)) {
+      // Clean up the gallery instance if it has a cleanup method
+      if (gallery.cleanup && typeof gallery.cleanup === 'function') {
+        gallery.cleanup();
+      }
+      window.productGalleryInstances.delete(container);
+    }
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', initializeProductGalleries);
+
+// Initialize after view transitions
+document.addEventListener('astro:page-load', () => {
+  cleanupProductGalleries();
+  initializeProductGalleries();
 });
 
 // Export for manual initialization

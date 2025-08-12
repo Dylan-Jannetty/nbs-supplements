@@ -1,0 +1,275 @@
+/**
+ * Astro View Transitions - Custom Animations for NBS Supplements
+ * Smooth, performance-optimized transitions that enhance the user experience
+ */
+
+/* ==========================================================================
+   Core View Transition Styles
+   ========================================================================== */
+
+/* Default smooth transitions for all unnamed elements */
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.15s !important;
+  animation-timing-function: ease-out !important;
+}
+
+/* Root element transition - subtle fade effect */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.15s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+/* ==========================================================================
+   Header Navigation Transitions
+   ========================================================================== */
+
+/* Logo transition - quick morph */
+::view-transition-old(logo),
+::view-transition-new(logo) {
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  mix-blend-mode: normal;
+}
+
+/* Header navigation persistence */
+::view-transition-old(header),
+::view-transition-new(header) {
+  animation-duration: 0.1s;
+  animation-timing-function: ease-out;
+}
+
+/* ==========================================================================
+   Page Content Transitions
+   ========================================================================== */
+
+/* Main content simple fade */
+::view-transition-old(main-content),
+::view-transition-new(main-content) {
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(main-content) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(main-content) {
+  animation-name: fade-in;
+}
+
+/* Hero section transitions */
+::view-transition-old(hero),
+::view-transition-new(hero) {
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(hero) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(hero) {
+  animation-name: fade-in;
+}
+
+/* ==========================================================================
+   Product & E-commerce Transitions
+   ========================================================================== */
+
+/* Product image transitions */
+::view-transition-old(product-image),
+::view-transition-new(product-image) {
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  object-fit: cover;
+}
+
+::view-transition-old(product-image) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(product-image) {
+  animation-name: fade-in;
+}
+
+/* Product cards */
+::view-transition-old(product-card),
+::view-transition-new(product-card) {
+  animation-duration: 0.15s;
+  animation-timing-function: ease-out;
+}
+
+/* CTA button transitions */
+::view-transition-old(cta-button),
+::view-transition-new(cta-button) {
+  animation-duration: 0.15s;
+  animation-timing-function: ease-out;
+}
+
+/* ==========================================================================
+   Simple Keyframe Animations
+   ========================================================================== */
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Loading States & Indicators
+   ========================================================================== */
+
+/* Loading indicator for view transitions */
+.view-transition-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--nbs-primary)),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: loading-bar 1s ease-in-out infinite;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.view-transition-loading.show {
+  opacity: 1;
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ==========================================================================
+   Accessibility & Reduced Motion
+   ========================================================================== */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.1s !important;
+    animation-timing-function: ease !important;
+  }
+  
+  .view-transition-loading {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   Performance Optimizations
+   ========================================================================== */
+
+/* Optimize animations for better performance */
+::view-transition-old(*),
+::view-transition-new(*) {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+/* Prevent layout thrashing during transitions */
+::view-transition-group(*) {
+  contain: layout style paint;
+}
+
+/* GPU acceleration for smooth animations */
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-old(hero),
+::view-transition-new(hero),
+::view-transition-old(product-image),
+::view-transition-new(product-image) {
+  transform: translateZ(0);
+}
+
+/* Prevent FOUC (Flash of Unstyled Content) during transitions */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    view-transition-name: none;
+  }
+  
+  html:has([astro-transition-persist]) {
+    view-transition-name: root;
+  }
+}
+
+/* ==========================================================================
+   Brand-Specific Enhancements
+   ========================================================================== */
+
+/* NBS brand color integration for transitions */
+::view-transition-old(root)::after,
+::view-transition-new(root)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--nbs-primary) / 0.03) 0%,
+    hsl(var(--nbs-secondary) / 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+/* Supplement-themed particle effect (subtle) */
+@keyframes supplement-sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* Trust badge transitions */
+::view-transition-old(trust-badge),
+::view-transition-new(trust-badge) {
+  animation-duration: 0.15s;
+  animation-timing-function: ease-out;
+}

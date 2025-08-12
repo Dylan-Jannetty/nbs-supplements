@@ -223,7 +223,7 @@ const seoData = {
 
   <!-- Blog article engagement tracking -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function initBlogTracking() {
       const articleTitle = document.querySelector('h1').textContent.trim();
       const category = document.querySelector('.badge')?.textContent.trim();
       const readingTimeElement = document.querySelector('span');
@@ -354,6 +354,10 @@ const seoData = {
           }
         });
       });
-    });
+    }
+
+    // Initialize on page load and after view transitions
+    document.addEventListener('DOMContentLoaded', initBlogTracking);
+    document.addEventListener('astro:page-load', initBlogTracking);
   </script>
 </BaseLayout>
