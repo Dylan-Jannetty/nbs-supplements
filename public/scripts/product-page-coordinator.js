@@ -495,11 +495,24 @@ class AnalyticsManager {
   }
 }
 
-// Auto-initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize coordinator function
+function initializeProductPageCoordinator() {
   // Check if we're on a product page
   if (document.body.classList.contains('product-page') ||
     window.location.pathname.includes('/products/')) {
+
+    console.log('🔄 Initializing/Re-initializing Product Page Coordinator...');
+
+    // Clean up existing coordinator instance
+    if (window.ProductPageCoordinator) {
+      console.log('🧹 Cleaning up existing coordinator instance');
+      try {
+        window.ProductPageCoordinator.destroy();
+      } catch (error) {
+        console.warn('Error destroying existing coordinator:', error);
+      }
+      window.ProductPageCoordinator = null;
+    }
 
     // Get configuration from data attributes or window object
     const config = window.PRODUCT_PAGE_CONFIG || {};
@@ -508,12 +521,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.ProductPageCoordinator = new ProductPageCoordinator(config);
 
     // Make coordinator globally accessible for debugging
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
       window.ProductEnhancements = window.ProductEnhancements || {};
       window.ProductEnhancements.coordinator = window.ProductPageCoordinator;
     }
   }
-});
+}
+
+// Auto-initialize when DOM is ready and after view transitions
+document.addEventListener('DOMContentLoaded', initializeProductPageCoordinator);
+document.addEventListener('astro:page-load', initializeProductPageCoordinator);
 
 // Export for module usage
 export default ProductPageCoordinator;
