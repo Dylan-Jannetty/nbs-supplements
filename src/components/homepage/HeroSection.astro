@@ -1,0 +1,184 @@
+---
+import { Image } from "astro:assets";
+import catalystStacked from "../../images/catalyst-stacked.png";
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  ctaPrimaryText?: string;
+  ctaPrimaryUrl?: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryUrl?: string;
+}
+
+const {
+  title = "Clean, Clinically Dosed Supplements",
+  subtitle = "Pharmacist-formulated with clinical doses of proven ingredients. Experience the difference of supplements designed by professionals who understand both science and results.",
+  ctaPrimaryText = "Shop Catalyst - $30.00",
+  ctaPrimaryUrl = "https://gumroad.com/l/nbs-catalyst",
+  ctaSecondaryText = "Learn Our Story",
+  ctaSecondaryUrl = "/about",
+} = Astro.props;
+
+// Trust badges data
+const trustBadges = [
+  {
+    text: "Pharmacist Formulated",
+    icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+  },
+  {
+    text: "Third-Party Tested",
+    icon: "M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0-2h10m-5-5v5",
+  },
+  {
+    text: "Made in USA",
+    icon: "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z",
+    fill: true,
+  },
+];
+
+// Quick benefits data
+const quickBenefits = [
+  {
+    text: "Clean energy without the crash",
+    color: "bg-nbs-secondary",
+  },
+  {
+    text: "5g Creatine + 2g L-Citrulline",
+    color: "bg-nbs-accent",
+  },
+  {
+    text: "Natural flavoring & monk fruit",
+    color: "bg-nbs-primary",
+  },
+];
+---
+
+<section
+  class="hero-section relative bg-gradient-to-br from-nbs-clinical max-w-[1440px] via-background to-nbs-primary/5 pt-10 lg:pt-22 overflow-hidden m-auto"
+>
+  <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px]">
+    <div
+      class="grid lg:grid-cols-2 gap-12 items-center max-w-[1440px] mx-auto mb-6"
+    >
+      <!-- Hero Content -->
+      <div class="space-y-8 animate-slide-up">
+        <h1
+          class="hero-title text-4xl sm:text-5xl lg:text-6xl font-bold text-nbs-trust leading-tight text-center"
+        >
+          {title}
+          <br />
+          <span class="gradient-text">No Fillers, No Fluff</span>
+        </h1>
+
+        <p
+          class="hero-subtitle text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl text-center"
+        >
+          {subtitle}
+        </p>
+
+        <!-- Trust Badges -->
+        <div
+          class="trust-badge-container flex flex-wrap gap-3 justify-between sm:justify-center"
+        >
+          {
+            trustBadges.map((badge) => (
+              <div class="trust-signal flex-1 sm:flex-initial">
+                <svg
+                  class="w-5 h-5 flex-shrink-0"
+                  fill={badge.fill ? "currentColor" : "none"}
+                  stroke={badge.fill ? "none" : "currentColor"}
+                  viewBox={badge.fill ? "0 0 20 20" : "0 0 24 24"}
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap={badge.fill ? undefined : "round"}
+                    stroke-linejoin={badge.fill ? undefined : "round"}
+                    stroke-width={badge.fill ? undefined : "2"}
+                    fill-rule={badge.fill ? "evenodd" : undefined}
+                    clip-rule={badge.fill ? "evenodd" : undefined}
+                    d={badge.icon}
+                  />
+                </svg>
+                <span class="truncate">{badge.text}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href={ctaPrimaryUrl}
+            class="no-underline gumroad-button btn btn-primary btn-lg text-lg transform hover:scale-105 shadow-lg hover:shadow-xl"
+            data-gumroad-single-product="true"
+          >
+            {ctaPrimaryText}
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+
+          <a
+            href={ctaSecondaryUrl}
+            class="btn btn-outline no-underline btn-lg text-lg border-nbs-primary text-nbs-primary hover:bg-nbs-primary hover:text-white"
+          >
+            {ctaSecondaryText}
+          </a>
+        </div>
+      </div>
+
+      <!-- Product Showcase - CLS Optimized -->
+      <div class="relative animate-scale-in" style="contain: layout;">
+        <div
+          class="bg-gradient-to-br from-nbs-primary/10 to-nbs-secondary/10 rounded-2xl p-8 shadow-2xl"
+          style="min-height: 500px; contain: layout;"
+        >
+          <!-- Optimized product image for LCP -->
+          <div
+            class="bg-gradient-to-br from-nbs-clinical to-nbs-primary/5 rounded-xl border-2 border-nbs-primary/20 flex items-center justify-center mb-6 p-4"
+            style="contain: layout;"
+          >
+            <div
+              class="text-center text-nbs-trust/60 flex items-center justify-center"
+            >
+              <Image
+                src={catalystStacked}
+                alt="Catalyst Pre-Workout - Clean, pharmacist-formulated natural pre-workout supplement bottles"
+                loading="eager"
+                fetchpriority="high"
+                width={400}
+                height={600}
+                class="w-full h-auto max-w-80 object-contain"
+              />
+            </div>
+          </div>
+
+          <!-- Quick Benefits -->
+          <div class="space-y-3">
+            {
+              quickBenefits.map((benefit) => (
+                <div class="flex items-center gap-3">
+                  <div class={`w-2 h-2 ${benefit.color} rounded-full`} />
+                  <span class="text-sm text-muted-foreground">
+                    {benefit.text}
+                  </span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import IngredientCard from "../ui/IngredientCard.astro";
+
+export interface Props {
+  ingredients: Array<{
+    name: string;
+    dosage: string;
+    purpose: string;
+    description: string;
+    benefits: string[];
+  }>;
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  ingredients,
+  title = "Clinical Doses of Premium Ingredients",
+  subtitle = "Every ingredient in Catalyst is included at clinically effective doses backed by scientific research. No fillers, no fluff - just what works."
+} = Astro.props;
+---
+
+<!-- Ingredient Breakdown -->
+<section id="ingredient-breakdown" class="mb-12" data-observe>
+  <div class="text-center mb-8">
+    <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+      {title}
+    </h2>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      {subtitle}
+    </p>
+  </div>
+
+  <!-- Interactive ingredient cards (enhanced by JavaScript) -->
+  <div id="ingredient-cards-container" data-ingredient-cards>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-observe>
+      {
+        ingredients.map((ingredient, index) => (
+          <IngredientCard
+            ingredient={ingredient}
+            animationDelay={index * 100}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

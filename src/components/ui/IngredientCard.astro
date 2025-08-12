@@ -1,0 +1,51 @@
+---
+export interface Props {
+  ingredient: {
+    name: string;
+    dosage: string;
+    purpose: string;
+    description: string;
+    benefits: string[];
+  };
+  animationDelay?: number;
+}
+
+const {
+  ingredient,
+  animationDelay = 0
+} = Astro.props;
+---
+
+<div
+  class="card ingredient-card hover:shadow-lg cursor-pointer transition-all duration-300 hover:transform hover:scale-[1.02]"
+  style={`animation-delay: ${animationDelay}ms;`}
+  data-ingredient={ingredient.name}
+>
+  <div class="card-header">
+    <div class="flex items-center justify-between mb-2">
+      <h4 class="card-title text-lg">{ingredient.name}</h4>
+      <div class="badge badge-outline bg-nbs-primary/10 text-nbs-primary border-nbs-primary">
+        {ingredient.dosage}
+      </div>
+    </div>
+    <p class="card-description text-nbs-accent font-medium">
+      {ingredient.purpose}
+    </p>
+  </div>
+  <div class="card-content">
+    <p class="text-muted-foreground mb-4">
+      {ingredient.description}
+    </p>
+    <div class="space-y-1">
+      <h5 class="font-medium text-foreground">Key Benefits:</h5>
+      <ul class="text-sm text-muted-foreground space-y-1">
+        {ingredient.benefits.map((benefit) => (
+          <li class="flex items-center gap-2">
+            <div class="w-1.5 h-1.5 bg-nbs-secondary rounded-full" />
+            {benefit}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>

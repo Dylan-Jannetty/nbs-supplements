@@ -1,0 +1,86 @@
+---
+import Newsletter from "../Newsletter.astro";
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+}
+
+const {
+  title = "Get Exclusive Offers & Supplement Science",
+  subtitle = "Join 1,000+ health enthusiasts receiving evidence-based supplement insights, early access to new products, and exclusive discounts.",
+  buttonText = "Join the Community"
+} = Astro.props;
+
+// Value propositions data
+const valuePropositions = [
+  {
+    text: "Early Access",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    colorClass: "nbs-primary",
+    justifyClass: "justify-center sm:justify-start"
+  },
+  {
+    text: "Supplement Education",
+    icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+    colorClass: "nbs-secondary",
+    justifyClass: "justify-center sm:justify-center"
+  },
+  {
+    text: "Exclusive Discounts",
+    icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1",
+    colorClass: "nbs-accent",
+    justifyClass: "justify-center sm:justify-end"
+  }
+];
+---
+
+<section class="py-16 lg:py-20 bg-gradient-to-br from-nbs-primary/5 to-nbs-secondary/5">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl lg:text-4xl font-bold text-nbs-trust mb-4">
+        {title.split(' ').slice(0, -2).join(' ')} <span class="gradient-text">{title.split(' ').slice(-2).join(' ')}</span>
+      </h2>
+      <p class="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+        {subtitle}
+      </p>
+
+      <!-- Value Propositions -->
+      <div class="grid sm:grid-cols-3 gap-6 mb-8">
+        {valuePropositions.map((prop) => (
+          <div class={`flex items-center gap-3 ${prop.justifyClass}`}>
+            <div class={`w-8 h-8 bg-${prop.colorClass}/10 rounded-full flex items-center justify-center`}>
+              <svg
+                class={`w-4 h-4 text-${prop.colorClass}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d={prop.icon}
+                ></path>
+              </svg>
+            </div>
+            <span class="text-sm text-muted-foreground">{prop.text}</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- Newsletter Component -->
+      <div class="max-w-lg mx-auto">
+        <Newsletter
+          size="lg"
+          variant="card"
+          title=""
+          description=""
+          buttonText={buttonText}
+          showConsent={true}
+        />
+      </div>
+    </div>
+  </div>
+</section>

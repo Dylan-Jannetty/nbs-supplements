@@ -141,27 +141,6 @@ class EnhancedProductFeatures {
     this.socialProofIndex = 0;
   }
 
-  createNavigationDots() {
-    const sections = ['ingredient-breakdown', 'reviews', 'faq'];
-    const navContainer = document.createElement('div');
-    navContainer.className = 'nav-dots fixed left-4 top-1/2 -translate-y-1/2 z-30 hidden lg:block space-y-3';
-
-    sections.forEach((sectionId) => {
-      const dot = document.createElement('button');
-      dot.className = 'nav-dot w-3 h-3 rounded-full bg-muted hover:bg-nbs-primary transition-colors duration-200';
-      dot.setAttribute('aria-label', `Go to ${sectionId.replace('-', ' ')}`);
-      dot.setAttribute('data-target', sectionId);
-
-      dot.addEventListener('click', () => {
-        this.smoothScrollTo(sectionId);
-      });
-
-      navContainer.appendChild(dot);
-    });
-
-    document.body.appendChild(navContainer);
-    this.elements.navigationDots = navContainer;
-  }
 
   enhanceIngredientCards() {
     // Find ingredient cards container or create it
@@ -350,23 +329,6 @@ class EnhancedProductFeatures {
       this.elements.stickyButton.classList.add('translate-y-16', 'opacity-0');
       this.elements.stickyButton.classList.remove('translate-y-0', 'opacity-100');
     }
-  }
-
-  updateNavigationDots() {
-    const dots = this.elements.navigationDots?.querySelectorAll('.nav-dot');
-    if (!dots) return;
-
-    const sections = ['ingredient-breakdown', 'reviews', 'faq'];
-    sections.forEach((sectionId, index) => {
-      const section = document.getElementById(sectionId);
-      if (section && dots[index]) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 100 && rect.bottom >= 100) {
-          dots.forEach(d => d.classList.remove('active', 'bg-nbs-primary'));
-          dots[index].classList.add('active', 'bg-nbs-primary');
-        }
-      }
-    });
   }
 
   // Event Handlers

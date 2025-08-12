@@ -1,0 +1,33 @@
+---
+export interface Props {
+  text: string;
+  icon: string;
+  fill?: boolean;
+}
+
+const {
+  text,
+  icon,
+  fill = false
+} = Astro.props;
+---
+
+<div class="trust-signal flex-1 sm:flex-initial">
+  <svg
+    class="w-5 h-5 flex-shrink-0"
+    fill={fill ? "currentColor" : "none"}
+    stroke={fill ? "none" : "currentColor"}
+    viewBox={fill ? "0 0 20 20" : "0 0 24 24"}
+    aria-hidden="true"
+  >
+    <path
+      stroke-linecap={fill ? undefined : "round"}
+      stroke-linejoin={fill ? undefined : "round"}
+      stroke-width={fill ? undefined : "2"}
+      fill-rule={fill ? "evenodd" : undefined}
+      clip-rule={fill ? "evenodd" : undefined}
+      d={icon}
+    ></path>
+  </svg>
+  <span class="truncate">{text}</span>
+</div>

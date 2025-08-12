@@ -7,10 +7,10 @@
 const throttle = (func, delay) => {
   let timeoutId;
   let lastExecTime = 0;
-  
+
   return (...args) => {
     const currentTime = Date.now();
-    
+
     if (currentTime - lastExecTime > delay) {
       func(...args);
       lastExecTime = currentTime;
@@ -67,9 +67,9 @@ class PurchaseTracker {
       const scrollTop = window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = Math.min(100, (scrollTop / docHeight) * 100);
-      
+
       this.metrics.scrollDepth = Math.max(this.metrics.scrollDepth, scrollPercent);
-      
+
       // Trigger events at key milestones
       if (scrollPercent >= 25 && !this.milestones?.quarter) {
         this.milestones = { ...this.milestones, quarter: true };
@@ -102,7 +102,7 @@ class PurchaseTracker {
     ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
     ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
     ripple.classList.add('ripple');
-    
+
     const style = document.createElement('style');
     style.textContent = `
       .ripple {
@@ -120,16 +120,16 @@ class PurchaseTracker {
         }
       }
     `;
-    
+
     if (!document.head.querySelector('style[data-ripple]')) {
       style.setAttribute('data-ripple', 'true');
       document.head.appendChild(style);
     }
-    
+
     button.style.position = 'relative';
     button.style.overflow = 'hidden';
     button.appendChild(ripple);
-    
+
     setTimeout(() => {
       ripple.remove();
     }, 600);
@@ -154,7 +154,6 @@ class PurchaseTracker {
 class SmoothScrollManager {
   constructor() {
     this.setupSmoothScrolling();
-    this.createNavigationDots();
   }
 
   setupSmoothScrolling() {
@@ -164,7 +163,7 @@ class SmoothScrollManager {
         e.preventDefault();
         const targetId = anchor.getAttribute('href').substring(1);
         const targetElement = document.getElementById(targetId);
-        
+
         if (targetElement) {
           const headerOffset = 80;
           const elementPosition = targetElement.getBoundingClientRect().top;
@@ -180,47 +179,6 @@ class SmoothScrollManager {
         }
       });
     });
-  }
-
-  createNavigationDots() {
-    const sections = ['ingredient-breakdown', 'reviews', 'faq'];
-    const navContainer = document.createElement('div');
-    navContainer.className = 'nav-dots fixed left-4 top-1/2 -translate-y-1/2 z-30 hidden lg:block space-y-3';
-
-    sections.forEach((sectionId, index) => {
-      const dot = document.createElement('button');
-      dot.className = 'nav-dot w-3 h-3 rounded-full bg-muted hover:bg-nbs-primary transition-colors duration-200';
-      dot.setAttribute('aria-label', `Go to ${sectionId.replace('-', ' ')}`);
-      dot.setAttribute('data-target', sectionId);
-      
-      dot.addEventListener('click', () => {
-        const targetElement = document.getElementById(sectionId);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-
-      navContainer.appendChild(dot);
-    });
-
-    document.body.appendChild(navContainer);
-
-    // Update active dot on scroll
-    const updateActiveDot = throttle(() => {
-      const dots = navContainer.querySelectorAll('.nav-dot');
-      sections.forEach((sectionId, index) => {
-        const section = document.getElementById(sectionId);
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            dots.forEach(d => d.classList.remove('active'));
-            dots[index].classList.add('active');
-          }
-        }
-      });
-    }, 100);
-
-    window.addEventListener('scroll', updateActiveDot, { passive: true });
   }
 }
 
@@ -244,7 +202,7 @@ class AnimationManager {
           setTimeout(() => {
             entry.target.classList.add('animate-in');
           }, index * 100);
-          
+
           observer.unobserve(entry.target);
         }
       });
@@ -268,10 +226,10 @@ class PerformanceMonitor {
   setupPerformanceTracking() {
     // Monitor Core Web Vitals
     this.observePerformanceMetrics();
-    
+
     // Track resource loading
     this.trackResourceTiming();
-    
+
     // Monitor user interactions
     this.trackInteractionTiming();
   }
@@ -307,7 +265,7 @@ class PerformanceMonitor {
     window.addEventListener('load', () => {
       const resources = performance.getEntriesByType('resource');
       const slowResources = resources.filter(r => r.duration > 1000);
-      
+
       this.metrics.resourceCount = resources.length;
       this.metrics.slowResourceCount = slowResources.length;
       this.metrics.totalResourceTime = resources.reduce((sum, r) => sum + r.duration, 0);
@@ -316,7 +274,7 @@ class PerformanceMonitor {
 
   trackInteractionTiming() {
     let interactionCount = 0;
-    
+
     ['click', 'touch', 'scroll'].forEach(eventType => {
       document.addEventListener(eventType, () => {
         interactionCount++;
@@ -452,7 +410,7 @@ class SocialProofManager {
 
     // Animate in
     container.style.transform = 'translateX(0)';
-    
+
     // Hide after 5 seconds
     setTimeout(() => {
       container.style.transform = 'translateX(-100%)';
@@ -465,7 +423,7 @@ class SocialProofManager {
 // Initialize all enhancements when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Initializing product page enhancements...');
-  
+
   try {
     const purchaseTracker = new PurchaseTracker();
     const smoothScrollManager = new SmoothScrollManager();

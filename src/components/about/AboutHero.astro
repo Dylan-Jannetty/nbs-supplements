@@ -1,0 +1,57 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  missionTitle?: string;
+  missionText?: string;
+  badge?: string;
+}
+
+const {
+  title = "Meet the Team Behind NBS Supplements",
+  subtitle = "We're four passionate pharmacists who got tired of seeing an industry full of empty promises and proprietary blends. So we decided to do something about it.",
+  missionTitle = "Our Mission",
+  missionText = "To create the cleanest, most effective supplements on the market by combining pharmaceutical expertise with complete transparency. Every ingredient has a purpose, every dose is clinically backed, and every claim is backed by science.",
+  badge = "Est. 2022 • Pharmacist-Founded"
+} = Astro.props;
+---
+
+<!-- Hero Section -->
+<section class="py-12 lg:py-20">
+  <div class="max-w-4xl mx-auto text-center">
+    <span class="badge badge-secondary mb-6 bg-nbs-secondary/10 text-nbs-secondary">
+      {badge}
+    </span>
+    
+    <h1 class="text-4xl lg:text-6xl font-bold text-foreground mb-6">
+      {title.split(' ').slice(0, -2).join(' ')} <span class="text-nbs-primary">{title.split(' ').slice(-2).join(' ')}</span>
+    </h1>
+    
+    <p class="text-xl lg:text-2xl text-muted-foreground mb-8 leading-relaxed">
+      {subtitle.split('empty promises and proprietary blends')[0]}
+      <span class="text-nbs-accent font-semibold">empty promises and proprietary blends</span>
+      {subtitle.split('empty promises and proprietary blends')[1]}
+    </p>
+
+    <!-- Team Photo Placeholder -->
+    <div class="relative max-w-3xl mx-auto mb-8">
+      <div class="aspect-video bg-gradient-to-br from-nbs-primary/10 to-nbs-secondary/10 rounded-2xl border-2 border-dashed border-nbs-primary/20 flex items-center justify-center">
+        <div class="text-center">
+          <svg class="w-16 h-16 mx-auto mb-4 text-nbs-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <p class="text-muted-foreground">Team Photo Coming Soon</p>
+          <p class="text-sm text-muted-foreground">Professional team photography in progress</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Statement -->
+    <div class="bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 rounded-2xl p-8 lg:p-12">
+      <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">{missionTitle}</h2>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        {missionText}
+      </p>
+    </div>
+  </div>
+</section>

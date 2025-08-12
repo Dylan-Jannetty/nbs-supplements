@@ -94,20 +94,17 @@
 .flex-stable {
   display: flex;
   min-height: max-content;
-  contain: layout;
 }
 
 .flex-wrap-stable {
   display: flex;
   flex-wrap: wrap;
   min-height: max-content;
-  contain: layout style;
 }
 
 /* Grid containers with minimum track sizes */
 .grid-stable {
   display: grid;
-  contain: layout;
 }
 
 /* ========================================
@@ -155,13 +152,17 @@
 /* Trust badges with exact dimensions */
 .trust-badge-stable {
   min-height: 2.5rem;
-  min-width: 8rem;
+  min-width: 0; /* Allow shrinking on mobile */
+  max-width: 100%; /* Prevent overflow */
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   white-space: nowrap;
-  contain: layout size;
+  contain: layout;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Newsletter forms with reserved space */
@@ -204,6 +205,27 @@
 /* ========================================
    RESPONSIVE STABILITY
    ======================================== */
+
+/* Mobile first responsive approach */
+@media (max-width: 640px) {
+  .trust-badge-stable {
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    min-height: 2rem;
+  }
+  
+  .flex-stable,
+  .flex-wrap-stable {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .responsive-container-stable {
+    min-height: auto;
+    padding: 1rem;
+  }
+}
 
 /* Responsive containers with reserved space */
 @media (min-width: 640px) {

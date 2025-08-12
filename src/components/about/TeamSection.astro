@@ -1,0 +1,64 @@
+---
+import { Separator } from '../ui/separator.tsx';
+import TeamMemberCard from "../ui/TeamMemberCard.astro";
+
+export interface Props {
+  teamMembers: Array<{
+    name: string;
+    role: string;
+    experience: string;
+    specialization: string;
+    education: string;
+    image: string;
+    bio: string;
+  }>;
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  teamMembers,
+  title = "Meet Your Formulation Team",
+  subtitle = "Four licensed pharmacists with a combined 50+ years of experience in pharmaceutical science, supplement formulation, and clinical research."
+} = Astro.props;
+---
+
+<!-- Team Credentials -->
+<section class="py-16 lg:py-20 bg-muted/30">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+        {title}
+      </h2>
+      <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
+        {subtitle}
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {teamMembers.map((member) => (
+        <TeamMemberCard member={member} />
+      ))}
+    </div>
+
+    <!-- Credentials Summary -->
+    <div class="mt-12 text-center">
+      <div class="inline-flex items-center gap-6 bg-background rounded-2xl p-6 shadow-sm border">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-nbs-primary">50+</div>
+          <div class="text-sm text-muted-foreground">Years Combined Experience</div>
+        </div>
+        <Separator orientation="vertical" class="h-12" />
+        <div class="text-center">
+          <div class="text-2xl font-bold text-nbs-secondary">4</div>
+          <div class="text-sm text-muted-foreground">Licensed PharmDs</div>
+        </div>
+        <Separator orientation="vertical" class="h-12" />
+        <div class="text-center">
+          <div class="text-2xl font-bold text-nbs-accent">100%</div>
+          <div class="text-sm text-muted-foreground">Science-Based Formulations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

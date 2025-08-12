@@ -1,0 +1,98 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = "Certifications & Quality Assurance",
+  subtitle = "Your health and safety are our top priorities. Every product meets the highest industry standards.",
+} = Astro.props;
+
+// Trust badges data
+const badges = [
+  {
+    title: "Third-Party Tested",
+    subtitle: "NSF/USP Standards",
+    icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
+    colorClass: "certification-gold",
+    fill: false,
+  },
+  {
+    title: "Made in USA",
+    subtitle: "American Quality",
+    icon: "M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z",
+    colorClass: "destructive",
+    fill: true,
+  },
+  {
+    title: "Pharmacist Formulated",
+    subtitle: "Medical Seal",
+    icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z",
+    colorClass: "nbs-primary",
+    fill: false,
+  },
+  {
+    title: "GMP Certified",
+    subtitle: "Quality Badge",
+    icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+    colorClass: "nbs-success",
+    fill: false,
+  },
+  {
+    title: "FDA Registered Facility",
+    subtitle: "Compliance Badge",
+    icon: "M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0-4h10m-5-5v5",
+    colorClass: "nbs-accent",
+    fill: false,
+  },
+];
+---
+
+<section class="py-16 lg:py-20">
+  <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-nbs-trust mb-4">
+          {title}
+        </h2>
+        <p class="text-lg text-muted-foreground">
+          {subtitle}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {
+          badges.map((badge) => (
+            <div class="certification-badge flex flex-col items-center text-center p-6 group hover:scale-105 transition-transform duration-200">
+              <div
+                class={`w-16 h-16 bg-${badge.colorClass}/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-${badge.colorClass}/20 transition-colors`}
+              >
+                <svg
+                  class={`w-8 h-8 text-${badge.colorClass}`}
+                  fill={badge.fill ? "currentColor" : "none"}
+                  stroke={badge.fill ? "none" : "currentColor"}
+                  viewBox={badge.fill ? "0 0 20 20" : "0 0 24 24"}
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap={badge.fill ? undefined : "round"}
+                    stroke-linejoin={badge.fill ? undefined : "round"}
+                    stroke-width={badge.fill ? undefined : "2"}
+                    fill-rule={badge.fill ? "evenodd" : undefined}
+                    clip-rule={badge.fill ? "evenodd" : undefined}
+                    d={badge.icon}
+                  />
+                </svg>
+              </div>
+              <h3 class={`font-semibold text-${badge.colorClass} mb-2`}>
+                {badge.title}
+              </h3>
+              <p class="text-xs text-muted-foreground">{badge.subtitle}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,98 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = "The NBS Difference",
+  subtitle = "We're pharmacists first, supplement makers second. Every decision is driven by science, not profit margins."
+} = Astro.props;
+
+// Value propositions data
+const valueProps = [
+  {
+    title: "Clean Formulations",
+    description: "No artificial additives, fillers, or unnecessary ingredients. Just what your body needs to perform.",
+    icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+    colorClass: "nbs-secondary"
+  },
+  {
+    title: "Clinically Dosed Ingredients", 
+    description: "Every ingredient meets or exceeds clinical research doses for maximum effectiveness.",
+    icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+    colorClass: "nbs-primary"
+  },
+  {
+    title: "Third-Party Tested",
+    description: "Independent lab verification for purity, potency, and safety with every batch.",
+    icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
+    colorClass: "nbs-accent"
+  },
+  {
+    title: "Pharmacist Formulated",
+    description: "Developed by licensed pharmacists with deep understanding of ingredient interactions.",
+    icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z",
+    colorClass: "nbs-natural"
+  },
+  {
+    title: "All-Natural Flavorings & Sweeteners",
+    description: "Monk fruit sweetener and natural flavors - no artificial colors or synthetic additives.",
+    icon: "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z",
+    colorClass: "nbs-success"
+  },
+  {
+    title: "Made in USA",
+    description: "Manufactured in FDA-registered facilities with strict quality control standards.",
+    icon: "M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z",
+    colorClass: "destructive",
+    fill: true
+  }
+];
+---
+
+<section class="py-16 lg:py-20 bg-muted/30">
+  <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold text-nbs-trust mb-4">
+          {title}
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
+          {subtitle}
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {valueProps.map((prop) => (
+          <div class="clinical-card p-6 text-center group hover:scale-105 transition-transform duration-200">
+            <div class={`w-14 h-14 bg-${prop.colorClass}/10 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-${prop.colorClass}/20 transition-colors`}>
+              <svg
+                class={`w-7 h-7 text-${prop.colorClass}`}
+                fill={prop.fill ? "currentColor" : "none"}
+                stroke={prop.fill ? "none" : "currentColor"}
+                viewBox={prop.fill ? "0 0 20 20" : "0 0 24 24"}
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap={prop.fill ? undefined : "round"}
+                  stroke-linejoin={prop.fill ? undefined : "round"}
+                  stroke-width={prop.fill ? undefined : "2"}
+                  fill-rule={prop.fill ? "evenodd" : undefined}
+                  clip-rule={prop.fill ? "evenodd" : undefined}
+                  d={prop.icon}
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-nbs-trust mb-3">
+              {prop.title}
+            </h3>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              {prop.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

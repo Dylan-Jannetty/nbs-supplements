@@ -1,0 +1,178 @@
+---
+export interface Props {
+  storyTitle?: string;
+  storyContent?: string[];
+  philosophyTitle?: string;
+  philosophyContent?: string[];
+  differentiators?: Array<{
+    title: string;
+    description: string;
+    content: string;
+    icon: string;
+    colorClass: string;
+  }>;
+}
+
+const {
+  storyTitle = "Why We Started NBS",
+  storyContent = [
+    "After years of working in pharmacy and seeing what goes into most supplements, we were honestly disgusted. Proprietary blends that hide underdosed ingredients. Artificial fillers that serve no purpose except to bulk up capsules. Marketing claims with zero scientific backing.",
+    "We knew there had to be a better way. As pharmacists, we understand bioavailability, drug interactions, and what actually works at the cellular level. We decided to use that knowledge to create supplements we'd actually give to our own families.",
+    "NBS isn't just another supplement company – we're pharmacists first, entrepreneurs second. Every decision we make is filtered through our training and our commitment to \"do no harm.\""
+  ],
+  philosophyTitle = "Our Philosophy: Natural is Best",
+  philosophyContent = [
+    "We believe your body knows the difference between natural and synthetic ingredients. That's why we source natural compounds whenever possible – from guarana extract instead of synthetic caffeine to monk fruit instead of artificial sweeteners.",
+    "But \"natural\" doesn't mean \"weak.\" Every natural ingredient we choose is backed by clinical research and dosed at levels that actually work. We're not interested in fairy dusting or feel-good marketing.",
+    "Transparency is non-negotiable. We list every ingredient and its exact dose on our labels. No proprietary blends, no hidden fillers, no surprises. If you can't pronounce it or don't know why it's there, we probably won't use it."
+  ],
+  differentiators = [
+    {
+      title: "Expert Knowledge",
+      description: "50+ combined years of pharmaceutical experience",
+      content: "We understand bioavailability, drug interactions, and metabolism at a level that typical supplement companies simply don't possess.",
+      icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
+      colorClass: "nbs-primary"
+    },
+    {
+      title: "All-Natural Ingredients",
+      description: "Nature's compounds, science's validation",
+      content: "We source natural ingredients that your body recognizes and can efficiently process, avoiding synthetic alternatives whenever possible.",
+      icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+      colorClass: "nbs-secondary"
+    },
+    {
+      title: "Transparent Formulations",
+      description: "Every ingredient and dose clearly labeled",
+      content: "No proprietary blends or hidden formulas. You know exactly what you're getting and why each ingredient is included.",
+      icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
+      colorClass: "nbs-accent"
+    }
+  ]
+} = Astro.props;
+---
+
+<!-- Company Story Sections -->
+<section class="py-16 lg:py-20">
+  <div class="max-w-6xl mx-auto">
+    
+    <!-- Why We Started NBS -->
+    <div class="mb-16 lg:mb-24">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-6">
+            {storyTitle}
+          </h2>
+          <div class="space-y-4 text-lg text-muted-foreground leading-relaxed">
+            {storyContent.map((paragraph, index) => (
+              <p>
+                {index === 0 ? (
+                  <>
+                    {paragraph.split('Proprietary blends')[0]}
+                    <span class="text-nbs-accent font-semibold">Proprietary blends</span>
+                    {paragraph.split('Proprietary blends')[1].split('Artificial fillers')[0]}
+                    <span class="text-nbs-accent font-semibold">Artificial fillers</span>
+                    {paragraph.split('Artificial fillers')[1].split('Marketing claims')[0]}
+                    <span class="text-nbs-accent font-semibold">Marketing claims</span>
+                    {paragraph.split('Marketing claims')[1]}
+                  </>
+                ) : index === 2 ? (
+                  <>
+                    <span class="text-nbs-primary font-semibold">NBS isn't just another supplement company</span>
+                    {paragraph.split('NBS isn\'t just another supplement company')[1]}
+                  </>
+                ) : (
+                  paragraph
+                )}
+              </p>
+            ))}
+          </div>
+        </div>
+        <div class="order-first lg:order-last">
+          <div class="aspect-square bg-gradient-to-br from-nbs-primary/10 to-nbs-accent/10 rounded-2xl border border-nbs-primary/20 flex items-center justify-center">
+            <div class="text-center">
+              <svg class="w-20 h-20 mx-auto mb-4 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              <p class="text-nbs-primary font-semibold">The "Aha" Moment</p>
+              <p class="text-sm text-muted-foreground">Realizing we could do better</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our Philosophy -->
+    <div class="mb-16 lg:mb-24">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="aspect-square bg-gradient-to-br from-nbs-secondary/10 to-nbs-natural/10 rounded-2xl border border-nbs-secondary/20 flex items-center justify-center">
+          <div class="text-center">
+            <svg class="w-20 h-20 mx-auto mb-4 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            <p class="text-nbs-secondary font-semibold">Natural First</p>
+            <p class="text-sm text-muted-foreground">But effective always</p>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-6">
+            {philosophyTitle}
+          </h2>
+          <div class="space-y-4 text-lg text-muted-foreground leading-relaxed">
+            {philosophyContent.map((paragraph, index) => (
+              <p>
+                {index === 0 ? (
+                  <>
+                    {paragraph.split('natural compounds')[0]}
+                    <span class="text-nbs-secondary font-semibold">natural compounds</span>
+                    {paragraph.split('natural compounds')[1]}
+                  </>
+                ) : index === 2 ? (
+                  <>
+                    <span class="text-nbs-primary font-semibold">Transparency is non-negotiable.</span>
+                    {paragraph.split('Transparency is non-negotiable.')[1]}
+                  </>
+                ) : (
+                  paragraph
+                )}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What Makes Us Different -->
+    <div class="mb-16">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+          What Makes Us Different
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
+          We're not just another supplement company. We're pharmacists who happen to make supplements.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {differentiators.map((item) => (
+          <div class="card text-center hover:shadow-lg transition-all duration-200">
+            <div class="card-header">
+              <div class={`w-16 h-16 bg-${item.colorClass}/10 rounded-full flex items-center justify-center mx-auto mb-4`}>
+                <svg class={`w-8 h-8 text-${item.colorClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={item.icon} />
+                </svg>
+              </div>
+              <h3 class="card-title text-xl">{item.title}</h3>
+              <p class="card-description">{item.description}</p>
+            </div>
+            <div class="card-content">
+              <p class="text-muted-foreground">
+                {item.content}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

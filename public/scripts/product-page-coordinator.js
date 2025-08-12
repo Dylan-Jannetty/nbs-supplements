@@ -4,7 +4,7 @@
  */
 
 import { QuantitySelector } from './modules/quantity-selector.js';
-import { ProductComparison } from './modules/product-comparison.js';
+// import { ProductComparison } from './modules/product-comparison.js'; // TODO: Create this module
 import { PerformanceTracker } from './modules/performance-tracker.js';
 import { EnhancedProductFeatures } from './modules/enhanced-product-features.js';
 
@@ -102,9 +102,9 @@ export class ProductPageCoordinator {
       initPromises.push(this.initQuantitySelector());
     }
 
-    if (this.config.enableProductComparison) {
-      initPromises.push(this.initProductComparison());
-    }
+    // if (this.config.enableProductComparison) {
+    //   initPromises.push(this.initProductComparison());
+    // }
 
     if (this.config.enableEnhancedFeatures) {
       initPromises.push(this.initEnhancedFeatures());
@@ -121,9 +121,13 @@ export class ProductPageCoordinator {
         return;
       }
 
+      // Read configuration from data attributes or fallback to config
+      const basePrice = parseFloat(container.dataset.basePrice) || this.config.product.price;
+      const gumroadUrl = container.dataset.gumroadUrl || this.config.product.gumroadUrl;
+
       this.modules.quantitySelector = new QuantitySelector(container, {
-        basePrice: this.config.product.price,
-        gumroadUrl: this.config.product.gumroadUrl,
+        basePrice: basePrice,
+        gumroadUrl: gumroadUrl,
         onQuantityChange: (quantity, totalPrice, savings) => {
           this.handleQuantityChange(quantity, totalPrice, savings);
         }
@@ -135,33 +139,33 @@ export class ProductPageCoordinator {
     }
   }
 
-  async initProductComparison() {
-    try {
-      const container = document.querySelector(this.config.comparisonContainer);
-      if (!container) {
-        console.warn('Product comparison container not found:', this.config.comparisonContainer);
-        return;
-      }
+  // async initProductComparison() {
+  //   try {
+  //     const container = document.querySelector(this.config.comparisonContainer);
+  //     if (!container) {
+  //       console.warn('Product comparison container not found:', this.config.comparisonContainer);
+  //       return;
+  //     }
 
-      this.modules.productComparison = new ProductComparison(container, {
-        currentProduct: {
-          name: this.config.product.name,
-          price: this.config.product.price,
-          features: [
-            "Clinical doses",
-            "Natural ingredients",
-            "Third-party tested",
-            "Pharmacist formulated"
-          ],
-          rating: 4.8
-        }
-      });
+  //     this.modules.productComparison = new ProductComparison(container, {
+  //       currentProduct: {
+  //         name: this.config.product.name,
+  //         price: this.config.product.price,
+  //         features: [
+  //           "Clinical doses",
+  //           "Natural ingredients",
+  //           "Third-party tested",
+  //           "Pharmacist formulated"
+  //         ],
+  //         rating: 4.8
+  //       }
+  //     });
 
-      console.log('✓ Product Comparison initialized');
-    } catch (error) {
-      console.error('Failed to initialize Product Comparison:', error);
-    }
-  }
+  //     console.log('✓ Product Comparison initialized');
+  //   } catch (error) {
+  //     console.error('Failed to initialize Product Comparison:', error);
+  //   }
+  // }
 
   async initPerformanceTracker() {
     try {
@@ -205,12 +209,12 @@ export class ProductPageCoordinator {
     });
 
     // Listen for comparison interactions
-    document.addEventListener('comparisonToggled', (event) => {
-      const { expanded } = event.detail;
-      this.analytics.track('comparison_interaction', {
-        action: expanded ? 'expand' : 'collapse'
-      });
-    });
+    // document.addEventListener('comparisonToggled', (event) => {
+    //   const { expanded } = event.detail;
+    //   this.analytics.track('comparison_interaction', {
+    //     action: expanded ? 'expand' : 'collapse'
+    //   });
+    // });
 
     // Listen for performance session end
     document.addEventListener('performanceSessionEnd', (event) => {
