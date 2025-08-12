@@ -165,7 +165,6 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       /* Layout stability for hero section */
       .hero-section { 
         min-height: 60vh; 
-        contain: layout style;
       }
       
       /* Color variables for immediate paint */
@@ -192,14 +191,21 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
         min-height: 3rem; /* Reserve space for badges */
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
         gap: 0.75rem;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       
       .trust-signal {
         min-height: 2.5rem;
-        min-width: 8rem;
+        min-width: 0;
+        max-width: 100%;
         display: flex;
         align-items: center;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       
       /* Gradient text stability */
@@ -210,7 +216,6 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       
       /* Animation containment */
       .animate-slide-up {
-        contain: style layout;
         will-change: auto;
       }
     </style>
@@ -399,25 +404,27 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
     
   </head>
   
-  <body class={`min-h-screen bg-background font-sans antialiased ${bodyClass}`.trim()}>
-    <!-- Skip to main content link for accessibility -->
-    <a 
-      href="#main-content" 
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium"
-    >
-      Skip to main content
-    </a>
-    
-    <!-- Header -->
-    <Header />
-    
-    <!-- Main Content -->
-    <main id="main-content" class="flex-1">
-      <slot />
-    </main>
-    
-    <!-- Footer -->
-    <Footer />
+  <body class={`bg-background font-sans antialiased ${bodyClass}`.trim()}>
+    <div class="min-h-screen flex flex-col">
+      <!-- Skip to main content link for accessibility -->
+      <a 
+        href="#main-content" 
+        class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium"
+      >
+        Skip to main content
+      </a>
+      
+      <!-- Header -->
+      <Header />
+      
+      <!-- Main Content -->
+      <main id="main-content" class="flex-1">
+        <slot />
+      </main>
+      
+      <!-- Footer -->
+      <Footer />
+    </div>
     
     <!-- Theme Toggle Script -->
     <script>

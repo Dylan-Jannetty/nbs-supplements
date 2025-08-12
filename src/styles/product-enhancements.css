@@ -1,9 +1,6 @@
 /* Product Page Enhancements CSS */
 
 /* Smooth animations and transitions */
-* {
-  scroll-behavior: smooth;
-}
 
 /* Purchase button enhancements */
 .purchase-button {
@@ -97,6 +94,28 @@
 [data-observe].animate-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Fallback: Show content after 3 seconds if JavaScript doesn't load */
+[data-observe] {
+  animation: fallback-reveal 0.6s ease-in-out 3s both;
+}
+
+@keyframes fallback-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Immediate visibility for users who prefer reduced motion or if JavaScript is disabled */
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  [data-observe] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 /* Override conflicting global animate-in for data-observe elements */
@@ -209,59 +228,6 @@
   animation: slideInUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Navigation dots */
-.nav-dots {
-  position: fixed;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 30;
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .nav-dots {
-    display: block;
-  }
-}
-
-.nav-dot {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background: hsl(var(--muted));
-  margin: 0.75rem 0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.nav-dot:hover,
-.nav-dot.active {
-  background: hsl(var(--nbs-primary));
-  transform: scale(1.2);
-}
-
-.nav-dot::after {
-  content: '';
-  position: absolute;
-  left: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: hsl(var(--background));
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  border: 1px solid hsl(var(--border));
-}
-
-.nav-dot:hover::after {
-  opacity: 1;
-}
 
 /* Quantity selector enhancements */
 .quantity-option {
@@ -393,7 +359,6 @@
 @media print {
   .sticky-purchase,
   .progress-indicator,
-  .nav-dots,
   .modal-backdrop {
     display: none !important;
   }

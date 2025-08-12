@@ -7,11 +7,16 @@ import logo from "../images/logo.png";
 // Includes theme toggle, mobile menu, and accessibility features
 ---
 
-<header class="sticky top-0 z-50 w-full glass-effect border-b border-border/50">
+<!-- @ts-nocheck HTML template - Astro syntax, not React/JSX -->
+
+<header
+  class="sticky top-0 z-50 w-full glass-effect border-b border-border/50"
+  style="position: sticky; top: 0; z-index: 50;"
+>
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <!-- Logo and Brand -->
-      <div class="flex items-center">
+      <div class="flex items-center relative z-50">
         <a
           href="/"
           class="flex items-center space-x-2 text-foreground hover:text-nbs-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary rounded-md p-1"
@@ -60,7 +65,7 @@ import logo from "../images/logo.png";
       </nav>
 
       <!-- Right Side Actions -->
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center space-x-2 relative z-50">
         <!-- Theme Toggle -->
         <button
           id="theme-toggle"
@@ -172,56 +177,69 @@ import logo from "../images/logo.png";
       </div>
     </div>
 
-    <!-- Mobile Navigation Menu -->
+    <!-- Mobile Navigation Menu - Full Viewport Overlay -->
     <div
       id="mobile-menu"
-      class="md:hidden hidden border-t border-border/50 bg-background/95 backdrop-blur"
+      class="md:hidden fixed top-0 left-0 right-0 bottom-0 z-40 hidden bg-background/95 backdrop-blur-3xl"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="mobile-menu-toggle"
+      style="backdrop-filter: blur(60px); -webkit-backdrop-filter: blur(60px);"
     >
-      <div class="px-2 pt-2 pb-3 space-y-1">
+      <!-- Full Screen Navigation - 100vw x 100vh with Centered Items -->
+      <nav
+        class="flex flex-col w-screen h-screen justify-center items-center space-y-4 bg-background/90 backdrop-blur-xl shadow-2xl py-8"
+        role="navigation"
+        id="mobile-nav-container"
+      >
         <a
           href="/"
-          class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-nbs-primary hover:bg-nbs-primary/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary"
+          class="w-full max-w-md h-16 text-3xl font-semibold text-center text-foreground hover:text-nbs-primary transition-all duration-300 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary hover:bg-foreground/10 rounded-lg"
           role="menuitem"
         >
           Home
         </a>
         <a
-          href="/products"
-          class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-nbs-primary hover:bg-nbs-primary/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary"
+          href="/products/catalyst"
+          class="w-full max-w-md h-16 text-3xl font-semibold text-center text-foreground hover:text-nbs-primary transition-all duration-300 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary hover:bg-foreground/10 rounded-lg"
           role="menuitem"
         >
           Products
         </a>
         <a
           href="/about"
-          class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-nbs-primary hover:bg-nbs-primary/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary"
+          class="w-full max-w-md h-16 text-3xl font-semibold text-center text-foreground hover:text-nbs-primary transition-all duration-300 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary hover:bg-foreground/10 rounded-lg"
           role="menuitem"
         >
           About Us
         </a>
         <a
           href="/blog"
-          class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-nbs-primary hover:bg-nbs-primary/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary"
+          class="w-full max-w-md h-16 text-3xl font-semibold text-center text-foreground hover:text-nbs-primary transition-all duration-300 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary hover:bg-foreground/10 rounded-lg"
           role="menuitem"
         >
           Blog
         </a>
         <a
           href="/contact"
-          class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-nbs-primary hover:bg-nbs-primary/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary"
+          class="w-full max-w-md h-16 text-3xl font-semibold text-center text-foreground hover:text-nbs-primary transition-all duration-300 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nbs-primary hover:bg-foreground/10 rounded-lg"
           role="menuitem"
         >
           Contact
         </a>
-      </div>
+      </nav>
     </div>
   </div>
 </header>
 
 <script>
+  // TypeScript declarations for window properties
+  declare global {
+    interface Window {
+      toggleTheme?: () => void;
+    }
+  }
+
   // Theme toggle functionality
   function initThemeToggle() {
     const themeToggle = document.getElementById("theme-toggle");
@@ -234,13 +252,13 @@ import logo from "../images/logo.png";
       const isDark = document.documentElement.classList.contains("dark");
 
       if (isDark) {
-        sunIcon.classList.add("hidden");
-        moonIcon.classList.remove("hidden");
-        themeToggle.setAttribute("aria-pressed", "true");
+        sunIcon?.classList.add("hidden");
+        moonIcon?.classList.remove("hidden");
+        themeToggle?.setAttribute("aria-pressed", "true");
       } else {
-        sunIcon.classList.remove("hidden");
-        moonIcon.classList.add("hidden");
-        themeToggle.setAttribute("aria-pressed", "false");
+        sunIcon?.classList.remove("hidden");
+        moonIcon?.classList.add("hidden");
+        themeToggle?.setAttribute("aria-pressed", "false");
       }
     }
 
@@ -269,30 +287,42 @@ import logo from "../images/logo.png";
 
     let isOpen = false;
 
-    function toggleMobileMenu() {
-      isOpen = !isOpen;
+    function openMobileMenu() {
+      isOpen = true;
+      mobileMenu?.classList.remove("hidden");
+      hamburgerIcon?.classList.add("hidden");
+      xIcon?.classList.remove("hidden");
+      mobileMenuToggle?.setAttribute("aria-expanded", "true");
+      mobileMenuToggle?.setAttribute("aria-label", "Close mobile menu");
 
-      if (isOpen) {
-        mobileMenu.classList.remove("hidden");
-        hamburgerIcon.classList.add("hidden");
-        xIcon.classList.remove("hidden");
-        mobileMenuToggle.setAttribute("aria-expanded", "true");
-        mobileMenuToggle.setAttribute("aria-label", "Close mobile menu");
-
-        // Prevent body scroll when menu is open
-        document.body.style.overflow = "hidden";
-      } else {
-        mobileMenu.classList.add("hidden");
-        hamburgerIcon.classList.remove("hidden");
-        xIcon.classList.add("hidden");
-        mobileMenuToggle.setAttribute("aria-expanded", "false");
-        mobileMenuToggle.setAttribute("aria-label", "Open mobile menu");
-
-        // Restore body scroll
-        document.body.style.overflow = "";
+      // Focus management - focus first navigation link
+      const firstNavLink = mobileMenu?.querySelector("nav a");
+      if (firstNavLink && 'focus' in firstNavLink && typeof firstNavLink.focus === 'function') {
+        (firstNavLink as HTMLElement).focus();
       }
     }
 
+    function closeMobileMenu() {
+      isOpen = false;
+      mobileMenu?.classList.add("hidden");
+      hamburgerIcon?.classList.remove("hidden");
+      xIcon?.classList.add("hidden");
+      mobileMenuToggle?.setAttribute("aria-expanded", "false");
+      mobileMenuToggle?.setAttribute("aria-label", "Open mobile menu");
+
+      // Return focus to toggle button
+      mobileMenuToggle?.focus();
+    }
+
+    function toggleMobileMenu() {
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    }
+
+    // Event listeners
     mobileMenuToggle.addEventListener("click", toggleMobileMenu);
 
     // Close mobile menu when clicking on a link
@@ -300,7 +330,7 @@ import logo from "../images/logo.png";
     mobileLinks.forEach((link) => {
       link.addEventListener("click", () => {
         if (isOpen) {
-          toggleMobileMenu();
+          closeMobileMenu();
         }
       });
     });
@@ -308,32 +338,77 @@ import logo from "../images/logo.png";
     // Close mobile menu when pressing Escape key
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && isOpen) {
-        toggleMobileMenu();
+        closeMobileMenu();
       }
     });
 
-    // Close mobile menu when clicking outside
-    document.addEventListener("click", (e) => {
-      if (
-        isOpen &&
-        !mobileMenuToggle.contains(e.target) &&
-        !mobileMenu.contains(e.target)
-      ) {
-        toggleMobileMenu();
+    // Close mobile menu when clicking the blurred background
+    mobileMenu.addEventListener("click", (e) => {
+      if (e.target === mobileMenu) {
+        if (isOpen) {
+          closeMobileMenu();
+        }
       }
     });
+  }
+
+  // Force fixed positioning for reliable sticky behavior
+  function initStickyHeaderFallback() {
+    const header = document.querySelector("header");
+    if (!header) return;
+
+    // Force fixed positioning as the primary solution
+    function forceFixedPositioning() {
+      if (!header) return;
+      header.classList.add("fixed-fallback");
+      document.body.style.paddingTop = "4rem";
+
+      // Ensure header stays at top during all scroll events
+      let ticking = false;
+      function updateHeaderPosition() {
+        if (!header) return;
+        header.style.position = "fixed";
+        header.style.top = "0";
+        header.style.left = "0";
+        header.style.right = "0";
+        header.style.zIndex = "50";
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(updateHeaderPosition);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // Also update on resize
+      window.addEventListener("resize", updateHeaderPosition, {
+        passive: true,
+      });
+
+      // Initial positioning
+      updateHeaderPosition();
+    }
+
+    // Run immediately - don't wait for testing
+    forceFixedPositioning();
   }
 
   // Initialize components when DOM is loaded
   document.addEventListener("DOMContentLoaded", () => {
     initThemeToggle();
     initMobileMenu();
+    initStickyHeaderFallback();
   });
 
   // Re-initialize when navigating in SPA-like behavior
   document.addEventListener("astro:page-load", () => {
     initThemeToggle();
     initMobileMenu();
+    initStickyHeaderFallback();
   });
 </script>
 
@@ -358,16 +433,96 @@ import logo from "../images/logo.png";
     -webkit-backdrop-filter: blur(8px);
   }
 
-  /* Mobile menu slide animation */
+  /* Fixed header positioning - primary solution */
+  header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+    width: 100% !important;
+  }
+
+  /* Ensure body has proper padding for fixed header */
+  body {
+    padding-top: 4rem !important; /* Height of header */
+  }
+
+  /* Mobile menu full-screen animations */
   @media (max-width: 767px) {
     #mobile-menu {
-      transform: translateY(-10px);
       opacity: 0;
+      transition: opacity 0.3s ease-out;
     }
 
     #mobile-menu:not(.hidden) {
-      transform: translateY(0);
       opacity: 1;
+    }
+
+    /* Navigation container ease-in animation */
+    #mobile-nav-container {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+      transition:
+        opacity 0.5s ease-in,
+        transform 0.5s ease-in;
+    }
+
+    #mobile-menu:not(.hidden) #mobile-nav-container {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 0.1s;
+    }
+
+    /* Navigation items cascade animation */
+    #mobile-menu nav a {
+      opacity: 0;
+      transform: translateY(15px);
+      transition:
+        opacity 0.3s ease-out,
+        transform 0.3s ease-out;
+    }
+
+    #mobile-menu:not(.hidden) nav a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered animation delay for each nav item (after container) */
+    #mobile-menu:not(.hidden) nav a:nth-child(1) {
+      transition-delay: 0.3s;
+    }
+    #mobile-menu:not(.hidden) nav a:nth-child(2) {
+      transition-delay: 0.4s;
+    }
+    #mobile-menu:not(.hidden) nav a:nth-child(3) {
+      transition-delay: 0.5s;
+    }
+    #mobile-menu:not(.hidden) nav a:nth-child(4) {
+      transition-delay: 0.6s;
+    }
+    #mobile-menu:not(.hidden) nav a:nth-child(5) {
+      transition-delay: 0.7s;
+    }
+
+    /* Clean hover effects for transparent items */
+    #mobile-menu nav a:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-menu,
+    #mobile-nav-container,
+    #mobile-menu nav a {
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    #mobile-menu nav a:hover {
+      transform: none !important;
     }
   }
 </style>

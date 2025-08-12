@@ -1,0 +1,44 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  colorClass?: string;
+  fill?: boolean;
+}
+
+const {
+  title,
+  description,
+  icon,
+  colorClass = "nbs-primary",
+  fill = false
+} = Astro.props;
+---
+
+<div class="clinical-card p-6 text-center group hover:scale-105 transition-transform duration-200">
+  <div class={`w-14 h-14 bg-${colorClass}/10 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-${colorClass}/20 transition-colors`}>
+    <svg
+      class={`w-7 h-7 text-${colorClass}`}
+      fill={fill ? "currentColor" : "none"}
+      stroke={fill ? "none" : "currentColor"}
+      viewBox={fill ? "0 0 20 20" : "0 0 24 24"}
+      aria-hidden="true"
+    >
+      <path
+        stroke-linecap={fill ? undefined : "round"}
+        stroke-linejoin={fill ? undefined : "round"}
+        stroke-width={fill ? undefined : "2"}
+        fill-rule={fill ? "evenodd" : undefined}
+        clip-rule={fill ? "evenodd" : undefined}
+        d={icon}
+      ></path>
+    </svg>
+  </div>
+  <h3 class="text-lg font-semibold text-nbs-trust mb-3">
+    {title}
+  </h3>
+  <p class="text-sm text-muted-foreground leading-relaxed">
+    {description}
+  </p>
+</div>

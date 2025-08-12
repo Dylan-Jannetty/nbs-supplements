@@ -234,8 +234,25 @@
   
   html {
     scroll-behavior: smooth;
-    /* Prevent horizontal scroll on mobile */
-    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+  
+  /* Comprehensive mobile overflow prevention - only on mobile */
+  @media (max-width: 768px) {
+    html,
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+  }
+  
+  /* Ensure all elements respect viewport width */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    max-width: 100%;
   }
   
   /* Fluid Typography Scale - Pharmaceutical/Medical Focus */
@@ -366,7 +383,6 @@
   
   a:hover {
     color: hsl(var(--nbs-accent));
-    text-decoration: underline;
   }
   
   /* Strong and emphasis */
@@ -474,9 +490,12 @@
     font-weight: 500;
     font-size: 0.875rem;
     min-height: 2.5rem; /* Reserve exact height */
-    min-width: fit-content; /* Prevent collapsing */
-    contain: layout; /* Isolate layout changes */
+    min-width: 0; /* Allow shrinking on mobile */
+    max-width: 100%; /* Prevent overflow */
     white-space: nowrap; /* Prevent text wrapping shifts */
+    box-sizing: border-box; /* Include padding in width calculation */
+    overflow: hidden; /* Prevent content overflow */
+    text-overflow: ellipsis; /* Show ellipsis if text is too long */
   }
   
   /* SVG icon containers with reserved space */
@@ -494,7 +513,6 @@
   
   .animate-slide-up {
     animation: fade-in-stable 0.6s ease-out;
-    contain: layout style; /* Prevent layout impacts */
   }
   
   .animate-scale-in {
@@ -885,8 +903,6 @@
     border-color 200ms ease-in-out,
     box-shadow 150ms ease-in-out,
     transform 150ms ease-in-out;
-  /* Prevent layout shifts during transitions */
-  contain: layout;
 }
 
 /* Override contain for flex/grid containers */
@@ -917,17 +933,43 @@
   contain: layout style;
 }
 
-/* Image loading optimization */
+/* Image loading optimization with mobile constraints */
 img {
   display: block;
   max-width: 100%;
   height: auto;
+  box-sizing: border-box;
+}
+
+/* Flex container mobile constraints */
+.flex, [class*="flex"], .grid, [class*="grid"] {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Container classes mobile safety */
+.container {
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Button and interactive element mobile constraints */
+.btn, button, a, input, textarea, select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Card and component containers */
+.card, .clinical-card, .badge, .certification-badge {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
 }
 
 /* Prevent shifts from dynamic content */
 .dynamic-content {
   min-height: 3rem; /* Reserve space for content */
-  contain: layout;
 }
 
 /* Loading state with proper dimensions */
@@ -940,6 +982,35 @@ img {
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+/* Mobile responsive adjustments for trust signals */
+@media (max-width: 640px) {
+  .trust-signal {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem; /* Slightly smaller on mobile */
+    min-height: 2rem; /* Reduce height on mobile */
+    flex: 1 1 auto; /* Allow flexible sizing */
+  }
+  
+  .trust-badge-container {
+    flex-direction: column; /* Stack vertically on small screens */
+    gap: 0.5rem;
+    align-items: stretch; /* Full width items */
+  }
+}
+
+/* Medium screens - allow some wrapping */
+@media (min-width: 641px) and (max-width: 768px) {
+  .trust-badge-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .trust-signal {
+    flex: 0 1 auto;
+    min-width: 120px; /* Minimum readable size */
+  }
 }
 
 /* Touch-friendly interactive elements - WCAG 2.2 compliance */

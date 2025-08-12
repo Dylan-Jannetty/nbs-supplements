@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Separator } from '../components/ui/separator.tsx';
+import AboutHero from '../components/about/AboutHero.astro';
+import CompanyStory from '../components/about/CompanyStory.astro';
+import TeamSection from '../components/about/TeamSection.astro';
 
 // SEO data
 const seoData = {
@@ -10,7 +12,7 @@ const seoData = {
   canonicalUrl: "https://supplements-nbs.com/about"
 };
 
-// Team member data (placeholder for now)
+// Team member data
 const teamMembers = [
   {
     name: "Dr. Sarah Johnson, PharmD",
@@ -50,87 +52,6 @@ const teamMembers = [
   }
 ];
 
-// Process steps for product development
-const developmentProcess = [
-  {
-    step: 1,
-    title: "Research & Analysis",
-    description: "We analyze peer-reviewed studies and clinical research to identify effective ingredients and optimal dosing.",
-    icon: "research",
-    duration: "2-3 months"
-  },
-  {
-    step: 2,
-    title: "Formulation Design",
-    description: "Our pharmacists create precise formulations using clinical doses, avoiding fillers and unnecessary additives.",
-    icon: "formulation",
-    duration: "1-2 months"
-  },
-  {
-    step: 3,
-    title: "Community Feedback",
-    description: "We share our formulation plans with our community of athletes and fitness enthusiasts for input.",
-    icon: "community",
-    duration: "2-4 weeks"
-  },
-  {
-    step: 4,
-    title: "Manufacturing & Testing",
-    description: "Products are manufactured in FDA-registered facilities and undergo rigorous third-party testing.",
-    icon: "testing",
-    duration: "4-6 weeks"
-  },
-  {
-    step: 5,
-    title: "Quality Verification",
-    description: "Final quality checks ensure purity, potency, and consistency before any product reaches customers.",
-    icon: "verification",
-    duration: "1-2 weeks"
-  }
-];
-
-// Future products roadmap
-const futureProducts = [
-  {
-    name: "Flux",
-    category: "Hydration Formula",
-    description: "Advanced electrolyte blend with natural coconut water and essential minerals for optimal hydration.",
-    timeline: "Coming Q2 2025",
-    keyIngredients: ["Coconut Water Powder", "Pink Himalayan Salt", "Magnesium Glycinate", "Potassium Citrate"]
-  },
-  {
-    name: "Synapse",
-    category: "Nootropic Blend",
-    description: "Clean cognitive enhancer featuring Lion's Mane, Bacopa Monnieri, and other natural nootropics.",
-    timeline: "Coming Q4 2025", 
-    keyIngredients: ["Lion's Mane Extract", "Bacopa Monnieri", "Rhodiola Rosea", "Alpha-GPC"]
-  }
-];
-
-// Customer testimonials specific to company/team
-const testimonials = [
-  {
-    name: "Alex Rodriguez",
-    role: "Personal Trainer",
-    text: "Finally, a supplement company run by people who actually understand what they're putting in their products. The transparency is refreshing.",
-    rating: 5,
-    location: "New York, NY"
-  },
-  {
-    name: "Maria Gonzalez",
-    role: "Gym Owner",
-    text: "I've recommended NBS to all my members. Knowing pharmacists are behind the formulations gives me confidence in the products.",
-    rating: 5,
-    location: "Newark, NJ"
-  },
-  {
-    name: "James Wilson",
-    role: "Amateur Bodybuilder",
-    text: "The team at NBS actually responds to emails and explains their ingredient choices. That level of care is rare in this industry.",
-    rating: 5,
-    location: "Philadelphia, PA"
-  }
-];
 ---
 
 <BaseLayout 
@@ -201,275 +122,16 @@ const testimonials = [
     }
   </script>
 
-
   <main class="container mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Hero Section -->
-    <section class="py-12 lg:py-20">
-      <div class="max-w-4xl mx-auto text-center">
-        <span class="badge badge-secondary mb-6 bg-nbs-secondary/10 text-nbs-secondary">
-          Est. 2022 • Pharmacist-Founded
-        </span>
-        
-        <h1 class="text-4xl lg:text-6xl font-bold text-foreground mb-6">
-          Meet the Team Behind <span class="text-nbs-primary">NBS Supplements</span>
-        </h1>
-        
-        <p class="text-xl lg:text-2xl text-muted-foreground mb-8 leading-relaxed">
-          We're four passionate pharmacists who got tired of seeing an industry full of 
-          <span class="text-nbs-accent font-semibold">empty promises and proprietary blends</span>. 
-          So we decided to do something about it.
-        </p>
-
-        <!-- Team Photo Placeholder -->
-        <div class="relative max-w-3xl mx-auto mb-8">
-          <div class="aspect-video bg-gradient-to-br from-nbs-primary/10 to-nbs-secondary/10 rounded-2xl border-2 border-dashed border-nbs-primary/20 flex items-center justify-center">
-            <div class="text-center">
-              <svg class="w-16 h-16 mx-auto mb-4 text-nbs-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              <p class="text-muted-foreground">Team Photo Coming Soon</p>
-              <p class="text-sm text-muted-foreground">Professional team photography in progress</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mission Statement -->
-        <div class="bg-gradient-to-r from-nbs-primary/5 to-nbs-secondary/5 rounded-2xl p-8 lg:p-12">
-          <h2 class="text-2xl lg:text-3xl font-bold text-foreground mb-4">Our Mission</h2>
-          <p class="text-lg text-muted-foreground leading-relaxed">
-            To create the cleanest, most effective supplements on the market by combining pharmaceutical expertise 
-            with complete transparency. Every ingredient has a purpose, every dose is clinically backed, 
-            and every claim is backed by science.
-          </p>
-        </div>
-      </div>
-    </section>
+    <AboutHero />
 
     <!-- Company Story Sections -->
-    <section class="py-16 lg:py-20">
-      <div class="max-w-6xl mx-auto">
-        
-        <!-- Why We Started NBS -->
-        <div class="mb-16 lg:mb-24">
-          <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-6">
-                Why We Started NBS
-              </h2>
-              <div class="space-y-4 text-lg text-muted-foreground leading-relaxed">
-                <p>
-                  After years of working in pharmacy and seeing what goes into most supplements, 
-                  we were honestly disgusted. <span class="text-nbs-accent font-semibold">Proprietary blends</span> that hide 
-                  underdosed ingredients. <span class="text-nbs-accent font-semibold">Artificial fillers</span> that serve no purpose 
-                  except to bulk up capsules. <span class="text-nbs-accent font-semibold">Marketing claims</span> with zero scientific backing.
-                </p>
-                <p>
-                  We knew there had to be a better way. As pharmacists, we understand bioavailability, 
-                  drug interactions, and what actually works at the cellular level. We decided to use 
-                  that knowledge to create supplements we'd actually give to our own families.
-                </p>
-                <p>
-                  <span class="text-nbs-primary font-semibold">NBS isn't just another supplement company</span> – 
-                  we're pharmacists first, entrepreneurs second. Every decision we make is filtered through 
-                  our training and our commitment to "do no harm."
-                </p>
-              </div>
-            </div>
-            <div class="order-first lg:order-last">
-              <div class="aspect-square bg-gradient-to-br from-nbs-primary/10 to-nbs-accent/10 rounded-2xl border border-nbs-primary/20 flex items-center justify-center">
-                <div class="text-center">
-                  <svg class="w-20 h-20 mx-auto mb-4 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                  <p class="text-nbs-primary font-semibold">The "Aha" Moment</p>
-                  <p class="text-sm text-muted-foreground">Realizing we could do better</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Our Philosophy -->
-        <div class="mb-16 lg:mb-24">
-          <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div class="aspect-square bg-gradient-to-br from-nbs-secondary/10 to-nbs-natural/10 rounded-2xl border border-nbs-secondary/20 flex items-center justify-center">
-              <div class="text-center">
-                <svg class="w-20 h-20 mx-auto mb-4 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-                <p class="text-nbs-secondary font-semibold">Natural First</p>
-                <p class="text-sm text-muted-foreground">But effective always</p>
-              </div>
-            </div>
-            <div>
-              <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-6">
-                Our Philosophy: Natural is Best
-              </h2>
-              <div class="space-y-4 text-lg text-muted-foreground leading-relaxed">
-                <p>
-                  We believe your body knows the difference between natural and synthetic ingredients. 
-                  That's why we source <span class="text-nbs-secondary font-semibold">natural compounds</span> whenever possible – 
-                  from guarana extract instead of synthetic caffeine to monk fruit instead of artificial sweeteners.
-                </p>
-                <p>
-                  But "natural" doesn't mean "weak." Every natural ingredient we choose is backed by clinical research 
-                  and dosed at levels that actually work. We're not interested in fairy dusting or feel-good marketing.
-                </p>
-                <p>
-                  <span class="text-nbs-primary font-semibold">Transparency is non-negotiable.</span> We list every ingredient 
-                  and its exact dose on our labels. No proprietary blends, no hidden fillers, no surprises. 
-                  If you can't pronounce it or don't know why it's there, we probably won't use it.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- What Makes Us Different -->
-        <div class="mb-16">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              What Makes Us Different
-            </h2>
-            <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We're not just another supplement company. We're pharmacists who happen to make supplements.
-            </p>
-          </div>
-
-          <div class="grid md:grid-cols-3 gap-8">
-            <!-- Expert Knowledge -->
-            <div class="card text-center hover:shadow-lg transition-all duration-200">
-              <div class="card-header">
-                <div class="w-16 h-16 bg-nbs-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-8 h-8 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <h3 class="card-title text-xl">Expert Knowledge</h3>
-                <p class="card-description">50+ combined years of pharmaceutical experience</p>
-              </div>
-              <div class="card-content">
-                <p class="text-muted-foreground">
-                  We understand bioavailability, drug interactions, and metabolism at a level that 
-                  typical supplement companies simply don't possess.
-                </p>
-              </div>
-            </div>
-
-            <!-- All-Natural Ingredients -->
-            <div class="card text-center hover:shadow-lg transition-all duration-200">
-              <div class="card-header">
-                <div class="w-16 h-16 bg-nbs-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-8 h-8 text-nbs-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                </div>
-                <h3 class="card-title text-xl">All-Natural Ingredients</h3>
-                <p class="card-description">Nature's compounds, science's validation</p>
-              </div>
-              <div class="card-content">
-                <p class="text-muted-foreground">
-                  We source natural ingredients that your body recognizes and can efficiently process, 
-                  avoiding synthetic alternatives whenever possible.
-                </p>
-              </div>
-            </div>
-
-            <!-- Transparent Formulations -->
-            <div class="card text-center hover:shadow-lg transition-all duration-200">
-              <div class="card-header">
-                <div class="w-16 h-16 bg-nbs-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-8 h-8 text-nbs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                  </svg>
-                </div>
-                <h3 class="card-title text-xl">Transparent Formulations</h3>
-                <p class="card-description">Every ingredient and dose clearly labeled</p>
-              </div>
-              <div class="card-content">
-                <p class="text-muted-foreground">
-                  No proprietary blends or hidden formulas. You know exactly what you're getting 
-                  and why each ingredient is included.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <CompanyStory />
 
     <!-- Team Credentials -->
-    <section class="py-16 lg:py-20 bg-muted/30">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-            Meet Your Formulation Team
-          </h2>
-          <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Four licensed pharmacists with a combined 50+ years of experience in pharmaceutical science, 
-            supplement formulation, and clinical research.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member) => (
-            <div class="card hover:shadow-lg transition-all duration-200 group">
-              <div class="card-header text-center">
-                <!-- Team Member Photo Placeholder -->
-                <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-nbs-primary/20 to-nbs-secondary/20 border-4 border-background shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                  <svg class="w-10 h-10 text-nbs-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <h3 class="card-title text-lg">{member.name}</h3>
-                <p class="card-description text-nbs-primary font-medium">{member.role}</p>
-              </div>
-              <div class="card-content text-center text-sm space-y-2">
-                <div class="flex items-center justify-center gap-2 text-muted-foreground">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>{member.experience} Experience</span>
-                </div>
-                <div class="flex items-center justify-center gap-2 text-muted-foreground">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                  <span>{member.education}</span>
-                </div>
-                <span class="badge badge-secondary text-xs bg-nbs-secondary/10 text-nbs-secondary">
-                  {member.specialization}
-                </span>
-                <p class="text-muted-foreground text-xs leading-relaxed pt-2">
-                  {member.bio}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <!-- Credentials Summary -->
-        <div class="mt-12 text-center">
-          <div class="inline-flex items-center gap-6 bg-background rounded-2xl p-6 shadow-sm border">
-            <div class="text-center">
-              <div class="text-2xl font-bold text-nbs-primary">50+</div>
-              <div class="text-sm text-muted-foreground">Years Combined Experience</div>
-            </div>
-            <Separator orientation="vertical" class="h-12" />
-            <div class="text-center">
-              <div class="text-2xl font-bold text-nbs-secondary">4</div>
-              <div class="text-sm text-muted-foreground">Licensed PharmDs</div>
-            </div>
-            <Separator orientation="vertical" class="h-12" />
-            <div class="text-center">
-              <div class="text-2xl font-bold text-nbs-accent">100%</div>
-              <div class="text-sm text-muted-foreground">Science-Based Formulations</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <TeamSection teamMembers={teamMembers} />
 
     <!-- Call to Action -->
     <section class="py-16 lg:py-20">
