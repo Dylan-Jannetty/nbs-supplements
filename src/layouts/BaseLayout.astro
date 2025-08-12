@@ -387,10 +387,7 @@ const finalTwitterDescription = twitterDescription || finalOgDescription;
       }
     </style>
     
-    <!-- Preload critical images for LCP -->
-    {Astro.url.pathname === '/' && (
-      <link rel="preload" as="image" href="/src/images/catalyst-stacked.png" />
-    )}
+    <!-- Critical images are handled by Astro Image component optimization -->
     
     <!-- Strategic resource hints for performance -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

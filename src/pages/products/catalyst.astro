@@ -5,6 +5,11 @@ import IngredientsBreakdown from "../../components/product/IngredientsBreakdown.
 import ProductReviews from "../../components/product/ProductReviews.astro";
 import ProductFAQ from "../../components/product/ProductFAQ.astro";
 import UsageInstructions from "../../components/product/UsageInstructions.astro";
+import { getImage } from "astro:assets";
+import catalystStacked from "../../images/catalyst-stacked.png";
+
+// Process image for use in product data
+const catalystStackedImage = await getImage({ src: catalystStacked });
 
 // Product data
 const product = {
@@ -43,9 +48,9 @@ const product = {
       thumbnail: "/images/catalyst-ingredients.webp",
     },
     {
-      src: "/images/catalyst-stacked.png",
+      src: catalystStackedImage.src,
       alt: "Multiple Catalyst Pre-Workout containers stacked showing product line",
-      thumbnail: "/images/catalyst-stacked.png",
+      thumbnail: catalystStackedImage.src,
     },
   ],
 };
@@ -276,7 +281,7 @@ const seoData = {
             "https://supplements-nbs.com/images/catalyst-front.webp",
             "https://supplements-nbs.com/images/catalyst-back.webp",
             "https://supplements-nbs.com/images/catalyst-ingredients.webp",
-            "https://supplements-nbs.com/images/catalyst-stacked.png"
+            `https://supplements-nbs.com${catalystStackedImage.src}`
           ],
           "additionalProperty": [
             {
